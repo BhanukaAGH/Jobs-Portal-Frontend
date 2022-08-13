@@ -10,3 +10,33 @@
     @apply !scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800;
   }
 }
+
+@layer components {
+  .dashboard-link {
+    @apply flex items-center px-4 md:pl-6 gap-x-6 text-lg bg-white w-full py-4  text-black hover:bg-black hover:text-white cursor-pointer;
+  }
+
+  .dashboard-avatar {
+    @apply h-9 w-9 rounded-full object-cover ring-2 ring-indigo-500;
+  }
+
+  .dashboard-nav {
+    @apply w-full flex items-center justify-between h-[68px] px-6 bg-white border-b-[0.5px] border-[#6B7E8B]/40;
+  }
+
+  .dashboard-sideNav {
+    @apply w-auto md:w-72 h-full bg-white border-r-[0.5px] border-[#6B7E8B]/40 pt-2 font-[Poppins] font-medium;
+  }
+
+  .dashboard-title {
+    @apply flex items-center justify-between bg-[#F4F5F7] border-b-[0.5px] border-[#6B7E8B]/60 h-[60px] md:h-[70px] px-3 md:px-6 font-[Poppins] font-semibold;
+  }
+
+  .dashbord-title-button {
+    @apply px-4 md:px-6 py-1 md:py-2 rounded-md bg-black text-white text-sm font-medium;
+  }
+
+  .dashboard-content {
+    @apply w-full h-[calc(100%-60px)] md:h-[calc(100%-70px)] overflow-hidden;
+  }
+}
