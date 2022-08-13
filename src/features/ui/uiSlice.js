@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   toggleNav: false,
+  authModal: false,
 }
 
 export const uiSlice = createSlice({
@@ -11,8 +12,11 @@ export const uiSlice = createSlice({
     toggleNavbar: (state, action) => {
       state.toggleNav = action.payload || !state.toggleNav
     },
+    openAuth: (state, action) => {
+      state.authModal = action.payload
+    },
   },
 })
 
-export const { toggleNavbar } = uiSlice.actions
+export const { toggleNavbar, openAuth } = uiSlice.actions
 export default uiSlice.reducer

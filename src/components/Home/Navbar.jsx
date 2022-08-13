@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 import { MdMenu, MdClose } from 'react-icons/md'
 import Logo from '../../assets/Logo.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleNavbar } from '../../features/ui/uiSlice'
+import { openAuth, toggleNavbar } from '../../features/ui/uiSlice'
+import AuthModal from '../Auth/AuthModal'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
 
   const dispatch = useDispatch()
-  const { toggleNav } = useSelector((state) => state.ui)
+  const { toggleNav, authModal } = useSelector((state) => state.ui)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,12 +59,18 @@ const Navbar = () => {
         </div>
         {/* right sign In */}
         <div className='hidden md:flex items-center gap-x-3 text-white font-[Poppins] '>
-          <button className='px-4 py-1 rounded-md hover:scale-110 hover:font-extrabold'>
+          <button
+            className='px-4 py-1 rounded-md hover:scale-110 hover:font-extrabold'
+            onClick={() => dispatch(openAuth(true))}
+          >
             Sign in
           </button>
-          <button className='px-4 py-1 md:px-6 md:py-2 font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'>
+          <Link
+            to={'/company/sign-up'}
+            className='px-4 py-1 md:px-6 md:py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
+          >
             Post Job
-          </button>
+          </Link>
         </div>
 
         {/* Toggle Button */}
@@ -97,15 +104,25 @@ const Navbar = () => {
             </Link>
           </div>
           <div className='flex flex-col text-white gap-4 font-[Poppins] h-1/6'>
-            <button className='px-3 py-2 border border-white rounded-md hover:bg-gray-800'>
+            <button
+              className='px-3 py-2 border border-white rounded-md hover:bg-gray-800'
+              onClick={() => {
+                dispatch(toggleNavbar())
+                dispatch(openAuth(true))
+              }}
+            >
               Sign in
             </button>
-            <button className='px-4 py-2 font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'>
+            <Link
+              to={'/company/sign-up'}
+              className='px-4 py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
+            >
               Post Job
-            </button>
+            </Link>
           </div>
         </div>
       )}
+      {authModal && <AuthModal />}
     </>
   )
 }
