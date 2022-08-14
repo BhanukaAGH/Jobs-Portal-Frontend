@@ -39,4 +39,12 @@
   .dashboard-content {
     @apply w-full h-[calc(100%-60px)] md:h-[calc(100%-70px)] overflow-hidden;
   }
+
+  .post-job-section {
+    @apply flex items-center justify-between w-full px-3 sm:px-6 md:px-8 py-6 bg-white rounded-2xl shadow-md;
+  }
+
+  .input-field {
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500;
+  }
 }
