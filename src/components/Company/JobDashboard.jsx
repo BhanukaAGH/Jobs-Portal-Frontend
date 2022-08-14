@@ -5,6 +5,7 @@ import {
   MdDeleteOutline,
   MdSearch,
 } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 import { MockData } from './TestData'
 
 const JobDashboard = () => {
@@ -17,7 +18,9 @@ const JobDashboard = () => {
           <button className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'>
             Job Report
           </button>
-          <button className='dashbord-title-button'>Post Job</button>
+          <Link to={'/company/post-job'} className='dashbord-title-button'>
+            Post Job
+          </Link>
         </div>
       </div>
 
