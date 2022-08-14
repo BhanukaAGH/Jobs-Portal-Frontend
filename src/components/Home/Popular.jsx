@@ -20,7 +20,10 @@ const Popular = () => {
 
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-5/6 lg:w-4/6 gap-x-6 xl:gap-x-8 2xl:gap-x-20 gap-y-4 md:gap-y-12'>
         {[...Array(6)].map((item, index) => (
-          <div className='flex flex-col items-center justify-center rounded-md w-full h-80 cursor-pointer bg-[#4285F4]/20 px-2 sm:px-4 hover:bg-[#4285F4]/80'>
+          <div
+            key={index}
+            className='flex flex-col items-center justify-center rounded-md w-full h-80 cursor-pointer bg-[#4285F4]/20 px-2 sm:px-4 hover:bg-[#4285F4]/80'
+          >
             <img
               src={GoogleImage}
               alt='google-logo'
