@@ -18,6 +18,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.auth)
 
   const onLogout = () => {
+    setOpenDropDown(false)
     dispatch(logout())
     dispatch(reset())
     navigate('/')

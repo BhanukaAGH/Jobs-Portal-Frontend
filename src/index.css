@@ -48,4 +48,12 @@
   .avatar-option {
     @apply block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-black hover:text-white;
   }
+
+  .input-label {
+    @apply mb-2 block text-sm font-medium text-gray-900;
+  }
+
+  .auth-modal-input {
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500;
+  }
 }

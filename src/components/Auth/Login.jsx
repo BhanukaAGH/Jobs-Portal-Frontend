@@ -6,6 +6,7 @@ import { login, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
 import { openAuth } from '../../features/ui/uiSlice'
+import { emailPattern } from '../../constants/pattern'
 
 const Login = ({ setOpenLogin }) => {
   const {
@@ -49,10 +50,7 @@ const Login = ({ setOpenLogin }) => {
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-4'>
-            <label
-              htmlFor='email'
-              className='mb-2 block text-sm font-medium text-gray-900'
-            >
+            <label htmlFor='email' className='input-label'>
               Your email
             </label>
             <input
@@ -60,11 +58,11 @@ const Login = ({ setOpenLogin }) => {
               {...register('email', {
                 required: 'Email is required',
                 pattern: {
-                  value: /^\S+@\S+$/i,
+                  value: emailPattern,
                   message: 'Please enter a valid email address',
                 },
               })}
-              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+              className='auth-modal-input'
               placeholder='email address'
             />
             {errors.email && (
@@ -75,10 +73,7 @@ const Login = ({ setOpenLogin }) => {
           </div>
 
           <div className='mb-8'>
-            <label
-              htmlFor='password'
-              className='mb-2 block text-sm font-medium text-gray-900'
-            >
+            <label htmlFor='password' className='input-label'>
               Password
             </label>
             <input
@@ -91,7 +86,7 @@ const Login = ({ setOpenLogin }) => {
                 },
               })}
               placeholder='password'
-              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+              className='auth-modal-input'
             />
             {errors.password && (
               <p className='text-xs text-red-500 pt-0.5'>

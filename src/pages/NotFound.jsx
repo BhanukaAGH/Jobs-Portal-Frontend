@@ -4,24 +4,24 @@ import NotFoundImage from '../assets/notFound.png'
 
 const NotFound = () => {
   return (
-    <div className='flex items-center justify-center w-screen h-screen bg-blue-100'>
-      <div className='flex flex-col md:flex-row items-center w-full md:w-2/3 lg:h-1/2'>
+    <div className='flex items-center justify-center w-screen h-screen bg-black'>
+      <div className='flex flex-col md:flex-row items-center w-full md:w-2/3 lg:h-1/2 gap-y-8'>
         <div className='flex flex-1 flex-col items-center'>
-          <h1 className='font-bold text-blue-600 text-6xl md:text-9xl'>404</h1>
+          <h1 className='font-bold text-white text-6xl md:text-9xl'>404</h1>
 
-          <h6 className='mb-2  text-xl font-bold text-center text-gray-800 md:text-3xl 2xl:text-6xl'>
+          <h6 className='mb-2  text-xl font-bold text-center text-gray-300 md:text-3xl 2xl:text-6xl'>
             <span className='text-red-500'>Oops!</span> Page not found
           </h6>
 
-          <p className='mb-8 text-center text-gray-500 md:text-lg 2xl:text-xl'>
+          <p className='mb-8 text-center text-gray-200 md:text-lg 2xl:text-xl'>
             The page you’re looking for doesn’t exist.
           </p>
 
           <Link
             to={'/'}
-            className='px-6 py-2 text-sm font-semibold text-white rounded-md bg-black hover:bg-blue-500'
+            className='px-6 py-2 text-sm font-semibold text-black rounded-md bg-white hover:bg-gray-500 hover:text-white'
           >
-            Go home
+            Go Home
           </Link>
         </div>
         <div className='flex-1'>
