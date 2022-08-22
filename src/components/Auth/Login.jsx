@@ -1,6 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { login, reset } from '../../features/auth/authSlice'
+import { Oval } from 'react-loader-spinner'
+import { toast } from 'react-toastify'
+import { openAuth } from '../../features/ui/uiSlice'
 
 const Login = ({ setOpenLogin }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
+
+  const onSubmit = (data) => {
+    dispatch(login(data))
+  }
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message, { theme: 'dark' })
+    }
+
+    if (isSuccess || user) {
+      if (user && (user?.role === 'admin' || user?.role === 'company')) {
+        navigate('/dashboard')
+      } else {
+        navigate('/')
+        dispatch(openAuth())
+      }
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
   return (
     <div className='rounded-lg bg-white shadow font-[Mulish]'>
       <div className='p-6 md:p-12'>
@@ -8,7 +47,7 @@ const Login = ({ setOpenLogin }) => {
         <h3 className='mb-6 text-xl text-gray-900 font-bold'>
           Sign in to your account
         </h3>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-4'>
             <label
               htmlFor='email'
@@ -17,11 +56,22 @@ const Login = ({ setOpenLogin }) => {
               Your email
             </label>
             <input
-              type='email'
-              name='email'
+              type='text'
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Please enter a valid email address',
+                },
+              })}
               className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
               placeholder='email address'
             />
+            {errors.email && (
+              <p className='text-xs text-red-500 pt-0.5'>
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div className='mb-8'>
@@ -33,17 +83,41 @@ const Login = ({ setOpenLogin }) => {
             </label>
             <input
               type='password'
-              name='password'
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters',
+                },
+              })}
               placeholder='password'
               className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             />
+            {errors.password && (
+              <p className='text-xs text-red-500 pt-0.5'>
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <button
             type='submit'
-            className='w-full rounded-lg bg-[#312ECB] px-5 py-3 text-center text-sm font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 uppercase'
+            className={`w-full rounded-lg bg-[#312ECB] px-5 ${
+              isLoading ? 'py-1' : 'py-3'
+            } text-center text-sm font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 uppercase flex items-center justify-center`}
           >
-            Login
+            {isLoading ? (
+              <Oval
+                height={30}
+                width={30}
+                color='#fff'
+                secondaryColor='#4fa94d'
+                strokeWidth={6}
+                strokeWidthSecondary={6}
+              />
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
         <p className='text-sm w-full text-center mt-6 font-bold text-[#6B7E8B]'>

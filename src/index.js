@@ -7,6 +7,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 import App from './App'
 
+import '@fontsource/poppins'
+import '@fontsource/domine'
+import '@fontsource/mulish'
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <Provider store={store}>

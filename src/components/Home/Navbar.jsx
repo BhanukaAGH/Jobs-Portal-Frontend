@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MdMenu, MdClose } from 'react-icons/md'
 import Logo from '../../assets/Logo.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAuth, toggleNavbar } from '../../features/ui/uiSlice'
+import { logout, reset } from '../../features/auth/authSlice'
 import AuthModal from '../Auth/AuthModal'
+import OutsideClickHandler from 'react-outside-click-handler'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [openDropDown, setOpenDropDown] = useState(false)
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   const { toggleNav, authModal } = useSelector((state) => state.ui)
+  const { user } = useSelector((state) => state.auth)
+
+  const onLogout = () => {
+    dispatch(logout())
+    dispatch(reset())
+    navigate('/')
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,33 +69,72 @@ const Navbar = () => {
           </Link>
         </div>
         {/* right sign In */}
-        <div className='hidden md:flex items-center gap-x-3 text-white font-[Poppins] '>
-          <button
-            className='px-4 py-1 rounded-md hover:scale-110 hover:font-extrabold'
-            onClick={() => dispatch(openAuth(true))}
-          >
-            Sign in
-          </button>
-          <Link
-            to={'/company/sign-up'}
-            className='px-4 py-1 md:px-6 md:py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
-          >
-            Post Job
-          </Link>
-        </div>
-
-        {/* Toggle Button */}
-        {toggleNav ? (
-          <MdClose
-            className='md:hidden flex items-center justify-center text-white bg-slate-600 rounded-full text-[39px] hover:bg-black/50 p-2 cursor-pointer ring-1 ring-white'
-            onClick={() => dispatch(toggleNavbar())}
-          />
-        ) : (
-          <MdMenu
-            className='md:hidden flex items-center justify-center text-white bg-slate-600 rounded-full text-[39px] hover:bg-black/50 p-2 cursor-pointer'
-            onClick={() => dispatch(toggleNavbar())}
-          />
+        {!user && (
+          <div className='hidden md:flex items-center gap-x-3 text-white font-[Poppins] '>
+            <button
+              className='px-4 py-1 rounded-md hover:scale-110 hover:font-extrabold'
+              onClick={() => dispatch(openAuth(true))}
+            >
+              Sign in
+            </button>
+            <Link
+              to={'/company/sign-up'}
+              className='px-4 py-1 md:px-6 md:py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
+            >
+              Post Job
+            </Link>
+          </div>
         )}
+        <div className='flex items-center justify-center space-x-3'>
+          {user && (
+            <div className='relative'>
+              <button
+                type='button'
+                className='flex items-center justify-center'
+                onClick={() => setOpenDropDown(!openDropDown)}
+              >
+                <span className='hidden text-white text-sm font-[Mulish] md:block pr-2'>
+                  {user?.name}
+                </span>
+                <img
+                  className='dashboard-avatar'
+                  src='https://mdbcdn.b-cdn.net/img/new/avatars/8.webp'
+                  alt='user-profile'
+                />
+              </button>
+
+              {openDropDown && (
+                <OutsideClickHandler
+                  onOutsideClick={() => setOpenDropDown(false)}
+                >
+                  <div
+                    className='absolute right-0 z-30 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
+                    role='menu'
+                  >
+                    <span className='avatar-option'>User option 01</span>
+                    <span className='avatar-option'>User option 02</span>
+                    <span className='avatar-option' onClick={onLogout}>
+                      Sign out
+                    </span>
+                  </div>
+                </OutsideClickHandler>
+              )}
+            </div>
+          )}
+
+          {/* Toggle Button */}
+          {toggleNav ? (
+            <MdClose
+              className='md:hidden flex items-center justify-center text-white bg-slate-600 rounded-full text-[39px] hover:bg-black/50 p-2 cursor-pointer ring-1 ring-white'
+              onClick={() => dispatch(toggleNavbar())}
+            />
+          ) : (
+            <MdMenu
+              className='md:hidden flex items-center justify-center text-white bg-slate-600 rounded-full text-[39px] hover:bg-black/50 p-2 cursor-pointer'
+              onClick={() => dispatch(toggleNavbar())}
+            />
+          )}
+        </div>
       </div>
       {/* Modile Nav */}
       {toggleNav && (
@@ -103,23 +153,25 @@ const Navbar = () => {
               About us
             </Link>
           </div>
-          <div className='flex flex-col text-white gap-4 font-[Poppins] h-1/6'>
-            <button
-              className='px-3 py-2 border border-white rounded-md hover:bg-gray-800'
-              onClick={() => {
-                dispatch(toggleNavbar())
-                dispatch(openAuth(true))
-              }}
-            >
-              Sign in
-            </button>
-            <Link
-              to={'/company/sign-up'}
-              className='px-4 py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
-            >
-              Post Job
-            </Link>
-          </div>
+          {!user && (
+            <div className='flex flex-col text-white gap-4 font-[Poppins] h-1/6'>
+              <button
+                className='px-3 py-2 border border-white rounded-md hover:bg-gray-800'
+                onClick={() => {
+                  dispatch(toggleNavbar())
+                  dispatch(openAuth(true))
+                }}
+              >
+                Sign in
+              </button>
+              <Link
+                to={'/company/sign-up'}
+                className='px-4 py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
+              >
+                Post Job
+              </Link>
+            </div>
+          )}
         </div>
       )}
       {authModal && <AuthModal />}

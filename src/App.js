@@ -17,7 +17,13 @@ const App = () => {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
-      <ToastContainer />
+      <ToastContainer
+        position='bottom-right'
+        autoClose={3000}
+        closeOnClick
+        draggable
+        limit={3}
+      />
     </>
   )
 }
