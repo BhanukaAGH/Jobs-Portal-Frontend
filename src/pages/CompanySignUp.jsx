@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { register as registerUser, reset } from '../features/auth/authSlice'
+import { openAuth } from '../features/ui/uiSlice'
 import { toast } from 'react-toastify'
 import Logo from '../assets/Logo.png'
 import BGImage from '../assets/registerBg.png'
@@ -17,6 +18,7 @@ const CompanySignUp = () => {
     watch,
   } = useForm()
   const navigate = useNavigate()
+  const { state } = useLocation()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -33,16 +35,17 @@ const CompanySignUp = () => {
     }
 
     if (isSuccess || user) {
-      navigate('/company/post-job')
+      navigate(state?.path || '/company/post-job')
     }
 
     dispatch(reset())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   return (
     <div className='grid grid-cols-8 w-screen h-screen'>
       <div className='col-span-8 lg:col-span-5 w-full font-[Mulish]'>
-        <div className='w-10/12 md:w-2/3 mx-auto pt-12 pb-8'>
+        <div className='w-10/12 md:w-2/3 mx-auto pt-9 pb-6'>
           <div className='flex items-center gap-x-2 md:mr-12 lg:mr-16 cursor-pointer'>
             <img src={Logo} alt='website-logo' className='w-14' />
             <p className='text-4xl font-bold text-black font-[Domine]'>
@@ -269,6 +272,19 @@ const CompanySignUp = () => {
                 'Create an Account'
               )}
             </button>
+            <p className='col-span-6 text-sm w-full text-center font-bold text-[#6B7E8B]'>
+              If you have an account?
+              <span
+                className='text-[#625BF7] cursor-pointer'
+                onClick={() => {
+                  navigate('/')
+                  dispatch(openAuth(true))
+                }}
+              >
+                {' '}
+                Sign in
+              </span>
+            </p>
           </form>
         </div>
       </div>

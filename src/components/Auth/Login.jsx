@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { login, reset } from '../../features/auth/authSlice'
 import { Oval } from 'react-loader-spinner'
 import { toast } from 'react-toastify'
@@ -15,6 +15,7 @@ const Login = ({ setOpenLogin }) => {
     formState: { errors },
   } = useForm()
   const navigate = useNavigate()
+  const { state } = useLocation()
   const dispatch = useDispatch()
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -30,15 +31,18 @@ const Login = ({ setOpenLogin }) => {
     }
 
     if (isSuccess || user) {
-      if (user && (user?.role === 'admin' || user?.role === 'company')) {
-        navigate('/dashboard')
+      if (user?.role === 'admin') {
+        navigate(state?.path || '/admin/dashboard')
+      } else if (user?.role === 'company') {
+        navigate(state?.path || '/company/dashboard')
       } else {
         navigate('/')
-        dispatch(openAuth())
       }
+      dispatch(openAuth(false))
     }
 
     dispatch(reset())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   return (

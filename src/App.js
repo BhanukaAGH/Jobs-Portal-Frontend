@@ -6,6 +6,7 @@ import CompanySignUp from './pages/CompanySignUp'
 import PostJob from './pages/PostJob'
 import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
   return (
@@ -13,8 +14,30 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/company/sign-up' element={<CompanySignUp />} />
-        <Route path='/company/post-job' element={<PostJob />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route
+          path='/company/post-job'
+          element={
+            <ProtectedRoute>
+              <PostJob />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/admin/dashboard'
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/company/dashboard'
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <ToastContainer

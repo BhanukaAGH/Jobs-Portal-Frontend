@@ -12,7 +12,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [openDropDown, setOpenDropDown] = useState(false)
   const navigate = useNavigate()
-
   const dispatch = useDispatch()
   const { toggleNav, authModal } = useSelector((state) => state.ui)
   const { user } = useSelector((state) => state.auth)
@@ -79,7 +78,7 @@ const Navbar = () => {
               Sign in
             </button>
             <Link
-              to={'/company/sign-up'}
+              to={'/company/post-job'}
               className='px-4 py-1 md:px-6 md:py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
             >
               Post Job
@@ -112,6 +111,16 @@ const Navbar = () => {
                     className='absolute right-0 z-30 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
                     role='menu'
                   >
+                    {user?.role === 'admin' && (
+                      <Link to={'/admin/dashboard'} className='avatar-option'>
+                        Dashboard
+                      </Link>
+                    )}
+                    {user?.role === 'company' && (
+                      <Link to={'/company/dashboard'} className='avatar-option'>
+                        Dashboard
+                      </Link>
+                    )}
                     <span className='avatar-option'>User option 01</span>
                     <span className='avatar-option'>User option 02</span>
                     <span className='avatar-option' onClick={onLogout}>
@@ -166,7 +175,7 @@ const Navbar = () => {
                 Sign in
               </button>
               <Link
-                to={'/company/sign-up'}
+                to={'/company/post-job'}
                 className='px-4 py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
               >
                 Post Job

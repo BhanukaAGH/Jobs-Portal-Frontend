@@ -33,7 +33,7 @@ const Register = ({ setOpenLogin }) => {
 
     if (isSuccess || user) {
       navigate('/')
-      dispatch(openAuth())
+      dispatch(openAuth(false))
     }
 
     dispatch(reset())
