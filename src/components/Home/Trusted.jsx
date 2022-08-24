@@ -1,9 +1,9 @@
 import React from 'react'
-import GoogleLogo from '../../assets/Google.png'
-import NetflixLogo from '../../assets/Netflix.png'
-import AirbnbLogo from '../../assets/Airbnb.png'
-import MicrosoftLogo from '../../assets/Microsoft.png'
-import TwitchLogo from '../../assets/Twitch.png'
+import GoogleLogo from '../../assets/Google.webp'
+import NetflixLogo from '../../assets/Netflix.webp'
+import AirbnbLogo from '../../assets/Airbnb.webp'
+import MicrosoftLogo from '../../assets/Microsoft.webp'
+import TwitchLogo from '../../assets/Twitch.webp'
 
 const Trusted = () => {
   return (

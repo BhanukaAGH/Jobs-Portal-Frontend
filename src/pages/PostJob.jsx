@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import DashboardNav from '../components/Dashboard/DashboardNav'
-import PostJobImage from '../assets/postJob.png'
+import PostJobImage from '../assets/postJob.webp'
 import { MdAdd } from 'react-icons/md'
 
 const PostJob = () => {

@@ -1,10 +1,10 @@
 import React from 'react'
-import Category1 from '../../assets/Category1.png'
-import Category2 from '../../assets/Category2.png'
-import Category3 from '../../assets/Category3.png'
-import Category4 from '../../assets/Category4.png'
-import Category5 from '../../assets/Category5.png'
-import Category6 from '../../assets/Category6.png'
+import Category1 from '../../assets/Category1.webp'
+import Category2 from '../../assets/Category2.webp'
+import Category3 from '../../assets/Category3.webp'
+import Category4 from '../../assets/Category4.webp'
+import Category5 from '../../assets/Category5.webp'
+import Category6 from '../../assets/Category6.webp'
 
 const Category = () => {
   return (

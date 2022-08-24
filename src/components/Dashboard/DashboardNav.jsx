@@ -3,7 +3,7 @@ import OutsideClickHandler from 'react-outside-click-handler'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logout, reset } from '../../features/auth/authSlice'
-import Logo from '../../assets/Logo.png'
+import Logo from '../../assets/Logo.webp'
 
 const DashboardNav = () => {
   const [openDropDown, setOpenDropDown] = useState(false)

@@ -1,5 +1,5 @@
 import React from 'react'
-import GoogleImage from '../../assets/GImage.png'
+import GoogleImage from '../../assets/GImage.webp'
 
 const Popular = () => {
   return (

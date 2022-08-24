@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdMenu, MdClose } from 'react-icons/md'
-import Logo from '../../assets/Logo.png'
+import Logo from '../../assets/Logo.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAuth, toggleNavbar } from '../../features/ui/uiSlice'
 import { logout, reset } from '../../features/auth/authSlice'

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaSearch } from 'react-icons/fa'
 import Navbar from '../components/Home/Navbar'
-import BGImage from '../assets/bg.jpg'
+import BGImage from '../assets/bg.webp'
 import Trusted from '../components/Home/Trusted'
 import Category from '../components/Home/Category'
 import Popular from '../components/Home/Popular'
