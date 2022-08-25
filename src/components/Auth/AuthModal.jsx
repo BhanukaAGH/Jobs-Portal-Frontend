@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { openAuth } from '../../features/ui/uiSlice'
 import Login from './Login'
 import Register from './Register'
 import { motion } from 'framer-motion'
+import useOnClickOutside from '../../hooks/useOnClickOutside'
 
 const modalVariants = {
   hidden: {
@@ -19,8 +19,11 @@ const modalVariants = {
 }
 
 const AuthModal = () => {
+  const ref = useRef()
   const [openLogin, setOpenLogin] = useState(true)
   const dispatch = useDispatch()
+
+  useOnClickOutside(ref, () => dispatch(openAuth(false)))
 
   return (
     <div className='fixed inset-0 z-40 min-w-full !overflow-hidden'>
@@ -32,10 +35,10 @@ const AuthModal = () => {
           animate='visible'
           className='w-full transform overflow-hidden rounded-lg z-[1] bg-white shadow-xl transition-all sm:max-w-lg'
         >
-          <OutsideClickHandler onOutsideClick={() => dispatch(openAuth(false))}>
+          <div ref={ref}>
             {openLogin && <Login setOpenLogin={setOpenLogin} />}
             {!openLogin && <Register setOpenLogin={setOpenLogin} />}
-          </OutsideClickHandler>
+          </div>
         </motion.div>
       </div>
     </div>

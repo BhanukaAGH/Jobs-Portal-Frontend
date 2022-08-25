@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import OutsideClickHandler from 'react-outside-click-handler'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logout, reset } from '../../features/auth/authSlice'
 import Logo from '../../assets/Logo.webp'
+import useOnClickOutside from '../../hooks/useOnClickOutside'
 
 const DashboardNav = () => {
+  const ref = useRef()
   const [openDropDown, setOpenDropDown] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -15,6 +16,8 @@ const DashboardNav = () => {
     dispatch(reset())
     navigate('/')
   }
+
+  useOnClickOutside(ref, () => setOpenDropDown(false))
 
   return (
     <nav className='dashboard-nav'>
@@ -33,7 +36,7 @@ const DashboardNav = () => {
         </button>
 
         {openDropDown && (
-          <OutsideClickHandler onOutsideClick={() => setOpenDropDown(false)}>
+          <div ref={ref}>
             <div
               className='absolute right-0 z-30 mt-1 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
               role='menu'
@@ -42,7 +45,7 @@ const DashboardNav = () => {
                 Sign out
               </span>
             </div>
-          </OutsideClickHandler>
+          </div>
         )}
       </div>
     </nav>
