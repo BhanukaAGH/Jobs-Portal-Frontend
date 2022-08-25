@@ -71,7 +71,7 @@ const CompanyDashboard = () => {
     setIsEdit(false)
     const id = toast('Please wait...', { isLoading: true })
 
-    let profileUrl = 'http://www.gravatar.com/avatar/?d=mp'
+    let profileUrl
     if (profileImg) {
       profileUrl = await uploadImage()
     }
@@ -86,7 +86,7 @@ const CompanyDashboard = () => {
         numberOfEmployees: data.numberOfEmployees,
         companyDescription: data.companyDescription,
       },
-      photoUrl: profileUrl,
+      photoUrl: profileUrl || '',
     }
 
     dispatch(updateCompany(companyData))
