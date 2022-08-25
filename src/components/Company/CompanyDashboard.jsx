@@ -1,13 +1,145 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { MdOutlineCloudUpload } from 'react-icons/md'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { urlPattern } from '../../constants/pattern'
+import { useSelector, useDispatch } from 'react-redux'
+import { getCompany, updateCompany } from '../../features/company/companySlice'
+import Loading from '../Loading'
 
 const CompanyDashboard = () => {
+  const [profileImg, setProfileImg] = useState(null)
+  const [isEdit, setIsEdit] = useState(false)
+
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+  const { company, isLoading } = useSelector((state) => state.company)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      name: company?.name,
+      email: company?.email,
+      companyWebsite: company?._company?.companyWebsite,
+      companyLocation: company?._company?.companyLocation,
+      numberOfEmployees: company?._company?.numberOfEmployees,
+      companyDescription: company?._company?.companyDescription,
+    },
+  })
+
+  // Check select image is valid
+  const handleProfileImage = (e) => {
+    const file = e.target.files[0]
+    if (file?.size >= 2000000) {
+      toast('File Size is too large', { type: 'error' })
+      return
+    }
+    if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file?.type)) {
+      toast('Unsupported File Format', { type: 'error' })
+      return
+    }
+
+    setProfileImg(file)
+  }
+
+  // Upload profile image to cloudinary
+  const uploadImage = async () => {
+    const data = new FormData()
+    data.append('file', profileImg)
+    data.append('upload_preset', 'jobs.lk')
+
+    try {
+      const uploadRes = await axios.post(
+        'https://api.cloudinary.com/v1_1/aghb/image/upload',
+        data
+      )
+
+      return uploadRes?.data?.secure_url
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // After save button click this function(update company) occur
+  const onSubmit = async (data) => {
+    setIsEdit(false)
+    const id = toast('Please wait...', { isLoading: true })
+
+    let profileUrl = 'http://www.gravatar.com/avatar/?d=mp'
+    if (profileImg) {
+      profileUrl = await uploadImage()
+    }
+
+    const companyData = {
+      id: user?.userId,
+      name: data.name,
+      email: data.email,
+      _company: {
+        companyWebsite: data.companyWebsite,
+        companyLocation: data.companyLocation,
+        numberOfEmployees: data.numberOfEmployees,
+        companyDescription: data.companyDescription,
+      },
+      photoUrl: profileUrl,
+    }
+
+    dispatch(updateCompany(companyData))
+    toast('Success! Company profile updated.', {
+      toastId: id,
+      updateId: id,
+      type: 'success',
+      isLoading: false,
+    })
+  }
+
+  // Get company data initial load
+  useEffect(() => {
+    dispatch(getCompany(user?.userId))
+  }, [user, dispatch])
+
+  // Reset form data after successfully get company data
+  useEffect(() => {
+    reset({
+      name: company?.name,
+      email: company?.email,
+      companyWebsite: company?._company?.companyWebsite,
+      companyLocation: company?._company?.companyLocation,
+      numberOfEmployees: company?._company?.numberOfEmployees,
+      companyDescription: company?._company?.companyDescription,
+    })
+  }, [company, reset])
+
+  if (isLoading) return <Loading />
+
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
       {/* Title Section */}
       <div className='dashboard-title'>
         <h3 className='text-lg md:text-2xl xl:text-3xl'>Company Details</h3>
         <div>
-          <button className='dashbord-title-button'>Edit</button>
+          {isEdit && (
+            <button
+              type='submit'
+              form='company-form'
+              className='dashbord-title-button bg-[#312ECB]'
+            >
+              Save
+            </button>
+          )}
+          {!isEdit && (
+            <button
+              className='dashbord-title-button'
+              onClick={() => setIsEdit(true)}
+            >
+              Edit
+            </button>
+          )}
         </div>
       </div>
 
@@ -15,7 +147,11 @@ const CompanyDashboard = () => {
       <div className='dashboard-content'>
         <div className='grid grid-cols-12 w-full h-full px-3 md:px-6 py-6 overflow-auto scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
           <div className='col-span-12 lg:col-span-9 w-full h-full'>
-            <form className='grid grid-cols-6 gap-3 pr-12'>
+            <form
+              id='company-form'
+              className='grid grid-cols-6 gap-3 pr-12'
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div className='col-span-6 lg:col-span-3'>
                 <label
                   htmlFor='company-name'
@@ -25,10 +161,21 @@ const CompanyDashboard = () => {
                 </label>
                 <input
                   type='text'
-                  name='company-name'
+                  {...register('name', {
+                    required: 'Name is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Name must be at least 3 characters',
+                    },
+                  })}
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
-                  placeholder='company name'
+                  disabled={!isEdit}
                 />
+                {errors.name && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
 
               <div className='col-span-6 lg:col-span-3'>
@@ -40,10 +187,21 @@ const CompanyDashboard = () => {
                 </label>
                 <input
                   type='email'
-                  name='company-email'
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: 'Please enter a valid email address',
+                    },
+                  })}
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
-                  placeholder='company email'
+                  disabled={!isEdit}
                 />
+                {errors.email && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               <div className='col-span-6'>
@@ -56,10 +214,20 @@ const CompanyDashboard = () => {
                 </label>
                 <input
                   type='url'
-                  name='company-website'
+                  {...register('companyWebsite', {
+                    pattern: {
+                      value: urlPattern,
+                      message: 'Please enter a valid url',
+                    },
+                  })}
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
-                  placeholder='company website url'
+                  disabled={!isEdit}
                 />
+                {errors.companyWebsite && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.companyWebsite.message}
+                  </p>
+                )}
               </div>
 
               <div className='col-span-6'>
@@ -71,10 +239,17 @@ const CompanyDashboard = () => {
                 </label>
                 <input
                   type='text'
-                  name='company-location'
+                  {...register('companyLocation', {
+                    required: 'Company location is required',
+                  })}
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
-                  placeholder='company location'
+                  disabled={!isEdit}
                 />
+                {errors.companyLocation && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.companyLocation.message}
+                  </p>
+                )}
               </div>
 
               <div className='col-span-6'>
@@ -86,9 +261,11 @@ const CompanyDashboard = () => {
                 </label>
                 <select
                   id='company-employees'
-                  name='company-employees'
-                  autoComplete='country-name'
+                  {...register('numberOfEmployees', {
+                    required: 'Please select the value',
+                  })}
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
+                  disabled={!isEdit}
                 >
                   <option>1 to 49</option>
                   <option>50 to 149</option>
@@ -98,6 +275,11 @@ const CompanyDashboard = () => {
                   <option>750 to 999</option>
                   <option>1000+</option>
                 </select>
+                {errors.numberOfEmployees && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.numberOfEmployees.message}
+                  </p>
+                )}
               </div>
 
               <div className='col-span-6'>
@@ -108,23 +290,58 @@ const CompanyDashboard = () => {
                   Company description
                 </label>
                 <textarea
-                  name='company-description'
+                  {...register('companyDescription', {
+                    required: 'Company description is required',
+                    minLength: {
+                      value: 20,
+                      message: 'Description is too short',
+                    },
+                    maxLength: {
+                      value: 500,
+                      message: 'Description is too long',
+                    },
+                  })}
                   rows='3'
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
-                  placeholder='company description'
+                  disabled={!isEdit}
                 />
+                {errors.companyDescription && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.companyDescription.message}
+                  </p>
+                )}
               </div>
             </form>
           </div>
 
           <div className='order-first lg:order-none col-span-12 lg:col-span-3 w-full h-full'>
-            <div className='flex items-center justify-center w-48 h-48 bg-white p-6 shadow-lg rounded-xl mb-8'>
+            <div className='flex items-center justify-center w-48 h-48 bg-white p-6 shadow-lg rounded-xl mb-8 relative'>
               <img
-                src='https://img.icons8.com/color/48/000000/google-logo.png'
+                src={company?.photoUrl}
                 alt='company-logo'
-                className='w-24 object-cover'
+                className={`w-24 object-cover ${isEdit && 'blur-md'}`}
               />
+              {isEdit && (
+                <label
+                  htmlFor='profile'
+                  className='absolute inset-0 flex flex-col items-center justify-center bg-transparent rounded-md cursor-pointer'
+                >
+                  <MdOutlineCloudUpload className='text-6xl' />
+                  <p className='font-[Poppins] text-lg'>Change profile</p>
+                  <input
+                    id='profile'
+                    type='file'
+                    onChange={handleProfileImage}
+                    className='hidden'
+                  />
+                </label>
+              )}
             </div>
+            {errors.profile && (
+              <p className='text-xs text-red-500 pt-0.5'>
+                {errors.profile.message}
+              </p>
+            )}
           </div>
         </div>
       </div>

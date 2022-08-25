@@ -11,6 +11,9 @@ import '@fontsource/poppins'
 import '@fontsource/domine'
 import '@fontsource/mulish'
 
+import { injectStore } from './utils/api'
+injectStore(store)
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <Provider store={store}>

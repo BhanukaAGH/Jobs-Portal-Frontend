@@ -1,16 +1,22 @@
 import axios from 'axios'
+import { logout } from '../features/auth/authSlice'
+
+let store
+export const injectStore = (_store) => {
+  store = _store
+}
 
 // axios
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: `${process.env.REACT_APP_API_URL}/api/v1`,
 })
 
 // request
 api.interceptors.request.use(
   (config) => {
-    config.headers.common['Authorization'] = `Bearer ${localStorage.getItem(
-      'token'
-    )}`
+    config.headers.common['Authorization'] = `Bearer ${
+      JSON.parse(localStorage.getItem('user')).token
+    }`
     return config
   },
   (error) => {
@@ -24,9 +30,8 @@ api.interceptors.response.use(
     return response
   },
   (error) => {
-    // console.log(error.response)
     if (error.response.status === 401) {
-      //   logoutUser()
+      store.dispatch(logout())
     }
     return Promise.reject(error)
   }
