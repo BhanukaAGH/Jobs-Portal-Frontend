@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MdMenu, MdClose } from 'react-icons/md'
 import Logo from '../../assets/Logo.webp'
@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { openAuth, toggleNavbar } from '../../features/ui/uiSlice'
 import { logout, reset } from '../../features/auth/authSlice'
 import AuthModal from '../Auth/AuthModal'
-import OutsideClickHandler from 'react-outside-click-handler'
+import useOnClickOutside from '../../hooks/useOnClickOutside'
 
 const Navbar = () => {
+  const ref = useRef()
   const [isScrolled, setIsScrolled] = useState(false)
   const [openDropDown, setOpenDropDown] = useState(false)
   const navigate = useNavigate()
@@ -22,6 +23,8 @@ const Navbar = () => {
     dispatch(reset())
     navigate('/')
   }
+
+  useOnClickOutside(ref, () => setOpenDropDown(false))
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,9 +107,7 @@ const Navbar = () => {
               </button>
 
               {openDropDown && (
-                <OutsideClickHandler
-                  onOutsideClick={() => setOpenDropDown(false)}
-                >
+                <div ref={ref}>
                   <div
                     className='absolute right-0 z-30 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
                     role='menu'
@@ -127,7 +128,7 @@ const Navbar = () => {
                       Sign out
                     </span>
                   </div>
-                </OutsideClickHandler>
+                </div>
               )}
             </div>
           )}
