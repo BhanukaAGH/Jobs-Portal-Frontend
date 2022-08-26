@@ -101,7 +101,7 @@ const Navbar = () => {
                 </span>
                 <img
                   className='dashboard-avatar'
-                  src='https://mdbcdn.b-cdn.net/img/new/avatars/8.webp'
+                  src={user?.profileImg}
                   alt='user-profile'
                 />
               </button>

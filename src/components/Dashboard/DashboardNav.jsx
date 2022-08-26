@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logout, reset } from '../../features/auth/authSlice'
 import Logo from '../../assets/Logo.webp'
@@ -10,6 +10,8 @@ const DashboardNav = () => {
   const [openDropDown, setOpenDropDown] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const { user } = useSelector((state) => state.auth)
 
   const onLogout = () => {
     dispatch(logout())
@@ -30,7 +32,7 @@ const DashboardNav = () => {
         <button type='button' onClick={() => setOpenDropDown(!openDropDown)}>
           <img
             className='dashboard-avatar'
-            src='https://mdbcdn.b-cdn.net/img/new/avatars/8.webp'
+            src={user?.profileImg}
             alt='user-profile'
           />
         </button>
