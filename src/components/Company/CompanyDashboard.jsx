@@ -86,7 +86,7 @@ const CompanyDashboard = () => {
         numberOfEmployees: data.numberOfEmployees,
         companyDescription: data.companyDescription,
       },
-      photoUrl: profileUrl || '',
+      photoUrl: profileUrl || data.photoUrl,
     }
 
     dispatch(updateCompany(companyData))
