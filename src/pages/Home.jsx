@@ -15,14 +15,14 @@ const Home = () => {
         <img
           src={BGImage}
           alt='background-img'
-          className='absolute top-0 left-0 object-cover w-full h-full opacity-40'
+          className='absolute top-0 left-0 object-cover w-full h-full opacity-40 select-none'
         />
         <div className='flex flex-col items-center max-w-xl md:max-w-3xl z-10 text-center'>
-          <h1 className='text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8'>
+          <h1 className='text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-8 select-none'>
             Find a Job in a{' '}
             <span className='text-[#312ECB]'>World Leading</span> Company.
           </h1>
-          <p className=' md:text-lg font-medium text-[#CFCFCF] max-w-lg mb-16'>
+          <p className=' md:text-lg font-medium text-[#CFCFCF] max-w-lg mb-16 select-none'>
             We Help you to find the best job to build your future and build a
             better future of digital era.
           </p>

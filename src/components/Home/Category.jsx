@@ -6,6 +6,33 @@ import Category4 from '../../assets/Category4.webp'
 import Category5 from '../../assets/Category5.webp'
 import Category6 from '../../assets/Category6.webp'
 
+const categories = [
+  {
+    name: 'IT/Telecommunication',
+    image: Category1,
+  },
+  {
+    name: 'Management',
+    image: Category2,
+  },
+  {
+    name: 'Digital & Creative',
+    image: Category3,
+  },
+  {
+    name: 'Sales & Marketing',
+    image: Category4,
+  },
+  {
+    name: 'Accounting',
+    image: Category5,
+  },
+  {
+    name: 'Design & Art',
+    image: Category6,
+  },
+]
+
 const Category = () => {
   return (
     <div className='flex flex-col items-center justify-center bg-gradient-to-r from-[#7D7D7D] to-white pt-8 pb-16'>
@@ -13,66 +40,21 @@ const Category = () => {
         Browse Job Category
       </h1>
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  w-5/6 lg:w-4/6 gap-x-6 md:gap-x-8 gap-y-6'>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            IT/Telecommunication
-          </h1>
-          <img
-            src={Category1}
-            alt='category-01'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            Management
-          </h1>
-          <img
-            src={Category2}
-            alt='category-02'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            Digital & Creative
-          </h1>
-          <img
-            src={Category3}
-            alt='category-03'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            Sales & Marketing
-          </h1>
-          <img
-            src={Category4}
-            alt='category-04'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            Accounting
-          </h1>
-          <img
-            src={Category5}
-            alt='category-05'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
-        <div className='relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'>
-          <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
-            Design & Art
-          </h1>
-          <img
-            src={Category6}
-            alt='category-06'
-            className='absolute top-0 left-0 w-full h-full object-cover hover:scale-110 transition ease-in hover:opacity-80'
-          />
-        </div>
+        {categories.map((item, index) => (
+          <div
+            key={index}
+            className='group relative flex items-center justify-center rounded-md overflow-hidden aspect-video cursor-pointer'
+          >
+            <h1 className='text-lg font-[Poppins] md:text-xl font-medium text-center text-white z-10'>
+              {item.name}
+            </h1>
+            <img
+              src={item.image}
+              alt={`category-${index}`}
+              className='absolute top-0 left-0 w-full h-full object-cover group-hover:scale-110 transition ease-in group-hover:opacity-80'
+            />
+          </div>
+        ))}
       </div>
     </div>
   )

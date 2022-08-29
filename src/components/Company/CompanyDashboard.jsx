@@ -86,7 +86,7 @@ const CompanyDashboard = () => {
         numberOfEmployees: data.numberOfEmployees,
         companyDescription: data.companyDescription,
       },
-      photoUrl: profileUrl || data.photoUrl,
+      photoUrl: profileUrl || company?.photoUrl,
     }
 
     dispatch(updateCompany(companyData))
@@ -96,6 +96,8 @@ const CompanyDashboard = () => {
       type: 'success',
       isLoading: false,
     })
+    profileUrl = ''
+    setProfileImg(null)
   }
 
   // Get company data initial load

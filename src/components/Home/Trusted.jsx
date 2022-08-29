@@ -7,7 +7,7 @@ import TwitchLogo from '../../assets/Twitch.webp'
 
 const Trusted = () => {
   return (
-    <div className='flex flex-col items-center justify-center w-full py-12'>
+    <div className='flex flex-col items-center justify-center w-full py-12 select-none'>
       <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-12 text-center text-[#0A2537]'>
         Trusted by 5,000+ Companies Worldwide
       </h1>
