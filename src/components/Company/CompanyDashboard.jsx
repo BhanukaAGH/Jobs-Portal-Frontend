@@ -269,13 +269,13 @@ const CompanyDashboard = () => {
                   className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
                   disabled={!isEdit}
                 >
-                  <option>1 to 49</option>
-                  <option>50 to 149</option>
-                  <option>150 to 249</option>
-                  <option>250 to 499</option>
-                  <option>500 to 749</option>
-                  <option>750 to 999</option>
-                  <option>1000+</option>
+                  <option value='1 to 49'>1 to 49</option>
+                  <option value='50 to 149'>50 to 149</option>
+                  <option value='150 to 249'>150 to 249</option>
+                  <option value='250 to 499'>250 to 499</option>
+                  <option value='500 to 749'>500 to 749</option>
+                  <option value='750 to 999'>750 to 999</option>
+                  <option value='1000+'>1000+</option>
                 </select>
                 {errors.numberOfEmployees && (
                   <p className='text-xs text-red-500 pt-0.5'>
