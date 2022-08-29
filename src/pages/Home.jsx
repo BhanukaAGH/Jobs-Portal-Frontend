@@ -6,10 +6,13 @@ import Trusted from '../components/Home/Trusted'
 import Category from '../components/Home/Category'
 import Popular from '../components/Home/Popular'
 import Footer from '../components/Home/Footer'
+import { useSelector } from 'react-redux'
 
 const Home = () => {
+  const { authModal } = useSelector((state) => state.ui)
+
   return (
-    <div>
+    <div className={`${authModal && 'h-screen overflow-hidden'}`}>
       <Navbar />
       <header className='h-screen relative bg-black flex justify-center items-center'>
         <img
@@ -30,8 +33,8 @@ const Home = () => {
             <FaSearch className='text-2xl text-[#9CA3AF]' />
             <input
               type='text'
-              className='rounded-lg w-full py-2 px-1 outline-none font-[Poppins] text-sm'
-              placeholder='Job title or keyword'
+              className='placeholder:italic rounded-lg w-full py-2 px-1 outline-none font-[Poppins] text-sm'
+              placeholder='Job title or keyword . . .'
             />
             <button className='px-6 py-2 font-medium rounded-md bg-blue-700 text-white'>
               Search

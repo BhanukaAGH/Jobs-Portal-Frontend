@@ -178,6 +178,7 @@ const Navbar = () => {
               <Link
                 to={'/company/post-job'}
                 className='px-4 py-2 text-center font-medium bg-[#312ECB] rounded-md hover:bg-blue-700'
+                onClick={() => dispatch(toggleNavbar())}
               >
                 Post Job
               </Link>
