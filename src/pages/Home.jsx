@@ -33,7 +33,7 @@ const Home = () => {
             <FaSearch className='text-2xl text-[#9CA3AF]' />
             <input
               type='text'
-              className='placeholder:italic rounded-lg w-full py-2 px-1 outline-none font-[Poppins] text-sm'
+              className='placeholder:italic rounded-lg w-full py-2 px-1 font-[Poppins] text-sm !outline-hidden !border-hidden !ring-0'
               placeholder='Job title or keyword . . .'
             />
             <button className='px-6 py-2 font-medium rounded-md bg-blue-700 text-white'>

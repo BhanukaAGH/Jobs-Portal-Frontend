@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import DashboardNav from '../components/Dashboard/DashboardNav'
 import PostJobImage from '../assets/postJob.webp'
-import { MdAdd, MdRemoveCircle } from 'react-icons/md'
+import { MdAdd, MdRemove } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCompany } from '../features/company/companySlice'
 import Loading from '../components/Loading'
@@ -22,6 +22,7 @@ const PostJob = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm()
 
   const {
@@ -62,7 +63,9 @@ const PostJob = () => {
 
   return (
     <div className='bg-[#F3F2F1] min-h-screen'>
-      <DashboardNav />
+      <div className='sticky top-0'>
+        <DashboardNav />
+      </div>
 
       <div className='flex flex-col items-center justify-center gap-y-6 pt-6 pb-12 w-full sm:w-[600px] md:w-[650px] lg:w-[700px] mx-auto px-3'>
         {/* Post Job Title Section */}
@@ -136,10 +139,15 @@ const PostJob = () => {
                 <select
                   id='job-title'
                   {...register('jobCategory', {
-                    required: 'Please select the job category',
+                    validate: () => {
+                      if (watch('jobCategory') === 'Choose a category') {
+                        return 'Please select the job category'
+                      }
+                    },
                   })}
                   className='input-field'
                 >
+                  <option>Choose a category</option>
                   <option value='IT/Telecommunication'>
                     IT/Telecommunication
                   </option>
@@ -167,10 +175,15 @@ const PostJob = () => {
                 <select
                   id='job-type'
                   {...register('jobType', {
-                    required: 'Please select the job type',
+                    validate: () => {
+                      if (watch('jobType') === 'Choose a job type') {
+                        return 'Please select the job type'
+                      }
+                    },
                   })}
                   className='input-field'
                 >
+                  <option>Choose a job type</option>
                   <option value='Full-time'>Full-time</option>
                   <option value='Part-time'>Part-time</option>
                   <option value='Contract'>Contract</option>
@@ -229,10 +242,15 @@ const PostJob = () => {
                 <select
                   id='country'
                   {...register('country', {
-                    required: 'Please select the value',
+                    validate: () => {
+                      if (watch('country') === 'Choose a country') {
+                        return 'Please select the country'
+                      }
+                    },
                   })}
                   className='input-field'
                 >
+                  <option>Choose a country</option>
                   {countries.map((country, index) => (
                     <option key={index} value={country.text}>
                       {country.text}
@@ -257,10 +275,15 @@ const PostJob = () => {
                 <select
                   id='work-type'
                   {...register('workType', {
-                    required: 'Please select the value',
+                    validate: () => {
+                      if (watch('workType') === 'Choose a work type') {
+                        return 'Please select the work type'
+                      }
+                    },
                   })}
                   className='input-field'
                 >
+                  <option>Choose a work type</option>
                   <option value='Remote'>Remote</option>
                   <option value='In person'>In person</option>
                 </select>
@@ -287,20 +310,20 @@ const PostJob = () => {
                 <select
                   id='number-of-vacancy'
                   {...register('numberOfVacancy', {
-                    required: 'Please select the value',
+                    validate: () => {
+                      if (watch('numberOfVacancy') === 'Choose a value') {
+                        return 'Please select the value'
+                      }
+                    },
                   })}
                   className='input-field'
                 >
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
-                  <option value={4}>4</option>
-                  <option value={5}>5</option>
-                  <option value={6}>6</option>
-                  <option value={7}>7</option>
-                  <option value={8}>8</option>
-                  <option value={9}>9</option>
-                  <option value={10}>10</option>
+                  <option>Choose a value</option>
+                  {[...Array(10)].map((i, index) => (
+                    <option key={index} value={index + 1}>
+                      {index + 1}
+                    </option>
+                  ))}
                 </select>
                 {errors.numberOfVacancy && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -318,11 +341,14 @@ const PostJob = () => {
                   <span className='text-red-500 font-bold'> *</span>
                 </label>
                 <input
-                  type='date'
+                  type='text'
                   {...register('jobDeadline', {
                     required: 'Job Deadline is required',
                   })}
+                  onFocus={(e) => (e.target.type = 'date')}
+                  onBlur={(e) => (e.target.type = 'text')}
                   className='input-field'
+                  placeholder='Select the deadline'
                 />
                 {errors.jobDeadline && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -373,10 +399,12 @@ const PostJob = () => {
                     key={item.id}
                     className='flex items-center space-x-2 pl-2'
                   >
-                    <MdRemoveCircle
+                    <div
                       onClick={() => requirementRemove(index)}
-                      className='cursor-pointer'
-                    />
+                      className='cursor-pointer rounded h-4 w-4 flex items-center justify-center bg-black'
+                    >
+                      <MdRemove className='text-white' />
+                    </div>
                     <p>{item.requirement}</p>
                   </div>
                 ))}
@@ -410,10 +438,12 @@ const PostJob = () => {
                     key={item.id}
                     className='flex items-center space-x-2 pl-2'
                   >
-                    <MdRemoveCircle
+                    <div
                       onClick={() => expectationRemove(index)}
-                      className='cursor-pointer'
-                    />
+                      className='cursor-pointer rounded h-4 w-4 flex items-center justify-center bg-black'
+                    >
+                      <MdRemove className='text-white' />
+                    </div>
                     <p>{item.expectation}</p>
                   </div>
                 ))}
