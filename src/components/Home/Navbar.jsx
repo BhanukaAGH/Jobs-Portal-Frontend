@@ -122,9 +122,12 @@ const Navbar = () => {
                         Dashboard
                       </Link>
                     )}
-                    <Link to={'/user-profile'} className='avatar-option'>
-                      profile
-                    </Link>
+                    {user?.role === 'user' && (
+                      <Link to={'/user-profile'} className='avatar-option'>
+                        Profile
+                      </Link>
+                    )}
+
                     <span className='avatar-option' onClick={onLogout}>
                       Sign out
                     </span>
