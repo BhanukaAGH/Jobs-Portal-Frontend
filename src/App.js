@@ -5,6 +5,11 @@ import Home from './pages/Home'
 import CompanySignUp from './pages/CompanySignUp'
 import PostJob from './pages/PostJob'
 import Dashboard from './pages/Dashboard'
+import Jobs from './pages/Jobs'
+import Companies from './pages/Companies'
+import Events from './pages/Events'
+import Aboutus from './pages/Aboutus'
+import UserProfile from './pages/UserProfile'
 import NotFound from './pages/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -14,6 +19,10 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/company/sign-up' element={<CompanySignUp />} />
+        <Route path='/jobs' element={<Jobs />} />
+        <Route path='/companies' element={<Companies />} />
+        <Route path='/events' element={<Events />} />
+        <Route path='/about' element={<Aboutus />} />
         <Route
           path='/company/post-job'
           element={
@@ -35,6 +44,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/user-profile'
+          element={
+            <ProtectedRoute>
+              <UserProfile />
             </ProtectedRoute>
           }
         />

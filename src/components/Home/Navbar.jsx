@@ -122,8 +122,9 @@ const Navbar = () => {
                         Dashboard
                       </Link>
                     )}
-                    <span className='avatar-option'>User option 01</span>
-                    <span className='avatar-option'>User option 02</span>
+                    <Link to={'/user-profile'} className='avatar-option'>
+                      profile
+                    </Link>
                     <span className='avatar-option' onClick={onLogout}>
                       Sign out
                     </span>

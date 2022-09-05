@@ -1,28 +1,44 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
-import { MdOutlineDomain, MdOutlineBusinessCenter } from 'react-icons/md'
+import { adminLinks, companyLinks } from '../../utils/NavLinks'
 
 const DashboardSidebar = ({ active, setActive }) => {
+  const { user } = useSelector((state) => state.auth)
+
   return (
     <div className='dashboard-sideNav'>
       {/* Side NavLink */}
-      <div
-        data-tip='Company'
-        className={`dashboard-link ${active === 1 && '!bg-black !text-white'}`}
-        onClick={() => setActive(1)}
-      >
-        <MdOutlineDomain className='text-lg md:text-2xl' />
-        <p className='hidden md:block'>Company</p>
-      </div>
-      {/* Side NavLink */}
-      <div
-        data-tip='Jobs'
-        className={`dashboard-link ${active === 2 && '!bg-black !text-white'}`}
-        onClick={() => setActive(2)}
-      >
-        <MdOutlineBusinessCenter className='text-lg md:text-2xl' />
-        <p className='hidden md:block'>Jobs</p>
-      </div>
+      {user?.role === 'company' &&
+        companyLinks.map((link) => (
+          <div
+            key={link.id}
+            data-tip={link.name}
+            className={`dashboard-link ${
+              active === link.id && '!bg-black !text-white'
+            }`}
+            onClick={() => setActive(link.id)}
+          >
+            <link.icon className='text-lg md:text-2xl' />
+            <p className='hidden md:block'>{link.name}</p>
+          </div>
+        ))}
+
+      {user?.role === 'admin' &&
+        adminLinks.map((link) => (
+          <div
+            key={link.id}
+            data-tip={link.name}
+            className={`dashboard-link ${
+              active === link.id && '!bg-black !text-white'
+            }`}
+            onClick={() => setActive(link.id)}
+          >
+            <link.icon className='text-lg md:text-2xl' />
+            <p className='hidden md:block'>{link.name}</p>
+          </div>
+        ))}
+
       <ReactTooltip
         place='right'
         type='dark'

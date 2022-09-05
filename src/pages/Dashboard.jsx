@@ -1,11 +1,17 @@
 import React, { useState } from 'react'
 import DashboardNav from '../components/Dashboard/DashboardNav'
 import DashboardSidebar from '../components/Dashboard/DashboardSidebar'
-import CompanyDashboard from '../components/Company/CompanyDashboard'
-import JobDashboard from '../components/Company/JobDashboard'
+import { useSelector } from 'react-redux'
+import { adminLinks, companyLinks } from '../utils/NavLinks'
 
 const Dashboard = () => {
-  const [active, setActive] = useState(1)
+  const { user } = useSelector((state) => state.auth)
+
+  const [active, setActive] = useState(
+    (user?.role === 'company' && companyLinks[0].id) ||
+      (user?.role === 'admin' && adminLinks[0].id)
+  )
+
   return (
     <div className='w-screen h-screen'>
       <DashboardNav />
@@ -15,8 +21,15 @@ const Dashboard = () => {
         <DashboardSidebar active={active} setActive={setActive} />
 
         {/* Dashboard Content */}
-        {active === 1 && <CompanyDashboard />}
-        {active === 2 && <JobDashboard />}
+        {user?.role === 'company' &&
+          companyLinks.map(
+            (link) => active === link.id && <link.element key={link.id} />
+          )}
+
+        {user?.role === 'admin' &&
+          adminLinks.map(
+            (link) => active === link.id && <link.element key={link.id} />
+          )}
       </section>
     </div>
   )
