@@ -64,7 +64,7 @@ const Companies = () => {
         </div>
       </header>
 
-      <div className='max-w-6xl mx-auto mt-16'>
+      <div className='max-w-7xl mx-auto mt-16'>
         {isLoading ? (
           <Loading />
         ) : (
