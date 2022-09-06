@@ -68,7 +68,7 @@ const Companies = () => {
         </div>
       </header>
 
-      <div className='max-w-7xl mx-auto mt-16'>
+      <div className='md:max-w-5xl xl:max-w-7xl mx-auto mt-16 pb-6'>
         {isLoading ? (
           <Loading />
         ) : (
@@ -93,7 +93,7 @@ const Companies = () => {
 
 const CompanyCard = ({ company }) => {
   return (
-    <div className='col-span-1 shadow-xl rounded-xl p-6 select-none relative transition-all ease-in-out duration-300 hover:shadow-2xl'>
+    <div className='col-span-1 rounded-xl p-6 select-none relative bg-white ring-1 ring-black/10 shadow-lg'>
       <div className='flex flex-col font-[Poppins] font-medium'>
         <div className='flex divide-x divide-gray-600'>
           <div className='pr-2'>
