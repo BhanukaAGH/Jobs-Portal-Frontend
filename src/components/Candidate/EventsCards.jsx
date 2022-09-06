@@ -39,6 +39,7 @@ const EventsCards = () => {
 
     return (
         <>
+        <p className='text-sm italic'>{jobscount} Results Found</p>
             <div class="grid grid-cols-2 gap-4">
                 {jobs.map((job) => (
                     <div key={job._id} className='flex flex-col pt-4 ...'>
