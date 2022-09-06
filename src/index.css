@@ -56,4 +56,25 @@
   .auth-modal-input {
     @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500;
   }
+
+  /* Jobs, Company & Events Header Styles */
+  .header-container {
+    @apply relative h-60 bg-[#14163A] flex justify-center items-center;
+  }
+
+  .header-title {
+    @apply text-2xl md:text-3xl lg:text-4xl font-semibold text-center mt-6 text-white uppercase font-[Poppins];
+  }
+
+  .header-search-container {
+    @apply w-full md:w-2/3 xl:w-1/2 px-3 md:px-0 absolute -bottom-6 mx-auto;
+  }
+
+  .header-input {
+    @apply placeholder:italic rounded-lg w-full p-3 py-4 font-[Poppins] text-sm !outline-hidden !border-hidden !ring-0 shadow-xl;
+  }
+
+  .header-search-button {
+    @apply px-6 py-3.5 w-48 md:w-64 font-medium rounded-md bg-blue-700 text-white shadow-xl;
+  }
 }
