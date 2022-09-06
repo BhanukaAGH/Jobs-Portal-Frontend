@@ -19,7 +19,11 @@ const Companies = () => {
 
   const onSearch = ({ search }) => {
     if (search) {
-      setData(companies.filter((company) => company.name.includes(search)))
+      setData(
+        companies.filter((company) =>
+          company.name.toLowerCase().includes(search.toLowerCase())
+        )
+      )
       return
     }
     setData(companies)
