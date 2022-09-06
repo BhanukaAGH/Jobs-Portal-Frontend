@@ -50,24 +50,27 @@ const Navbar = () => {
         }`}
       >
         {/* Logo */}
-        <div className='flex items-center gap-x-2 md:mr-12 lg:mr-16 cursor-pointer'>
+        <Link
+          to={'/'}
+          className='flex items-center gap-x-2 md:mr-12 lg:mr-16 cursor-pointer'
+        >
           <img src={Logo} alt='website-logo' />
           <p className='text-2xl font-medium text-white font-[Domine]'>
             Jobs.lk
           </p>
-        </div>
+        </Link>
         {/* List */}
         <div className='hidden md:flex items-center md:gap-x-4 lg:gap-x-6 text-white font-medium font-[Poppins] flex-1 '>
-          <Link to={'jobs'} className='hover:scale-110 hover:font-bold'>
+          <Link to={'/jobs'} className='hover:scale-110 hover:font-bold'>
             Jobs
           </Link>
-          <Link to={'companies'} className='hover:scale-110 hover:font-bold'>
+          <Link to={'/companies'} className='hover:scale-110 hover:font-bold'>
             Companies
           </Link>
-          <Link to={'events'} className='hover:scale-110 hover:font-bold'>
+          <Link to={'/events'} className='hover:scale-110 hover:font-bold'>
             Events
           </Link>
-          <Link to={'about'} className='hover:scale-110 hover:font-bold'>
+          <Link to={'/about'} className='hover:scale-110 hover:font-bold'>
             About us
           </Link>
         </div>
@@ -155,16 +158,32 @@ const Navbar = () => {
       {toggleNav && (
         <div className='h-screen md:hidden fixed top-0 left-0 w-full bg-black z-30 pt-24 pb-8 px-6'>
           <div className='flex flex-col w-full h-5/6 text-white gap-6 text-2xl font-medium font-[Poppins]'>
-            <Link to={'jobs'} className='hover:text-[#312ECB]'>
+            <Link
+              to={'/jobs'}
+              className='hover:text-[#312ECB]'
+              onClick={() => dispatch(toggleNavbar())}
+            >
               Jobs
             </Link>
-            <Link to={'companies'} className='hover:text-[#312ECB]'>
+            <Link
+              to={'/companies'}
+              className='hover:text-[#312ECB]'
+              onClick={() => dispatch(toggleNavbar())}
+            >
               Companies
             </Link>
-            <Link to={'events'} className='hover:text-[#312ECB]'>
+            <Link
+              to={'/events'}
+              className='hover:text-[#312ECB]'
+              onClick={() => dispatch(toggleNavbar())}
+            >
               Events
             </Link>
-            <Link to={'about'} className='hover:text-[#312ECB]'>
+            <Link
+              to={'/about'}
+              className='hover:text-[#312ECB]'
+              onClick={() => dispatch(toggleNavbar())}
+            >
               About us
             </Link>
           </div>
