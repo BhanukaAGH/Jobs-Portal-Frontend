@@ -11,6 +11,7 @@ const JobsCard = () => {
   //store page number
   const [pageNo, setPageNo] = useState(0)
   const [totPages, setTotPages] = useState(0)
+  const [jobscount, SetJobscount] = useState(0)
 
   //pageination
   const pages = new Array(totPages).fill(null).map((v, i) => i)
@@ -28,6 +29,7 @@ const JobsCard = () => {
     const API_URL = `candidate/getAllJobs?page=${pageNo}`
     const response = await api.get(API_URL)
     setJobs(response.data.jobs)
+    SetJobscount(response.data.JobsCount)
     setTotPages(response.data.totalPages)
   }
   useEffect(() => {
@@ -37,6 +39,7 @@ const JobsCard = () => {
 
   return (
     <>
+    <p className='text-sm italic text-gray-500'>{jobscount} Results Found</p>
       {jobs.map((job) => (
         <div key={job._id} className='flex flex-col pt-4 ...'>
           <div className=' h-56 w-full bg-gray-50 rounded-lg  shadow-md'>
@@ -48,7 +51,7 @@ const JobsCard = () => {
                   className='object-cover h-24 w-24 rounded-lg border-2 shadow-2xl'
                 />
                 <div className='pl-4 grid grid-cols-1 '>
-                  <div className='font-sans text-4xl font-bold'>JOB TITLE</div>
+                  <div className='font-sans text-4xl font-bold'>{job.jobTitle}</div>
                   <div className='flex pt-2 '>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
@@ -106,7 +109,7 @@ const JobsCard = () => {
                     {job.workType}
                   </div>
                   <div>
-                    <p className='truncate text-sm text-gray-500'>
+                    <p className='truncate pt-2 text-sm text-gray-500'>
                       {job.jobDescription}
                     </p>
                   </div>

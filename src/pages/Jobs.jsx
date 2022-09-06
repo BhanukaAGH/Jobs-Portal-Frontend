@@ -49,7 +49,7 @@ const Jobs = () => {
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
           >
-            <option defaultValue>Country</option>
+            <option defaultValue>Salary</option>
             <option value='US'>United States</option>
             <option value='CA'>Canada</option>
             <option value='FR'>France</option>
