@@ -9,15 +9,14 @@ const Events = () => {
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
       <Navbar />
-      <header className='flex justify-center h-screen relative bg-[#14163A]  items-center h-96'>
+      <header className='flex justify-center relative bg-[#14163A] items-center h-96'>
         <img
           src={BGImage}
           alt='background-img'
           className='absolute top-0 left-0 object-cover w-full h-full opacity-40 select-none'
         />
 
-        <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-12 text-center text-white '>
-          {' '}
+        <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-12 text-center text-white'>
           Event Postings
         </h1>
 
@@ -33,7 +32,7 @@ const Events = () => {
           </div>
         </div>
       </header>
-      <div class='box-border h-auto w-full pt-16 pr-36 pl-36'>
+      <div className='box-border h-auto w-full pt-16 pr-36 pl-36'>
         {/* card starts here */}
         <EventsCards />
         {/* card ends here */}

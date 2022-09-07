@@ -139,11 +139,11 @@ const CompanyCard = ({ company }) => {
     >
       <div className='flex flex-col font-[Poppins] font-medium'>
         <div className='flex divide-x divide-gray-600'>
-          <div className='pr-2'>
+          <div className='p-2 h-24 w-24 flex items-center justify-center'>
             <img
               src={company?.photoUrl}
               alt='company-logo'
-              className='h-24 w-24'
+              className='h-full object-cover'
             />
           </div>
           <div className='font-[Poppins] pl-2'>
