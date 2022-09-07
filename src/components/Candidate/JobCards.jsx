@@ -25,9 +25,9 @@ const JobsCard = () => {
             try {
                 const API_URL = `candidate/delsaveJob/${Jid}`
                 const response = await api.delete(API_URL)
-                toast.info(response, { theme: 'dark' })   
+                toast.info(response, { theme: 'dark' })
             } catch (error) {
-                console.log("err",error)
+                console.log("err", error)
                 toast.error("error", { theme: 'dark' })
             }
         } else {//save job
@@ -248,3 +248,4 @@ const JobsCard = () => {
 }
 
 export default JobsCard
+
