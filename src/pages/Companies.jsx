@@ -168,9 +168,11 @@ const CompanyCard = ({ company }) => {
 
         <p className='pt-3'>{company?._company?.companyDescription}</p>
       </div>
-      <span className='absolute bottom-0 right-0 px-6 py-1 bg-[#14163A] rounded-tl-xl rounded-br-xl text-white font-[Poppins] text-sm'>
-        Verified
-      </span>
+      {company?._company?.verified && (
+        <span className='absolute bottom-0 right-0 px-6 py-1 bg-[#14163A] rounded-tl-xl rounded-br-xl text-white font-[Poppins] text-sm'>
+          Verified
+        </span>
+      )}
     </motion.div>
   )
 }
