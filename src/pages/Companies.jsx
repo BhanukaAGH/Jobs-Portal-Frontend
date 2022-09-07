@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllCompany, reset } from '../features/company/companySlice'
 import Loading from '../components/Loading'
 import { toast } from 'react-toastify'
-import { MdOutlineLocationOn, MdPublic } from 'react-icons/md'
+import {
+  MdGridView,
+  MdOutlineLocationOn,
+  MdOutlineViewHeadline,
+  MdPeopleOutline,
+  MdPublic,
+} from 'react-icons/md'
 import { useForm } from 'react-hook-form'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -16,6 +22,7 @@ const companyListVariant = {
 
 const Companies = () => {
   const [data, setData] = useState([])
+  const [gridView, setGridView] = useState(true)
   const dispatch = useDispatch()
   const { authModal } = useSelector((state) => state.ui)
   const { companies, isLoading, isSuccess, isError, message } = useSelector(
@@ -81,17 +88,34 @@ const Companies = () => {
         ) : (
           <>
             {data.length > 0 ? (
-              <motion.div
-                layout
-                variants={companyListVariant}
-                className='grid grid-cols-1 md:grid-cols-2 gap-8 p-3'
-              >
-                <AnimatePresence>
-                  {data?.map((company) => (
-                    <CompanyCard key={company._id} company={company} />
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+              <>
+                <div className='hidden md:flex items-center justify-between px-4 mb-2'>
+                  <p className='text-sm italic'>{`${data.length} results found`}</p>
+                  <div className='flex items-center space-x-2 text-3xl'>
+                    <MdOutlineViewHeadline
+                      className='bg-gray-100 rounded p-1 cursor-pointer'
+                      onClick={() => setGridView(false)}
+                    />
+                    <MdGridView
+                      className='bg-gray-100 rounded p-1 cursor-pointer'
+                      onClick={() => setGridView(true)}
+                    />
+                  </div>
+                </div>
+                <motion.div
+                  layout
+                  variants={companyListVariant}
+                  className={`grid grid-cols-1 ${
+                    gridView && 'md:grid-cols-2'
+                  } gap-8 p-3`}
+                >
+                  <AnimatePresence>
+                    {data?.map((company) => (
+                      <CompanyCard key={company._id} company={company} />
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              </>
             ) : (
               <p className='text-xl text-center font-[Poppins] font-semibold'>
                 Not Found Companies
@@ -135,6 +159,10 @@ const CompanyCard = ({ company }) => {
               <MdPublic />
               {company?._company?.companyWebsite}
             </a>
+            <p className='text-sm flex items-center gap-x-1'>
+              <MdPeopleOutline />
+              {company?._company?.numberOfEmployees}
+            </p>
           </div>
         </div>
 
