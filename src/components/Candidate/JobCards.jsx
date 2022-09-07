@@ -25,7 +25,7 @@ const JobsCard = () => {
             try {
                 const API_URL = `candidate/delsaveJob/${Jid}`
                 const response = await api.delete(API_URL)
-                toast.info(response, { theme: 'dark' })
+                toast.info(response.data.msg, { theme: 'dark' })
             } catch (error) {
                 console.log("err", error)
                 toast.error("error", { theme: 'dark' })
@@ -37,14 +37,13 @@ const JobsCard = () => {
                     userID: user.userId,
                     JobID: Jid
                 })
-                console.log('response', response)
                 toast.info(response.data.msg, { theme: 'dark' })
             } catch (error) {
                 toast.error("error", { theme: 'dark' })
             }
         }
         getSavedJobs();
-        getSavedJobs();
+        getAllJobs();
     }
     //get all saved jobs
     const getSavedJobs = async () => {
