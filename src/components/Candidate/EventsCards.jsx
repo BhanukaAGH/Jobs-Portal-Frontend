@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import BGImage from '../../assets/bg.webp'
 import api from '../../utils/api'
 
 const EventsCards = () => {

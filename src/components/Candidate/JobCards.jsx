@@ -1,18 +1,58 @@
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import BGImage from '../../assets/bg.webp'
 import api from '../../utils/api'
+import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 const JobsCard = () => {
     //store all jobs
     const [jobs, setJobs] = useState([])
+    //check if logged in or not
+    const { user } = useSelector((state) => state.auth)
 
     //store page number
     const [pageNo, setPageNo] = useState(0)
     const [totPages, setTotPages] = useState(0)
     const [jobscount, SetJobscount] = useState(0)
 
+    //saved jobs jobid
+    const [savedJobs, setSavedjobs] = useState([])
+
+    //save method
+    const saveJob = async (Jid) => {
+        if (savedJobs.includes(Jid)) {//delete job
+            try {
+                const API_URL = `candidate/delsaveJob/${Jid}`
+                const response = await api.delete(API_URL)
+                toast.info(response, { theme: 'dark' })   
+            } catch (error) {
+                console.log("err",error)
+                toast.error("error", { theme: 'dark' })
+            }
+        } else {//save job
+            try {
+                const API_URL = `candidate/saveJob`
+                const response = await api.post(API_URL, {
+                    userID: user.userId,
+                    JobID: Jid
+                })
+                console.log('response', response)
+                toast.info(response.data.msg, { theme: 'dark' })
+            } catch (error) {
+                toast.error("error", { theme: 'dark' })
+            }
+        }
+        getSavedJobs();
+        getSavedJobs();
+    }
+    //get all saved jobs
+    const getSavedJobs = async () => {
+        const API_URL = `candidate/getsaveJob/${user.userId}`
+        const response = await api.get(API_URL)
+        let mapped = response.data.find.map((ele) => ele.JobID);
+        setSavedjobs(mapped)
+    }
     //pageination
     const pages = new Array(totPages).fill(null).map((v, i) => i)
     //previouse pagination
@@ -33,13 +73,17 @@ const JobsCard = () => {
         setTotPages(response.data.totalPages)
     }
     useEffect(() => {
-        getAllJobs()
+        if (user !== null) {
+            getSavedJobs();
+        }
+        getAllJobs();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo])
 
     return (
         <>
             <p className='text-sm italic'>{jobscount} Results Found</p>
+
             {jobs.map((job) => (
                 <div key={job._id} className='flex flex-col pt-4 ...'>
                     <div className=' h-56 w-full bg-gray-50 rounded-lg  shadow-md'>
@@ -120,34 +164,47 @@ const JobsCard = () => {
                             <div className='grid grid-cols-2'>
                                 <div className='pl-4 pt-2'>{job.createdAt}</div>
                                 <div className='flex justify-end pr-4 pt-2'>
-                                    <button>
-                                        <svg
-                                            xmlns='http://www.w3.org/2000/svg'
-                                            fill='none'
-                                            viewBox='0 0 24 24'
-                                            strokeWidth='1.5'
-                                            stroke='currentColor'
-                                            className='w-6 h-6'
-                                        >
-                                            <path
-                                                strokeLinecap='round'
-                                                strokeLinejoin='round'
-                                                d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
-                                            />
-                                        </svg>
-                                    </button>
-                                    <svg
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        viewBox='0 0 24 24'
-                                        fill='currentColor'
-                                        className='w-6 h-6'
-                                    >
-                                        <path
-                                            fillRule='evenodd'
-                                            d='M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z'
-                                            clipRule='evenodd'
-                                        />
-                                    </svg>
+                                    {user === null && (
+                                        <button onClick={saveJob} title="login to save" disabled={true} className='cursor-not-allowed'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l1.664 1.664M21 21l-1.5-1.5m-5.485-1.242L12 17.25 4.5 21V8.742m.164-4.078a2.15 2.15 0 011.743-1.342 48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185V19.5M4.664 4.664L19.5 19.5" />
+                                            </svg>
+                                        </button>
+                                    )
+                                    }
+                                    {user !== null && (<button onClick={(e) => { saveJob(job._id) }} title="login to save" >
+                                        {!savedJobs.includes(job._id) && (
+                                            <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                fill='none'
+                                                viewBox='0 0 24 24'
+                                                strokeWidth='1.5'
+                                                stroke='currentColor'
+                                                className='w-6 h-6'
+                                            >
+                                                <path
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
+                                                />
+                                            </svg>
+                                        )}
+                                        {savedJobs.includes(job._id) && (
+                                            <svg
+                                                xmlns='http://www.w3.org/2000/svg'
+                                                viewBox='0 0 24 24'
+                                                fill='currentColor'
+                                                className='w-6 h-6'
+                                            >
+                                                <path
+                                                    fillRule='evenodd'
+                                                    d='M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z'
+                                                    clipRule='evenodd'
+                                                />
+                                            </svg>
+                                        )}
+                                    </button>)}
+
 
                                     <div className='pr-4 pl-4 '>
                                         <a
