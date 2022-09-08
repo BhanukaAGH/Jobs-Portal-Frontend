@@ -4,6 +4,9 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import Moment from 'react-moment';
+import 'moment-timezone';
+
 const EventsCards = () => {
   //store all events
   const [events, setEvents] = useState([])
@@ -136,7 +139,7 @@ const EventsCards = () => {
               </div>
               <div>
                 <div className='grid grid-cols-2'>
-                  <div className='pl-4 pt-2'>{event.date}</div>
+                  <div className='pl-4 pt-2'><Moment>{event.date}</Moment></div>
                   <div className='flex justify-end pr-4 pt-2'>
                     {user === null && (
                       <button onClick={saveEvent} title="login to save" disabled={true} className='cursor-not-allowed'>
