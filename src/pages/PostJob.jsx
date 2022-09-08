@@ -5,16 +5,18 @@ import PostJobImage from '../assets/postJob.webp'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCompany } from '../features/company/companySlice'
-import { createJob } from '../features/job/jobSlice'
+import { createJob, updateJob } from '../features/job/jobSlice'
 import Loading from '../components/Loading'
 import { useForm, useFieldArray } from 'react-hook-form'
 import countries from '../utils/countries.json'
+import { editJob, viewJob } from '../features/ui/uiSlice'
 
 const PostJob = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.auth)
   const { company, isLoading } = useSelector((state) => state.company)
+  const { jobView, jobEdit } = useSelector((state) => state.ui)
 
   const {
     control,
@@ -22,7 +24,54 @@ const PostJob = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      jobTitle:
+        (jobView.state && jobView.viewData.jobTitle) ||
+        (jobEdit.state && jobEdit.editData.jobTitle) ||
+        '',
+      jobCategory:
+        (jobView.state && jobView.viewData.jobCategory) ||
+        (jobEdit.state && jobEdit.editData.jobCategory) ||
+        'Choose a category',
+      jobType:
+        (jobView.state && jobView.viewData.jobType) ||
+        (jobEdit.state && jobEdit.editData.jobType) ||
+        'Choose a job type',
+      jobDescription:
+        (jobView.state && jobView.viewData.jobDescription) ||
+        (jobEdit.state && jobEdit.editData.jobDescription) ||
+        '',
+      country:
+        (jobView.state && jobView.viewData.country) ||
+        (jobEdit.state && jobEdit.editData.country) ||
+        'Choose a country',
+      workType:
+        (jobView.state && jobView.viewData.workType) ||
+        (jobEdit.state && jobEdit.editData.workType) ||
+        'Choose a work type',
+      numberOfVacancy:
+        (jobView.state && jobView.viewData.numberOfVacancy) ||
+        (jobEdit.state && jobEdit.editData.numberOfVacancy) ||
+        'Choose a value',
+      jobDeadline:
+        (jobView.state && jobView.viewData.jobDeadline) ||
+        (jobEdit.state && jobEdit.editData.jobDeadline) ||
+        '',
+      averageSalary:
+        (jobView.state && jobView.viewData.averageSalary) ||
+        (jobEdit.state && jobEdit.editData.averageSalary) ||
+        '',
+      jobRequirements:
+        (jobView.state && jobView.viewData.jobRequirements) ||
+        (jobEdit.state && jobEdit.editData.jobRequirements) ||
+        [],
+      jobExpectations:
+        (jobView.state && jobView.viewData.jobExpectations) ||
+        (jobEdit.state && jobEdit.editData.jobExpectations) ||
+        [],
+    },
+  })
 
   const {
     fields: requirementFields,
@@ -46,7 +95,13 @@ const PostJob = () => {
 
   const onSubmit = async (data) => {
     data.company = user.userId
-    dispatch(createJob(data))
+    if (jobEdit.state) {
+      dispatch(updateJob({ jobId: jobEdit.editData._id, jobData: data }))
+      dispatch(editJob({ state: false, editData: null }))
+    }
+    if (!jobView.state && !jobEdit.state) {
+      dispatch(createJob(data))
+    }
     navigate('/company/dashboard')
   }
 
@@ -124,6 +179,7 @@ const PostJob = () => {
                   })}
                   className='input-field'
                   placeholder='job title'
+                  disabled={jobView.state || false}
                 />
                 {errors.jobTitle && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -149,6 +205,7 @@ const PostJob = () => {
                     },
                   })}
                   className='input-field'
+                  disabled={jobView.state || false}
                 >
                   <option>Choose a category</option>
                   <option value='IT/Telecommunication'>
@@ -185,6 +242,7 @@ const PostJob = () => {
                     },
                   })}
                   className='input-field'
+                  disabled={jobView.state || false}
                 >
                   <option>Choose a job type</option>
                   <option value='Full-time'>Full-time</option>
@@ -222,6 +280,7 @@ const PostJob = () => {
                   rows='4'
                   className='input-field'
                   placeholder='Job description'
+                  disabled={jobView.state || false}
                 />
                 {errors.jobDescription && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -252,6 +311,7 @@ const PostJob = () => {
                     },
                   })}
                   className='input-field'
+                  disabled={jobView.state || false}
                 >
                   <option>Choose a country</option>
                   {countries.map((country, index) => (
@@ -285,6 +345,7 @@ const PostJob = () => {
                     },
                   })}
                   className='input-field'
+                  disabled={jobView.state || false}
                 >
                   <option>Choose a work type</option>
                   <option value='Remote'>Remote</option>
@@ -320,6 +381,7 @@ const PostJob = () => {
                     },
                   })}
                   className='input-field'
+                  disabled={jobView.state || false}
                 >
                   <option>Choose a value</option>
                   {[...Array(10)].map((i, index) => (
@@ -352,6 +414,7 @@ const PostJob = () => {
                   onBlur={(e) => (e.target.type = 'text')}
                   className='input-field'
                   placeholder='Select the deadline'
+                  disabled={jobView.state || false}
                 />
                 {errors.jobDeadline && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -375,6 +438,7 @@ const PostJob = () => {
                   })}
                   className='input-field'
                   placeholder='$ 4000.00'
+                  disabled={jobView.state || false}
                 />
                 {errors.averageSalary && (
                   <p className='text-xs text-red-500 pt-0.5'>
@@ -409,12 +473,15 @@ const PostJob = () => {
                       })}
                       className='input-field h-full'
                       placeholder='Type your job requirement here'
+                      disabled={jobView.state || false}
                     />
                     <MdRemove
                       onClick={() => {
                         requirementRemove(index)
                       }}
-                      className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
+                      className={`px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer ${
+                        jobView.state && 'hidden'
+                      }`}
                     />
                   </div>
                 ))}
@@ -428,7 +495,9 @@ const PostJob = () => {
                 <button
                   type='button'
                   onClick={() => requirementAppend()}
-                  className='flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none'
+                  className={`flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none ${
+                    jobView.state && 'hidden'
+                  }`}
                 >
                   <MdAdd />
                   <p>Add Requirement</p>
@@ -456,12 +525,15 @@ const PostJob = () => {
                       })}
                       className='input-field h-full'
                       placeholder='Type your job expectation here'
+                      disabled={jobView.state || false}
                     />
                     <MdRemove
                       onClick={() => {
                         expectationRemove(index)
                       }}
-                      className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
+                      className={`px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer ${
+                        jobView.state && 'hidden'
+                      }`}
                     />
                   </div>
                 ))}
@@ -475,7 +547,9 @@ const PostJob = () => {
                 <button
                   type='button'
                   onClick={() => expectationAppend()}
-                  className='flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none'
+                  className={`flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none ${
+                    jobView.state && 'hidden'
+                  }`}
                 >
                   <MdAdd />
                   <p>Add Expectation</p>
@@ -489,14 +563,20 @@ const PostJob = () => {
             <Link
               to={'/company/dashboard'}
               className='text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center'
+              onClick={() => {
+                dispatch(viewJob({ state: false, viewData: null }))
+                dispatch(editJob({ state: false, editData: null }))
+              }}
             >
               Back
             </Link>
             <button
               type='submit'
-              className='text-white bg-[#312ECB] hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5'
+              className={`text-white bg-[#312ECB] hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
+                jobView.state && 'hidden'
+              }`}
             >
-              Post a Job
+              {jobEdit.state ? 'Update Job' : 'Post a Job'}
             </button>
           </div>
         </form>

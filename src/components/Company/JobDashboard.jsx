@@ -6,18 +6,54 @@ import {
   MdSearch,
 } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { getAllJobs } from '../../features/job/jobSlice'
+import { Link, useNavigate } from 'react-router-dom'
+import { deleteJob, getAllJobs, reset } from '../../features/job/jobSlice'
 import Loading from '../../components/Loading'
+import moment from 'moment/moment'
+import { editJob, viewJob } from '../../features/ui/uiSlice'
+import { toast } from 'react-toastify'
 
 const JobDashboard = () => {
   const dispatch = useDispatch()
-  const { jobs, isLoading } = useSelector((state) => state.job)
+  const navigate = useNavigate()
+  const { jobs, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.job
+  )
+
+  const handleViewJob = (jobData) => {
+    dispatch(viewJob({ state: true, viewData: jobData }))
+    navigate('/company/post-job')
+  }
+
+  const handleEditJob = (jobData) => {
+    dispatch(editJob({ state: true, editData: jobData }))
+    navigate('/company/post-job')
+  }
+
+  const handleRemoveJob = (jobId) => {
+    dispatch(deleteJob(jobId))
+  }
 
   useEffect(() => {
     dispatch(getAllJobs())
+    dispatch(viewJob({ state: false, viewData: null }))
+    dispatch(editJob({ state: false, editData: null }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (isSuccess && message) {
+      dispatch(getAllJobs())
+      toast(message, { type: 'success' })
+    }
+
+    if (isError && message) {
+      toast(message, { type: 'error' })
+    }
+
+    dispatch(reset())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, isError, message])
 
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
@@ -88,12 +124,23 @@ const JobDashboard = () => {
                           {job.jobTitle}
                         </td>
                         <td className='py-4 px-6'>{job.jobCategory}</td>
-                        <td className='py-4 px-6'>{job.createdAt}</td>
+                        <td className='py-4 px-6'>
+                          {moment(job.createdAt).format('YYYY-MM-DD')}
+                        </td>
                         <td className='py-4 px-6'>{job.numberOfVacancy}</td>
                         <td className='flex items-center py-4 px-6 space-x-3'>
-                          <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
-                          <MdOutlineEdit className='text-lg text-blue-500 cursor-pointer' />
-                          <MdDeleteOutline className='text-lg text-red-500 cursor-pointer' />
+                          <MdOutlineRemoveRedEye
+                            className='text-lg cursor-pointer'
+                            onClick={() => handleViewJob(job)}
+                          />
+                          <MdOutlineEdit
+                            className='text-lg text-blue-500 cursor-pointer'
+                            onClick={() => handleEditJob(job)}
+                          />
+                          <MdDeleteOutline
+                            className='text-lg text-red-500 cursor-pointer'
+                            onClick={() => handleRemoveJob(job._id)}
+                          />
                         </td>
                       </tr>
                     ))}

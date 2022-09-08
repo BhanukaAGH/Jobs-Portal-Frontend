@@ -27,7 +27,7 @@ const updateJob = async ({ jobId, jobData }) => {
 }
 
 //! DELETE JOB
-const deleteJob = async ({ jobId }) => {
+const deleteJob = async (jobId) => {
   const response = await api.delete(API_URL + `/${jobId}`)
   return response.data
 }
