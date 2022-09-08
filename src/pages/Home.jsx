@@ -18,6 +18,9 @@ const Home = () => {
         <img
           src={BGImage}
           alt='background-img'
+          loading='lazy'
+          width={'100%'}
+          height={'100%'}
           className='absolute top-0 left-0 object-cover w-full h-full opacity-40 select-none'
         />
         <div className='flex flex-col items-center max-w-xl md:max-w-3xl z-10 text-center'>

@@ -292,6 +292,9 @@ const CompanySignUp = () => {
         <img
           src={BGImage}
           alt='right-bg'
+          loading='lazy'
+          width={'100%'}
+          height={'100%'}
           className='absolute inset-0 h-full object-cover w-full'
         />
       </div>
