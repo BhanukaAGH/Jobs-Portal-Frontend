@@ -12,12 +12,18 @@ import Loading from '../../components/Loading'
 import moment from 'moment/moment'
 import { editJob, viewJob } from '../../features/ui/uiSlice'
 import { toast } from 'react-toastify'
+import useConfirm from '../../hooks/useConfirm'
 
 const JobDashboard = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { jobs, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.job
+  )
+
+  const [Dialog, confirmDelete] = useConfirm(
+    'Are you sure?',
+    'Are you sure you want to delete job post ?'
   )
 
   const handleViewJob = (jobData) => {
@@ -30,8 +36,11 @@ const JobDashboard = () => {
     navigate('/company/post-job')
   }
 
-  const handleRemoveJob = (jobId) => {
-    dispatch(deleteJob(jobId))
+  const handleRemoveJob = async (jobId) => {
+    const ans = await confirmDelete()
+    if (ans) {
+      dispatch(deleteJob(jobId))
+    }
   }
 
   useEffect(() => {
@@ -162,6 +171,7 @@ const JobDashboard = () => {
           </div>
         </div>
       </div>
+      <Dialog />
     </div>
   )
 }
