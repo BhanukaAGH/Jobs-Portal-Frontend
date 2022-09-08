@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   MdOutlineRemoveRedEye,
   MdOutlineEdit,
   MdDeleteOutline,
   MdSearch,
 } from 'react-icons/md'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { MockData } from './TestData'
+import { getAllJobs } from '../../features/job/jobSlice'
+import Loading from '../../components/Loading'
 
 const JobDashboard = () => {
+  const dispatch = useDispatch()
+  const { jobs, isLoading } = useSelector((state) => state.job)
+
+  useEffect(() => {
+    dispatch(getAllJobs())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
       {/* Title Section */}
@@ -44,47 +54,64 @@ const JobDashboard = () => {
               </div>
             </div>
 
-            <table className='w-full text-sm text-left text-gray-500'>
-              <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
-                <tr>
-                  <th scope='col' className='py-3 px-6'>
-                    Title
-                  </th>
-                  <th scope='col' className='py-3 px-6'>
-                    Job Category
-                  </th>
-                  <th scope='col' className='py-3 px-6'>
-                    Posted Date
-                  </th>
-                  <th scope='col' className='py-3 px-6'>
-                    No of Position
-                  </th>
-                  <th scope='col' className='py-3 px-6'>
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {MockData.map((data) => (
-                  <tr
-                    key={data.id}
-                    className='bg-white border-b hover:bg-gray-50'
-                  >
-                    <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
-                      {data.job_title}
-                    </td>
-                    <td className='py-4 px-6'>{data.job_category}</td>
-                    <td className='py-4 px-6'>{data.posted}</td>
-                    <td className='py-4 px-6'>{data.no_of_position}</td>
-                    <td className='flex items-center py-4 px-6 space-x-3'>
-                      <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
-                      <MdOutlineEdit className='text-lg text-blue-500 cursor-pointer' />
-                      <MdDeleteOutline className='text-lg text-red-500 cursor-pointer' />
-                    </td>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <table className='w-full text-sm text-left text-gray-500'>
+                <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
+                  <tr>
+                    <th scope='col' className='py-3 px-6'>
+                      Title
+                    </th>
+                    <th scope='col' className='py-3 px-6'>
+                      Job Category
+                    </th>
+                    <th scope='col' className='py-3 px-6'>
+                      Posted Date
+                    </th>
+                    <th scope='col' className='py-3 px-6'>
+                      No of Position
+                    </th>
+                    <th scope='col' className='py-3 px-6'>
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                {jobs.length > 0 ? (
+                  <tbody>
+                    {jobs.map((job) => (
+                      <tr
+                        key={job._id}
+                        className='bg-white border-b hover:bg-gray-50'
+                      >
+                        <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
+                          {job.jobTitle}
+                        </td>
+                        <td className='py-4 px-6'>{job.jobCategory}</td>
+                        <td className='py-4 px-6'>{job.createdAt}</td>
+                        <td className='py-4 px-6'>{job.numberOfVacancy}</td>
+                        <td className='flex items-center py-4 px-6 space-x-3'>
+                          <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
+                          <MdOutlineEdit className='text-lg text-blue-500 cursor-pointer' />
+                          <MdDeleteOutline className='text-lg text-red-500 cursor-pointer' />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td
+                        colSpan={5}
+                        className='text-lg md:text-2xl font-[Poppins] font-semibold text-center pt-8'
+                      >
+                        No Posted Jobs
+                      </td>
+                    </tr>
+                  </tbody>
+                )}
+              </table>
+            )}
           </div>
         </div>
       </div>

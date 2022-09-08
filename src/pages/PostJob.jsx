@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DashboardNav from '../components/Dashboard/DashboardNav'
 import PostJobImage from '../assets/postJob.webp'
 import { MdAdd, MdRemove } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCompany } from '../features/company/companySlice'
+import { createJob } from '../features/job/jobSlice'
 import Loading from '../components/Loading'
 import { useForm, useFieldArray } from 'react-hook-form'
 import countries from '../utils/countries.json'
 
 const PostJob = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { user } = useSelector((state) => state.auth)
   const { company, isLoading } = useSelector((state) => state.company)
 
@@ -43,7 +45,9 @@ const PostJob = () => {
   })
 
   const onSubmit = async (data) => {
-    console.log(data)
+    data.company = user.userId
+    dispatch(createJob(data))
+    navigate('/company/dashboard')
   }
 
   useEffect(() => {
