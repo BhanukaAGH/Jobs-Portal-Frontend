@@ -4,23 +4,29 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
-const JobsCard = () => {
-    //store all jobs
-    const [jobs, setJobs] = useState([])
-    //check if logged in or not
+const SavedJobsCard = () => {
+    const { authModal } = useSelector((state) => state.ui)
     const { user } = useSelector((state) => state.auth)
-
+    const [type, setType] = useState(0)
+    //saved jobs 
+    const [savedJobs, setSavedjobs] = useState([])
     //store page number
     const [pageNo, setPageNo] = useState(0)
     const [totPages, setTotPages] = useState(0)
     const [jobscount, SetJobscount] = useState(0)
 
-    //saved jobs jobid
-    const [savedJobs, setSavedjobs] = useState([])
-
-    //save method
-    const saveJob = async (Jid) => {
-        if (savedJobs.includes(Jid)) {//delete job
+    //get all saved jobs
+    const getSavedJobs = async () => {
+        const API_URL = `candidate/getsaveJobs/${user.userId}`
+        const response = await api.get(API_URL);
+        let mapped = response.data.find.map((ele) => ele.JobID);
+        console.log('response', mapped)
+        setSavedjobs(mapped)
+    }
+    //remove from saved
+    const removeJob = async (Jid) => {
+        let text = "Are You sure you want to unsave job";
+        if (window.confirm(text) === true) {
             try {
                 const API_URL = `candidate/delsaveJob/${Jid}`
                 const response = await api.delete(API_URL)
@@ -29,60 +35,19 @@ const JobsCard = () => {
                 console.log("err", error)
                 toast.error("error", { theme: 'dark' })
             }
-        } else {//save job
-            try {
-                const API_URL = `candidate/saveJob`
-                const response = await api.post(API_URL, {
-                    userID: user.userId,
-                    JobID: Jid
-                })
-                toast.info(response.data.msg, { theme: 'dark' })
-            } catch (error) {
-                toast.error("error", { theme: 'dark' })
-            }
+        } else {
+          return
         }
         getSavedJobs();
-        getAllJobs();
-    }
-    //get all saved jobs
-    const getSavedJobs = async () => {
-        const API_URL = `candidate/getsaveJob/${user.userId}`
-        const response = await api.get(API_URL)
-        let mapped = response.data.find.map((ele) => ele.JobID);
-        setSavedjobs(mapped)
-    }
-    //pageination
-    const pages = new Array(totPages).fill(null).map((v, i) => i)
-    //previouse pagination
-    const prev = () => {
-        setPageNo(Math.max(0, pageNo - 1))
-    }
-    //next pagination
-    const next = () => {
-        setPageNo(Math.min(totPages - 1, pageNo + 1))
-    }
-
-    //get all job postings
-    const getAllJobs = async () => {
-        const API_URL = `candidate/getAllJobs?page=${pageNo}`
-        const response = await api.get(API_URL)
-        setJobs(response.data.jobs)
-        SetJobscount(response.data.JobsCount)
-        setTotPages(response.data.totalPages)
     }
     useEffect(() => {
         if (user !== null) {
             getSavedJobs();
         }
-        getAllJobs();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageNo])
-
+    }, [])
     return (
         <>
-            <p className='text-sm italic'>{jobscount} Results Found</p>
-
-            {jobs.map((job) => (
+            {savedJobs.map((job) => (
                 <div key={job._id} className='flex flex-col pt-4 ...'>
                     <div className=' h-56 w-full bg-gray-50 rounded-lg  shadow-md'>
                         <div className=' h-5/6 w-full pl-4 pt-4 bg-white rounded-t-lg '>
@@ -162,52 +127,19 @@ const JobsCard = () => {
                             <div className='grid grid-cols-2'>
                                 <div className='pl-4 pt-2'>{job.createdAt}</div>
                                 <div className='flex justify-end pr-4 pt-2'>
-                                    {user === null && (
-                                        <button onClick={saveJob} title="login to save" disabled={true} className='cursor-not-allowed'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l1.664 1.664M21 21l-1.5-1.5m-5.485-1.242L12 17.25 4.5 21V8.742m.164-4.078a2.15 2.15 0 011.743-1.342 48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185V19.5M4.664 4.664L19.5 19.5" />
-                                            </svg>
+
+                                    <div className='pr-4 pl-4 '>
+                                        <button
+                                            onClick={(e) => { removeJob(job._id) }}
+                                            className='no-underline hover:underline text-red-700'
+                                        >
+                                            Remove
                                         </button>
-                                    )
-                                    }
-                                    {user !== null && (<button onClick={(e) => { saveJob(job._id) }} title="login to save" >
-                                        {!savedJobs.includes(job._id) && (
-                                            <svg
-                                                xmlns='http://www.w3.org/2000/svg'
-                                                fill='none'
-                                                viewBox='0 0 24 24'
-                                                strokeWidth='1.5'
-                                                stroke='currentColor'
-                                                className='w-6 h-6'
-                                            >
-                                                <path
-                                                    strokeLinecap='round'
-                                                    strokeLinejoin='round'
-                                                    d='M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z'
-                                                />
-                                            </svg>
-                                        )}
-                                        {savedJobs.includes(job._id) && (
-                                            <svg
-                                                xmlns='http://www.w3.org/2000/svg'
-                                                viewBox='0 0 24 24'
-                                                fill='currentColor'
-                                                className='w-6 h-6'
-                                            >
-                                                <path
-                                                    fillRule='evenodd'
-                                                    d='M6.32 2.577a49.255 49.255 0 0111.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 01-1.085.67L12 18.089l-7.165 3.583A.75.75 0 013.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93z'
-                                                    clipRule='evenodd'
-                                                />
-                                            </svg>
-                                        )}
-                                    </button>)}
-
-
+                                    </div>
                                     <div className='pr-4 pl-4 '>
                                         <a
                                             href='/'
-                                            className='no-underline hover:underline text-red-700'
+                                            className='no-underline hover:underline text-blue-700'
                                         >
                                             Apply
                                         </a>
@@ -218,32 +150,9 @@ const JobsCard = () => {
                     </div>
                 </div>
             ))}
-            <div className='flex justify-center pt-6'>
-                <button
-                    className='text-blue-700 hover:text-white border hover:bg-blue-800 focus:ring-4 focus:outline-none !ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-blue-500'
-                    onClick={prev}
-                >
-                    Previous
-                </button>
-                {pages.map((pageindex) => (
-                    <button
-                        key={pageindex}
-                        className='text-blue-700 hover:text-white border hover:bg-blue-800 focus:ring-4 focus:outline-none !ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-blue-500'
-                        onClick={() => setPageNo(pageindex)}
-                    >
-                        {pageindex + 1}
-                    </button>
-                ))}
-                <button
-                    onClick={next}
-                    className='text-blue-700 hover:text-white border hover:bg-blue-800 focus:ring-4 focus:outline-none !ring-0 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-blue-500'
-                >
-                    Next
-                </button>
-            </div>
         </>
     )
 }
 
-export default JobsCard
+export default SavedJobsCard
 
