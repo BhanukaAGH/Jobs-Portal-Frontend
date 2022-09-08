@@ -288,7 +288,7 @@ const CompanySignUp = () => {
           </form>
         </div>
       </div>
-      <div className='hidden lg:block col-span-3 w-full relative bg-slate-600'>
+      <div className='hidden lg:block col-span-3 w-full relative'>
         <img
           src={BGImage}
           alt='right-bg'
