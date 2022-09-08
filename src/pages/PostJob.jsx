@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import DashboardNav from '../components/Dashboard/DashboardNav'
 import PostJobImage from '../assets/postJob.webp'
@@ -10,9 +10,6 @@ import { useForm, useFieldArray } from 'react-hook-form'
 import countries from '../utils/countries.json'
 
 const PostJob = () => {
-  const [requirement, setRequirement] = useState('')
-  const [expectation, setExpectation] = useState('')
-
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const { company, isLoading } = useSelector((state) => state.company)
@@ -32,6 +29,7 @@ const PostJob = () => {
   } = useFieldArray({
     control,
     name: 'jobRequirements',
+    rules: { required: 'Job requirements required.' },
   })
 
   const {
@@ -41,6 +39,7 @@ const PostJob = () => {
   } = useFieldArray({
     control,
     name: 'jobExpectations',
+    rules: { required: 'Job expectations required.' },
   })
 
   const onSubmit = async (data) => {
@@ -397,32 +396,39 @@ const PostJob = () => {
                 {requirementFields.map((item, index) => (
                   <div
                     key={item.id}
-                    className='flex items-center space-x-2 pl-2'
+                    className='flex space-x-2 items-center w-full h-10 mt-2'
                   >
-                    <div
-                      onClick={() => requirementRemove(index)}
-                      className='cursor-pointer rounded h-4 w-4 flex items-center justify-center bg-black'
-                    >
-                      <MdRemove className='text-white' />
-                    </div>
-                    <p>{item.requirement}</p>
+                    <input
+                      type='text'
+                      {...register(`jobRequirements.${index}`, {
+                        required: true,
+                      })}
+                      className='input-field h-full'
+                      placeholder='Type your job requirement here'
+                    />
+                    <MdRemove
+                      onClick={() => {
+                        requirementRemove(index)
+                      }}
+                      className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
+                    />
                   </div>
                 ))}
-                <div className='flex space-x-2 items-center w-full h-10 mt-2'>
-                  <input
-                    type='text'
-                    value={requirement}
-                    onChange={(e) => setRequirement(e.target.value)}
-                    className='input-field h-full'
-                  />
-                  <MdAdd
-                    onClick={() => {
-                      requirementAppend({ requirement })
-                      setRequirement('')
-                    }}
-                    className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
-                  />
-                </div>
+
+                {errors.jobRequirements && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.jobRequirements?.root?.message}
+                  </p>
+                )}
+
+                <button
+                  type='button'
+                  onClick={() => requirementAppend()}
+                  className='flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none'
+                >
+                  <MdAdd />
+                  <p>Add Requirement</p>
+                </button>
               </div>
 
               <div className='col-span-6'>
@@ -433,35 +439,43 @@ const PostJob = () => {
                   Job expectations{' '}
                   <span className='text-red-500 font-bold'>*</span>
                 </label>
+
                 {expectationFields.map((item, index) => (
                   <div
                     key={item.id}
-                    className='flex items-center space-x-2 pl-2'
+                    className='flex space-x-2 items-center w-full h-10 mt-2'
                   >
-                    <div
-                      onClick={() => expectationRemove(index)}
-                      className='cursor-pointer rounded h-4 w-4 flex items-center justify-center bg-black'
-                    >
-                      <MdRemove className='text-white' />
-                    </div>
-                    <p>{item.expectation}</p>
+                    <input
+                      type='text'
+                      {...register(`jobExpectations.${index}`, {
+                        required: true,
+                      })}
+                      className='input-field h-full'
+                      placeholder='Type your job expectation here'
+                    />
+                    <MdRemove
+                      onClick={() => {
+                        expectationRemove(index)
+                      }}
+                      className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
+                    />
                   </div>
                 ))}
-                <div className='flex space-x-2 items-center w-full h-10 mt-2'>
-                  <input
-                    type='text'
-                    value={expectation}
-                    onChange={(e) => setExpectation(e.target.value)}
-                    className='input-field h-full'
-                  />
-                  <MdAdd
-                    onClick={() => {
-                      expectationAppend({ expectation })
-                      setExpectation('')
-                    }}
-                    className='px-2 w-10 h-10 text-white bg-black rounded-lg cursor-pointer'
-                  />
-                </div>
+
+                {errors.jobExpectations && (
+                  <p className='text-xs text-red-500 pt-0.5'>
+                    {errors.jobExpectations?.root?.message}
+                  </p>
+                )}
+
+                <button
+                  type='button'
+                  onClick={() => expectationAppend()}
+                  className='flex items-center space-x-2 mt-2 py-1 px-3 bg-gray-300 font-[Poppins] rounded-md outline-none border-none'
+                >
+                  <MdAdd />
+                  <p>Add Expectation</p>
+                </button>
               </div>
             </div>
           </div>
