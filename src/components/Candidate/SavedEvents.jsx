@@ -16,7 +16,7 @@ const SavedEvents = () => {
         const response = await api.get(API_URL);
         console.log(response)
         let mapped = response.data.find.map((ele) => ele.EventID);
-        console.log('response', mapped)
+        console.log('response at event', mapped)
         setSavedEvents(mapped)
     }
     //remove from saved

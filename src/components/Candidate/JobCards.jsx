@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 const JobsCard = () => {
     //store all jobs
     const [jobs, setJobs] = useState([])
@@ -74,6 +75,7 @@ const JobsCard = () => {
         if (user !== null) {
             getSavedJobs();
         }
+        console.log("moment",moment().utc().format('YYYY-MM-DD'))
         getAllJobs();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNo])
@@ -160,7 +162,7 @@ const JobsCard = () => {
                         </div>
                         <div>
                             <div className='grid grid-cols-2'>
-                                <div className='pl-4 pt-2'>{job.createdAt}</div>
+                                <div className='pl-4 pt-2'>Posted on: {moment(job.createdAt).utc().format('YYYY-MM-DD')}</div>
                                 <div className='flex justify-end pr-4 pt-2'>
                                     {user === null && (
                                         <button onClick={saveJob} title="login to save" disabled={true} className='cursor-not-allowed'>

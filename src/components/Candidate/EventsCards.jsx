@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
 const EventsCards = () => {
   //store all events
@@ -72,6 +73,7 @@ const EventsCards = () => {
   useEffect(() => {
     getAllEvents()
     getSavedEvents();
+    console.log("date",moment("2022-08-15T00:00:00.000Z").utc().format('YYYY-MM-DD'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo])
 
@@ -137,7 +139,8 @@ const EventsCards = () => {
               </div>
               <div>
                 <div className='grid grid-cols-2'>
-                  <div className='pl-4 pt-2'>{event.date}</div>
+                  <div className='pl-4 pt-2 w-full'>{moment(event.date).utc().format('YYYY-MM-DD')} | {moment(event.date).utc().format('h:mm a')}
+                  </div> 
                   <div className='flex justify-end pr-4 pt-2'>
                     {user === null && (
                       <button onClick={saveEvent} title="login to save" disabled={true} className='cursor-not-allowed'>

@@ -2,9 +2,13 @@ import React from 'react'
 import Navbar from '../components/Home/Navbar'
 import JobsCard from '../components/Candidate/JobCards'
 import { useSelector } from 'react-redux'
+import api from '../utils/api'
+import { useEffect } from 'react'
+import { useState } from 'react'
 const Jobs = () => {
-  const { authModal } = useSelector((state) => state.ui)
 
+  const { authModal } = useSelector((state) => state.ui)
+  
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
       <Navbar />
@@ -33,18 +37,18 @@ const Jobs = () => {
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
           >
-            <option defaultValue>Job-Type</option>
-            <option value='US'>United States</option>
-            <option value='CA'>Canada</option>
-            <option value='FR'>France</option>
-            <option value='DE'>Germany</option>
+            <option defaultValue="">Job-Type</option>
+            <option value='Remote'>Remote</option>
+            <option value='Physical'>Physical</option>
+            <option value='Hybrid'>Hybrid</option>
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
           >
-            <option defaultValue>Salary</option>
+            
+            <option defaultValue>Company</option>
             <option value='US'>United States</option>
             <option value='CA'>Canada</option>
             <option value='FR'>France</option>
@@ -74,8 +78,8 @@ const Jobs = () => {
           </select>
         </div>
 
-        <div className='flex justify-center w-1/2 mt-3'>
-          <div className='box-border grow-0 h-auto'>
+        <div className='flex justify-center  w-1/2 mt-3'>
+          <div className='box-border grow-0  h-auto'>
             {/* card starts here */}
             <JobsCard />
             {/* card ends here */}
