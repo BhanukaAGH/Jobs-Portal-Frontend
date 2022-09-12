@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   MdOutlineRemoveRedEye,
   MdOutlineEdit,
@@ -13,13 +13,18 @@ import moment from 'moment/moment'
 import { editJob, viewJob } from '../../features/ui/uiSlice'
 import { toast } from 'react-toastify'
 import useConfirm from '../../hooks/useConfirm'
+import useDebounce from '../../hooks/useDebounce'
 
 const JobDashboard = () => {
+  const [data, setData] = useState([])
+  const [searchText, setSearchText] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { jobs, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.job
   )
+
+  const debouncedSearchTerm = useDebounce(searchText, 500)
 
   const [Dialog, confirmDelete] = useConfirm(
     'Are you sure?',
@@ -51,6 +56,10 @@ const JobDashboard = () => {
   }, [])
 
   useEffect(() => {
+    if (isSuccess) {
+      setData(jobs)
+    }
+
     if (isSuccess && message) {
       dispatch(getAllJobs())
       toast(message, { type: 'success' })
@@ -63,6 +72,25 @@ const JobDashboard = () => {
     dispatch(reset())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isError, message])
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setData(
+        data.filter(
+          (item) =>
+            item.jobTitle
+              .toLowerCase()
+              .includes(debouncedSearchTerm.toLowerCase()) ||
+            item.jobCategory
+              .toLowerCase()
+              .includes(debouncedSearchTerm.toLowerCase())
+        )
+      )
+    } else {
+      setData(jobs)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm])
 
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
@@ -94,6 +122,8 @@ const JobDashboard = () => {
                 <input
                   type='text'
                   className='block p-2 pl-10 w-72 md:w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
                   placeholder='Search for items'
                 />
               </div>
@@ -122,9 +152,9 @@ const JobDashboard = () => {
                     </th>
                   </tr>
                 </thead>
-                {jobs.length > 0 ? (
+                {data.length > 0 ? (
                   <tbody>
-                    {jobs.map((job) => (
+                    {data.map((job) => (
                       <tr
                         key={job._id}
                         className='bg-white border-b hover:bg-gray-50'
