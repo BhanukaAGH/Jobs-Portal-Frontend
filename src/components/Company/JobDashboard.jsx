@@ -14,6 +14,13 @@ import { editJob, viewJob } from '../../features/ui/uiSlice'
 import { toast } from 'react-toastify'
 import useConfirm from '../../hooks/useConfirm'
 import useDebounce from '../../hooks/useDebounce'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const tableVariant = {
+  initial: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0 },
+}
 
 const JobDashboard = () => {
   const [data, setData] = useState([])
@@ -153,37 +160,42 @@ const JobDashboard = () => {
                   </tr>
                 </thead>
                 {data.length > 0 ? (
-                  <tbody>
+                  <motion.tbody layout variants={tableVariant}>
                     {data.map((job) => (
-                      <tr
-                        key={job._id}
-                        className='bg-white border-b hover:bg-gray-50'
-                      >
-                        <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
-                          {job.jobTitle}
-                        </td>
-                        <td className='py-4 px-6'>{job.jobCategory}</td>
-                        <td className='py-4 px-6'>
-                          {moment(job.createdAt).format('YYYY-MM-DD')}
-                        </td>
-                        <td className='py-4 px-6'>{job.numberOfVacancy}</td>
-                        <td className='flex items-center py-4 px-6 space-x-3'>
-                          <MdOutlineRemoveRedEye
-                            className='text-lg cursor-pointer'
-                            onClick={() => handleViewJob(job)}
-                          />
-                          <MdOutlineEdit
-                            className='text-lg text-blue-500 cursor-pointer'
-                            onClick={() => handleEditJob(job)}
-                          />
-                          <MdDeleteOutline
-                            className='text-lg text-red-500 cursor-pointer'
-                            onClick={() => handleRemoveJob(job._id)}
-                          />
-                        </td>
-                      </tr>
+                      <AnimatePresence key={job._id}>
+                        <motion.tr
+                          layout
+                          initial='hidden'
+                          animate='visible'
+                          exit='exit'
+                          className='bg-white border-b hover:bg-gray-50'
+                        >
+                          <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
+                            {job.jobTitle}
+                          </td>
+                          <td className='py-4 px-6'>{job.jobCategory}</td>
+                          <td className='py-4 px-6'>
+                            {moment(job.createdAt).format('YYYY-MM-DD')}
+                          </td>
+                          <td className='py-4 px-6'>{job.numberOfVacancy}</td>
+                          <td className='flex items-center py-4 px-6 space-x-3'>
+                            <MdOutlineRemoveRedEye
+                              className='text-lg cursor-pointer'
+                              onClick={() => handleViewJob(job)}
+                            />
+                            <MdOutlineEdit
+                              className='text-lg text-blue-500 cursor-pointer'
+                              onClick={() => handleEditJob(job)}
+                            />
+                            <MdDeleteOutline
+                              className='text-lg text-red-500 cursor-pointer'
+                              onClick={() => handleRemoveJob(job._id)}
+                            />
+                          </td>
+                        </motion.tr>
+                      </AnimatePresence>
                     ))}
-                  </tbody>
+                  </motion.tbody>
                 ) : (
                   <tbody>
                     <tr>
