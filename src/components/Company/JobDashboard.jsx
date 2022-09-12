@@ -24,7 +24,7 @@ const JobDashboard = () => {
     (state) => state.job
   )
 
-  const debouncedSearchTerm = useDebounce(searchText, 500)
+  const debouncedSearchTerm = useDebounce(searchText, 300)
 
   const [Dialog, confirmDelete] = useConfirm(
     'Are you sure?',
@@ -74,16 +74,16 @@ const JobDashboard = () => {
   }, [isSuccess, isError, message])
 
   useEffect(() => {
-    if (debouncedSearchTerm) {
+    if (debouncedSearchTerm.trim()) {
       setData(
-        data.filter(
+        jobs.filter(
           (item) =>
             item.jobTitle
               .toLowerCase()
-              .includes(debouncedSearchTerm.toLowerCase()) ||
+              .includes(debouncedSearchTerm.toLowerCase().trim()) ||
             item.jobCategory
               .toLowerCase()
-              .includes(debouncedSearchTerm.toLowerCase())
+              .includes(debouncedSearchTerm.toLowerCase().trim())
         )
       )
     } else {
