@@ -6,9 +6,50 @@ import api from '../utils/api'
 import { useEffect } from 'react'
 import { useState } from 'react'
 const Jobs = () => {
-
   const { authModal } = useSelector((state) => state.ui)
+  //company details for dropdown
+  const [companies, setCompanies] = useState([])
+  //jobs categpries
+  const [category, setCategory] = useState([])
+  //job medialities
+  const [medialitiy, setMedialitiy] = useState([])
+  //job experience
+  const [experience, setExperience] = useState([])
+
+  //search data
+  const [keyword, setKeyword] = useState('')
+  const [location, setLocation] = useState('')
+  const [search, setSearch] = useState(0)
+  //filter data
+  const [experienceF, setExperienceF] = useState('')
+  const [companyF, setCompanyF] = useState('')
+  const [categoryF, setCategoryF] = useState('')
+  const [medialitiyF, setMedialitiyF] = useState('')
   
+  //! Get All Company
+  const getAllCompany = async () => {
+    const response = await api.get("/company")
+    setCompanies(response.data.companies)
+    return response.data
+  }
+  //geta all jobs
+  const getAllJobs = async () => {
+    const API_URL = `candidate/getAllJobs?page=${0}`
+    const response = await api.post(API_URL)
+
+    setCategory(response.data.distincCat)
+    setMedialitiy(response.data.mediality)
+    setExperience(response.data.experience)
+  }
+  const Onsearch = async () => {
+    setSearch(1)
+    //setSearch(0)    
+  }
+  useEffect(() => {
+    getAllCompany()
+    getAllJobs();
+  }, [])
+
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
       <Navbar />
@@ -20,14 +61,16 @@ const Jobs = () => {
             <input
               type='text'
               className='header-input'
+              onChange={(e) => { setKeyword(e.target.value) }}
               placeholder='Job title or keyword'
             />
             <input
               type='text'
               className='header-input'
+              onChange={(e) => { setLocation(e.target.value) }}
               placeholder='Location'
             />
-            <button className='header-search-button'>Search</button>
+            <button className='header-search-button' onClick={Onsearch} >Search</button>
           </div>
         </div>
       </header>
@@ -36,52 +79,56 @@ const Jobs = () => {
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
+            onChange={(e) => { setExperienceF(e.target.value)}}
           >
-            <option defaultValue="">Job-Type</option>
-            <option value='Remote'>Remote</option>
-            <option value='Physical'>Physical</option>
-            <option value='Hybrid'>Hybrid</option>
+            <option value="" >Experience</option>
+            {experience.map((option) => (
+              <option  value={option}>{option}</option>
+            ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
+            onChange={(e) => { setCompanyF(e.target.value) }}
           >
-            
-            <option defaultValue>Company</option>
-            <option value='US'>United States</option>
-            <option value='CA'>Canada</option>
-            <option value='FR'>France</option>
-            <option value='DE'>Germany</option>
+
+            <option value="">Company</option>
+            {companies.map((company) => (
+              <option  value={company.name}>{company.name}</option>
+            ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
+            onChange={(e) => { setCategoryF(e.target.value) }}
           >
-            <option defaultValue>Category</option>
-            <option value='US'>United States</option>
-            <option value='CA'>Canada</option>
-            <option value='FR'>France</option>
-            <option value='DE'>Germany</option>
+            <option value=''>Category</option>
+            {category.map((option) => (
+              <option  value={option}>{option}</option>
+            ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
+            onChange={(e) => { setMedialitiyF(e.target.value) }}
           >
-            <option defaultValue>Mediality</option>
-            <option value='US'>United States</option>
-            <option value='CA'>Canada</option>
-            <option value='FR'>France</option>
-            <option value='DE'>Germany</option>
+            <option value=''>Mediality</option>
+            {medialitiy.map((option) => (
+              <option  value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
         <div className='flex justify-center  w-1/2 mt-3'>
           <div className='box-border grow-0  h-auto'>
             {/* card starts here */}
-            <JobsCard />
+
+            <JobsCard keyword={keyword} location={location} search={search} setSearch={setSearch} 
+              experienceF={experienceF} companyF={companyF} categoryF={categoryF} medialitiyF={medialitiyF}
+            />
             {/* card ends here */}
           </div>
         </div>

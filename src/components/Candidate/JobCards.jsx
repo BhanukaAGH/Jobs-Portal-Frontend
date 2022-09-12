@@ -5,7 +5,8 @@ import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import moment from 'moment'
-const JobsCard = () => {
+const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF, companyF, experienceF }) => {
+
     //store all jobs
     const [jobs, setJobs] = useState([])
     //check if logged in or not
@@ -14,7 +15,7 @@ const JobsCard = () => {
     //store page number
     const [pageNo, setPageNo] = useState(0)
     const [totPages, setTotPages] = useState(0)
-    const [jobscount, SetJobscount] = useState(0)
+    const [jobsCount, setJobsCount] = useState(0)
 
     //saved jobs jobid
     const [savedJobs, setSavedjobs] = useState([])
@@ -43,7 +44,7 @@ const JobsCard = () => {
             }
         }
         getSavedJobs();
-        getAllJobs();
+        // getAllJobs();
     }
     //get all saved jobs
     const getSavedJobs = async () => {
@@ -62,27 +63,42 @@ const JobsCard = () => {
     const next = () => {
         setPageNo(Math.min(totPages - 1, pageNo + 1))
     }
-
     //get all job postings
     const getAllJobs = async () => {
         const API_URL = `candidate/getAllJobs?page=${pageNo}`
-        const response = await api.get(API_URL)
-        setJobs(response.data.jobs)
-        SetJobscount(response.data.JobsCount)
+        const response = await api.post(API_URL, {
+            Location: location,
+            keyword: keyword
+        })
+        //setJobs(response.data.jobs)
+        setJobs(
+            response.data.jobs.filter((data) =>
+                data.jobType.includes(experienceF) && data.jobCategory.includes(categoryF) && data.workType.includes(medialitiyF) && data.company.name.includes(companyF)
+            )
+        )
         setTotPages(response.data.totalPages)
+        setJobsCount(response.data.JobsCount)
+        setSearch(0)
     }
+
     useEffect(() => {
         if (user !== null) {
             getSavedJobs();
         }
-        console.log("moment",moment().utc().format('YYYY-MM-DD'))
         getAllJobs();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageNo])
+    }, [pageNo, search])
 
     return (
         <>
-            <p className='text-sm italic'>{jobscount} Results Found</p>
+            <p className='text-sm italic'>
+                {jobs.length === 0 && (
+                    <>
+                        No Matching Results found
+                    </>
+                )}
+          
+            </p>
 
             {jobs.map((job) => (
                 <div key={job._id} className='flex flex-col pt-4 ...'>
