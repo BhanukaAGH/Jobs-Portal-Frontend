@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import moment from 'moment'
 
-const EventsCards = () => {
+const EventsCards = ({location,keyword,search,setSearch}) => {
   //store all events
   const [events, setEvents] = useState([])
   //store saved events
@@ -65,17 +65,24 @@ const EventsCards = () => {
   //get all event postings
   const getAllEvents = async () => {
     const API_URL = `candidate/getAllEvents?page=${pageNo}`
-    const response = await api.get(API_URL)
-    setEvents(response.data.events)
+    const response = await api.get(API_URL, {
+  })
+    //setEvents(response.data.events)
+    setEvents(
+      response.data.events.filter((data) =>
+      data.eventTitle.toLowerCase().includes(keyword.toLowerCase()) && data.company.name.toLowerCase().includes(location.toLowerCase())
+      )
+  )
     SetEventscount(response.data.EvenyCount)
     setTotPages(response.data.totalPages)
+    setSearch(0)
   }
   useEffect(() => {
     getAllEvents()
     getSavedEvents();
-    console.log("date",moment("2022-08-15T00:00:00.000Z").utc().format('YYYY-MM-DD'))
+    //console.log(location)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNo])
+  }, [pageNo,search])
 
   return (
     <>

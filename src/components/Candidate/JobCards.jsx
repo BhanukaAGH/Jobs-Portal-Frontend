@@ -97,7 +97,6 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
                         No Matching Results found
                     </>
                 )}
-          
             </p>
 
             {jobs.map((job) => (

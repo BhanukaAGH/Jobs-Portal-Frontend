@@ -3,9 +3,20 @@ import Navbar from '../components/Home/Navbar'
 import EventsCards from '../components/Candidate/EventsCards'
 import BGImage from '../assets/event.webp'
 import { useSelector } from 'react-redux'
+import { useState } from 'react'
 
 const Events = () => {
   const { authModal } = useSelector((state) => state.ui)
+
+  //search data
+  const [keyword, setKeyword] = useState('')
+  const [location, setLocation] = useState('')
+  const [search, setSearch] = useState(0)
+
+  const Onsearch = async () => {
+    setSearch(1)
+    //setSearch(0)    
+  }
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
       <Navbar />
@@ -25,16 +36,17 @@ const Events = () => {
             <input
               type='text'
               className='header-input'
+              onChange={(e) => { setKeyword(e.target.value) }}
               placeholder='Event title or keyword'
             />
-            <input type='text' className='header-input' placeholder='Company' />
-            <button className='header-search-button'>Search</button>
+            <input type='text' className='header-input' placeholder='Company' onChange={(e) => { setLocation(e.target.value) }}/>
+            <button className='header-search-button'  onClick={Onsearch} >Search</button>
           </div>
         </div>
       </header>
       <div className='box-border h-auto w-full pt-16 pr-36 pl-36'>
         {/* card starts here */}
-        <EventsCards />
+        <EventsCards keyword={keyword} location={location} search={search} setSearch={setSearch}  />
         {/* card ends here */}
       </div>
     </div>
