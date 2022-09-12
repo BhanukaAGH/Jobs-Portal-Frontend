@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   MdOutlineRemoveRedEye,
   MdOutlineEdit,
@@ -12,12 +12,30 @@ import Loading from '../../components/Loading'
 import moment from 'moment/moment'
 import { editJob, viewJob } from '../../features/ui/uiSlice'
 import { toast } from 'react-toastify'
+import useConfirm from '../../hooks/useConfirm'
+import useDebounce from '../../hooks/useDebounce'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const tableVariant = {
+  initial: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0 },
+}
 
 const JobDashboard = () => {
+  const [data, setData] = useState([])
+  const [searchText, setSearchText] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { jobs, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.job
+  )
+
+  const debouncedSearchTerm = useDebounce(searchText, 300)
+
+  const [Dialog, confirmDelete] = useConfirm(
+    'Are you sure?',
+    'Are you sure you want to delete job post ?'
   )
 
   const handleViewJob = (jobData) => {
@@ -30,8 +48,11 @@ const JobDashboard = () => {
     navigate('/company/post-job')
   }
 
-  const handleRemoveJob = (jobId) => {
-    dispatch(deleteJob(jobId))
+  const handleRemoveJob = async (jobId) => {
+    const ans = await confirmDelete()
+    if (ans) {
+      dispatch(deleteJob(jobId))
+    }
   }
 
   useEffect(() => {
@@ -42,6 +63,10 @@ const JobDashboard = () => {
   }, [])
 
   useEffect(() => {
+    if (isSuccess) {
+      setData(jobs)
+    }
+
     if (isSuccess && message) {
       dispatch(getAllJobs())
       toast(message, { type: 'success' })
@@ -54,6 +79,25 @@ const JobDashboard = () => {
     dispatch(reset())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isError, message])
+
+  useEffect(() => {
+    if (debouncedSearchTerm.trim()) {
+      setData(
+        jobs.filter(
+          (item) =>
+            item.jobTitle
+              .toLowerCase()
+              .includes(debouncedSearchTerm.toLowerCase().trim()) ||
+            item.jobCategory
+              .toLowerCase()
+              .includes(debouncedSearchTerm.toLowerCase().trim())
+        )
+      )
+    } else {
+      setData(jobs)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm])
 
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
@@ -85,6 +129,8 @@ const JobDashboard = () => {
                 <input
                   type='text'
                   className='block p-2 pl-10 w-72 md:w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
                   placeholder='Search for items'
                 />
               </div>
@@ -113,38 +159,43 @@ const JobDashboard = () => {
                     </th>
                   </tr>
                 </thead>
-                {jobs.length > 0 ? (
-                  <tbody>
-                    {jobs.map((job) => (
-                      <tr
-                        key={job._id}
-                        className='bg-white border-b hover:bg-gray-50'
-                      >
-                        <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
-                          {job.jobTitle}
-                        </td>
-                        <td className='py-4 px-6'>{job.jobCategory}</td>
-                        <td className='py-4 px-6'>
-                          {moment(job.createdAt).format('YYYY-MM-DD')}
-                        </td>
-                        <td className='py-4 px-6'>{job.numberOfVacancy}</td>
-                        <td className='flex items-center py-4 px-6 space-x-3'>
-                          <MdOutlineRemoveRedEye
-                            className='text-lg cursor-pointer'
-                            onClick={() => handleViewJob(job)}
-                          />
-                          <MdOutlineEdit
-                            className='text-lg text-blue-500 cursor-pointer'
-                            onClick={() => handleEditJob(job)}
-                          />
-                          <MdDeleteOutline
-                            className='text-lg text-red-500 cursor-pointer'
-                            onClick={() => handleRemoveJob(job._id)}
-                          />
-                        </td>
-                      </tr>
+                {data.length > 0 ? (
+                  <motion.tbody layout variants={tableVariant}>
+                    {data.map((job) => (
+                      <AnimatePresence key={job._id}>
+                        <motion.tr
+                          layout
+                          initial='hidden'
+                          animate='visible'
+                          exit='exit'
+                          className='bg-white border-b hover:bg-gray-50'
+                        >
+                          <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
+                            {job.jobTitle}
+                          </td>
+                          <td className='py-4 px-6'>{job.jobCategory}</td>
+                          <td className='py-4 px-6'>
+                            {moment(job.createdAt).format('YYYY-MM-DD')}
+                          </td>
+                          <td className='py-4 px-6'>{job.numberOfVacancy}</td>
+                          <td className='flex items-center py-4 px-6 space-x-3'>
+                            <MdOutlineRemoveRedEye
+                              className='text-lg cursor-pointer'
+                              onClick={() => handleViewJob(job)}
+                            />
+                            <MdOutlineEdit
+                              className='text-lg text-blue-500 cursor-pointer'
+                              onClick={() => handleEditJob(job)}
+                            />
+                            <MdDeleteOutline
+                              className='text-lg text-red-500 cursor-pointer'
+                              onClick={() => handleRemoveJob(job._id)}
+                            />
+                          </td>
+                        </motion.tr>
+                      </AnimatePresence>
                     ))}
-                  </tbody>
+                  </motion.tbody>
                 ) : (
                   <tbody>
                     <tr>
@@ -162,6 +213,7 @@ const JobDashboard = () => {
           </div>
         </div>
       </div>
+      <Dialog />
     </div>
   )
 }
