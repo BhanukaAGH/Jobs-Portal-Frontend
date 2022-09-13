@@ -2,7 +2,7 @@ import React from 'react'
 import { TiArrowLeft } from 'react-icons/ti'
 import ApplicantCard from './ApplicantCard'
 
-const Applicants = ({ selectJob, setSelectRow }) => {
+const Applicants = ({ selectJob, setSelectRow, setViewResume }) => {
   return (
     <div className='absolute inset-0 overflow-auto !scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
       <div className='flex items-center justify-start pt-4 pb-3 px-4 space-x-4 divide-x-2 divide-gray-500 sticky top-0 bg-white z-[2] border-b'>
@@ -21,7 +21,11 @@ const Applicants = ({ selectJob, setSelectRow }) => {
       <div className='grid grid-cols-1 w-full px-4 pb-8 pt-4'>
         <div className='col-span-1 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4'>
           {[...Array(8)].map((_, index) => (
-            <ApplicantCard key={index} />
+            <ApplicantCard
+              key={index}
+              data={selectJob}
+              setViewResume={setViewResume}
+            />
           ))}
         </div>
       </div>

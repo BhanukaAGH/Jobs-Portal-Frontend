@@ -16,6 +16,7 @@ import useConfirm from '../../hooks/useConfirm'
 import useDebounce from '../../hooks/useDebounce'
 import { AnimatePresence, motion } from 'framer-motion'
 import Applicants from '../Applicant/Applicants'
+import ApplicantResume from '../Applicant/ApplicantResume'
 
 const tableVariant = {
   initial: { opacity: 0 },
@@ -27,6 +28,7 @@ const JobDashboard = () => {
   const [data, setData] = useState([])
   const [searchText, setSearchText] = useState('')
   const [selectRow, setSelectRow] = useState(null)
+  const [viewResume, setViewResume] = useState(null)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -223,11 +225,16 @@ const JobDashboard = () => {
 
           {/* One Job Applicants List */}
           {selectRow && (
-            <Applicants selectJob={selectRow} setSelectRow={setSelectRow} />
+            <Applicants
+              selectJob={selectRow}
+              setSelectRow={setSelectRow}
+              setViewResume={setViewResume}
+            />
           )}
         </div>
       </div>
       <Dialog />
+      {viewResume && <ApplicantResume setViewResume={setViewResume} />}
     </div>
   )
 }

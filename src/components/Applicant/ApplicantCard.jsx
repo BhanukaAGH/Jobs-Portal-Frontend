@@ -1,8 +1,11 @@
 import React from 'react'
 
-const ApplicantCard = () => {
+const ApplicantCard = ({ data, setViewResume }) => {
   return (
-    <div className='relative block p-8 overflow-hidden border border-gray-200 rounded-lg h-min'>
+    <div
+      className='relative block p-8 overflow-hidden border border-gray-200 rounded-lg h-min cursor-pointer'
+      onClick={() => setViewResume(data)}
+    >
       <span className='absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600'></span>
 
       <div className='justify-between sm:flex'>
