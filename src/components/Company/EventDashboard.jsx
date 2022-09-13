@@ -13,6 +13,8 @@ import CreateEvent from '../Event/CreateEvent'
 const EventDashboard = () => {
   const [events, setEvents] = useState([])
   const [form, setForm] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+  const [results, setResults] = useState([])
 
   useEffect(() => {
     const getAllEvents = async () => {
@@ -21,7 +23,21 @@ const EventDashboard = () => {
     }
 
     getAllEvents()
-  }, [form])
+  }, [form, setForm])
+
+  useEffect(() => {
+    if (searchInput === '') {
+      setResults(events)
+    } else {
+      let results = events.filter(
+        (event) =>
+          event.eventTitle.toLowerCase().includes(searchInput) ||
+          event.deliveryType.toLowerCase().includes(searchInput) ||
+          event.location.toLowerCase().includes(searchInput)
+      )
+      setResults(results)
+    }
+  }, [searchInput, events])
 
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
@@ -58,8 +74,10 @@ const EventDashboard = () => {
                   </div>
                   <input
                     type='text'
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                     className='block p-2 pl-10 w-72 md:w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500'
-                    placeholder='Search for items'
+                    placeholder='Search for events'
                   />
                 </div>
               </div>
@@ -85,17 +103,17 @@ const EventDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map((event) => (
+                  {results.map((event) => (
                     <tr
                       key={event._id}
                       className='bg-white border-b hover:bg-gray-50'
                     >
                       <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
-                        {event.eventTiltle}
+                        {event.eventTitle}
                       </td>
                       <td className='py-4 px-6'>{event.location}</td>
                       <td className='py-4 px-6'>{event.deliveryType}</td>
-                      <td className='py-4 px-6'>{event.date}</td>
+                      <td className='py-4 px-6'>{event.date.substr(0, 10)}</td>
                       <td className='flex items-center py-4 px-6 space-x-3'>
                         <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
                         <MdOutlineEdit className='text-lg text-blue-500 cursor-pointer' />

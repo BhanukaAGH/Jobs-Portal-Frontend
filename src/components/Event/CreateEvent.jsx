@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { toast } from 'react-toastify'
 import api from '../../utils/api'
 
 const CreateEvent = ({ setForm }) => {
@@ -7,7 +7,7 @@ const CreateEvent = ({ setForm }) => {
     eventTitle: '',
     deliveryType: 'Virtual',
     location: '',
-    date: '',
+    date: undefined,
     description: '',
   })
 
@@ -32,15 +32,25 @@ const CreateEvent = ({ setForm }) => {
     const createEvent = async () => {
       const res = await api.post('/event', newEvent)
       setEvent(res.data)
+      toast.info('Event Successfully created', { theme: 'dark' })
     }
 
-    createEvent()
-
-    setForm(false)
+    if (
+      newEvent.eventTitle === '' ||
+      newEvent.deliveryType === '' ||
+      newEvent.location === '' ||
+      newEvent.date === undefined ||
+      newEvent.description === ''
+    ) {
+      toast.error('Please fill all fields', { theme: 'dark' })
+    } else {
+      createEvent()
+      setForm(false)
+    }
   }
 
   return (
-    <div className='grid grid-cols-12 w-full h-full px-3 md:px-6 py-6 overflow-auto scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
+    <div className=' w-full h-full px-3 md:px-6 py-6 overflow-auto scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
       <div className='col-span-12 lg:col-span-9 w-full h-full'>
         <form
           id='company-form'
@@ -64,7 +74,7 @@ const CreateEvent = ({ setForm }) => {
             />
           </div>
 
-          {/* <div className='col-span-6 lg:col-span-3'>
+          <div className='col-span-6 lg:col-span-3'>
             <label
               htmlFor='date'
               className='mb-2 block text-sm font-medium text-gray-900'
@@ -72,13 +82,13 @@ const CreateEvent = ({ setForm }) => {
               Date
             </label>
             <input
-              type='text'
+              type='date'
               name='date'
               value={event.date}
               onChange={handleChange}
               className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
             />
-          </div> */}
+          </div>
 
           <div className='col-span-6'>
             <label
@@ -97,7 +107,7 @@ const CreateEvent = ({ setForm }) => {
             />
           </div>
 
-          {/* <div className='col-span-6'>
+          <div className='col-span-6'>
             <label
               htmlFor='deliveryType'
               className='block text-sm font-medium text-gray-700'
@@ -112,7 +122,7 @@ const CreateEvent = ({ setForm }) => {
               <option value='Virtual'>Virtual</option>
               <option value='Physical'>Physical</option>
             </select>
-          </div> */}
+          </div>
 
           <div className='col-span-6'>
             <label
@@ -130,10 +140,10 @@ const CreateEvent = ({ setForm }) => {
               className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
             />
           </div>
-          <div className='flex justify-center'>
+          <div className='pl-80 pt-6'>
             <button
               type='submit'
-              className=' mr-2 mb-2 rounded-lg bg-[#e2a500]  px-5 py-2.5 text-sm font-medium text-white hover:bg-yellow-500 focus:outline-none'
+              className=' mr-2 mb-2 rounded-lg bg-[rgb(0,0,0)]  px-5 py-2.5 text-sm font-medium text-white focus:outline-none'
               onClick={handleSubmit}
             >
               Submit
