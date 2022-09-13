@@ -13,6 +13,7 @@ import UserProfile from "./pages/UserProfile";
 import Saved from "./pages/Saved";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ViewJob from "./components/Candidate/ViewJob";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/companies" element={<Companies />} />
         <Route path="/events" element={<Events />} />
         <Route path="/about" element={<Aboutus />} />
+        <Route path="/candidate/view-job" element={<ViewJob />} />
         <Route
           path="/company/post-job"
           element={

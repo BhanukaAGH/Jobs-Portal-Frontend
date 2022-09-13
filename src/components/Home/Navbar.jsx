@@ -127,7 +127,7 @@ const Navbar = () => {
                     )}
                     {user?.role === 'user' && (
                       <Link to={'/user-profile'} className='avatar-option'>
-                        Profile
+                        Resume
                       </Link>
                     )}
                     {user?.role === 'user' && (
