@@ -4,8 +4,9 @@ import { useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import moment from 'moment'
 
-const EventsCards = () => {
+const EventsCards = ({location,keyword,search,setSearch}) => {
   //store all events
   const [events, setEvents] = useState([])
   //store saved events
@@ -64,16 +65,24 @@ const EventsCards = () => {
   //get all event postings
   const getAllEvents = async () => {
     const API_URL = `candidate/getAllEvents?page=${pageNo}`
-    const response = await api.get(API_URL)
-    setEvents(response.data.events)
+    const response = await api.get(API_URL, {
+  })
+    //setEvents(response.data.events)
+    setEvents(
+      response.data.events.filter((data) =>
+      data.eventTitle.toLowerCase().includes(keyword.toLowerCase()) && data.company.name.toLowerCase().includes(location.toLowerCase())
+      )
+  )
     SetEventscount(response.data.EvenyCount)
     setTotPages(response.data.totalPages)
+    setSearch(0)
   }
   useEffect(() => {
     getAllEvents()
     getSavedEvents();
+    //console.log(location)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageNo])
+  }, [pageNo,search])
 
   return (
     <>
@@ -137,7 +146,8 @@ const EventsCards = () => {
               </div>
               <div>
                 <div className='grid grid-cols-2'>
-                  <div className='pl-4 pt-2'>{event.date}</div>
+                  <div className='pl-4 pt-2 w-full'>{moment(event.date).utc().format('YYYY-MM-DD')} | {moment(event.date).utc().format('h:mm a')}
+                  </div> 
                   <div className='flex justify-end pr-4 pt-2'>
                     {user === null && (
                       <button onClick={saveEvent} title="login to save" disabled={true} className='cursor-not-allowed'>

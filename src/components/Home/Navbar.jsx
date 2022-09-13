@@ -130,7 +130,11 @@ const Navbar = () => {
                         Profile
                       </Link>
                     )}
-
+                    {user?.role === 'user' && (
+                      <Link to={'/saved'} className='avatar-option'>
+                        Saved Postings
+                      </Link>
+                    )}
                     <span className='avatar-option' onClick={onLogout}>
                       Sign out
                     </span>
