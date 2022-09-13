@@ -46,8 +46,16 @@ const UserProfile = () => {
       toast.info("Location should be filled", { theme: 'dark' })
       return;
     }
+    if( Location.length<6){
+      toast.info("Location Lenth should be more than 5 character", { theme: 'dark' })
+      return;
+    }
     if(!PrimaryRole){
       toast.info("role should be filled", { theme: 'dark' })
+      return;
+    }
+    if( PrimaryRole.length<6){
+      toast.info("Role Lenth should be more than 5 character", { theme: 'dark' })
       return;
     }
     const API_URL = `candidate/addResume`

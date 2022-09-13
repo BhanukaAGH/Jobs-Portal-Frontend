@@ -80,8 +80,8 @@ const Saved = () => {
             {/* Jobs */}
             {type === 0 && (
                 <div className='flex flex-col items-center mt-16 '>
-                    <div className='flex justify-center w-1/2 mt-3'>
-                        <div className='box-border grow-0 h-auto'>
+                    <div className='flex justify-center w-1/2  mt-3'>
+                        <div className='box-border grow-0 h-auto w-full'>
                             {/* card starts here */}
                             <SavedJobsCard />
                             {/* card ends here */}
