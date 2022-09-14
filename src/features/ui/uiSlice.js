@@ -1,10 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const jobViewState = JSON.parse(localStorage.getItem('viewJob'))
+const jobEditState = JSON.parse(localStorage.getItem('editJob'))
+
 const initialState = {
   toggleNav: false,
   authModal: false,
-  jobView: { state: false, viewData: null },
-  jobEdit: { state: false, editData: null },
+  jobView: {
+    state: jobViewState ? jobViewState.state : false,
+    viewData: jobViewState ? jobViewState.viewData : null,
+  },
+  jobEdit: {
+    state: jobEditState ? jobEditState.state : false,
+    editData: jobEditState ? jobEditState.editData : null,
+  },
 }
 
 export const uiSlice = createSlice({
@@ -18,9 +27,19 @@ export const uiSlice = createSlice({
       state.authModal = action.payload
     },
     viewJob: (state, action) => {
+      if (action.payload?.state) {
+        localStorage.setItem('viewJob', JSON.stringify(action.payload))
+      } else {
+        localStorage.removeItem('viewJob')
+      }
       state.jobView = action.payload
     },
     editJob: (state, action) => {
+      if (action.payload?.state) {
+        localStorage.setItem('editJob', JSON.stringify(action.payload))
+      } else {
+        localStorage.removeItem('editJob')
+      }
       state.jobEdit = action.payload
     },
   },
