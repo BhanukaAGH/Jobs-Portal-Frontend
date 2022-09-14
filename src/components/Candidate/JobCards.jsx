@@ -12,8 +12,6 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
     const dispatch = useDispatch()
     const navigate =useNavigate()
 
-    //load view job component
-    const [viewjob, setViewjob] = useState(false)
     //store all jobs
     const [jobs, setJobs] = useState([])
     //check if logged in or not
