@@ -91,7 +91,6 @@ const ViewJob = ({ setViewjob }) => {
     if (user !== null) {
       getSavedJobs();
     }
-    console.log("a", jobApply)
   }, [])
 
   return (

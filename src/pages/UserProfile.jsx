@@ -147,7 +147,6 @@ const UserProfile = () => {
                   /> */
   useEffect(() => {
     getResume();
-    console.log(resume)
   }, [resume])
 
   if (resumeExist === null) {

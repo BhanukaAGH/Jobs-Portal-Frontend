@@ -88,7 +88,6 @@ const ViewProfile = () => {
         }
         setisLoading(true)
         const CVData = await uploadResume()
-        console.log("cvdata", CVData)
         const API_URL = `candidate/updateResume`
         const response = await api.post(API_URL, {
             userID: user.userId,

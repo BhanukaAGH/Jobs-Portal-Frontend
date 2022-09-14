@@ -33,7 +33,6 @@ const ViewEvent = () => {
         const response = await api.get(API_URL)
         let mapped = response.data.find.map((ele) => ele.EventID);
         setsavedEvent(mapped)
-        console.log("respon", mapped)
     }
     //save event
     const saveEvent = async () => {
@@ -62,7 +61,6 @@ const ViewEvent = () => {
     }
     //on submit
     const onSubmit = async (data) => {
-        console.log(data)
         try {
             const API_URL = `candidate/applyEvent`
             const response = await api.post(API_URL, {
@@ -77,7 +75,6 @@ const ViewEvent = () => {
             setisLoading(false)
             toast.info(response.data.msg, { theme: 'dark' })
         } catch (error) {
-            console.log(error)
             setisLoading(false)
             toast.info("Error when signing up", { theme: 'dark' })
         }
@@ -87,7 +84,6 @@ const ViewEvent = () => {
         if (user !== null) {
             getSavedEvents();
         }
-        console.log("a", eventApply.viewData.company._id, user)
     }, [])
 
     return (
