@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const jobViewState = JSON.parse(localStorage.getItem('viewJob'))
 const jobEditState = JSON.parse(localStorage.getItem('editJob'))
 const jobApplyState = JSON.parse(localStorage.getItem('applyJob'))
+const eventApplyState = JSON.parse(localStorage.getItem('applyEvent'))
 
 const initialState = {
   toggleNav: false,
@@ -18,6 +19,10 @@ const initialState = {
   jobApply: {
     state: jobApplyState ? jobApplyState.state : false,
     viewData: jobApplyState ? jobApplyState.viewData : null,
+  },
+  eventApply: {
+    state: eventApplyState ? eventApplyState.state : false,
+    viewData: eventApplyState ? eventApplyState.viewData : null,
   },
 }
 
@@ -55,8 +60,16 @@ export const uiSlice = createSlice({
       }
       state.jobApply = action.payload
     },
+    applyEvent: (state, action) => {
+      if (action.payload?.state) {
+        localStorage.setItem('applyEvent', JSON.stringify(action.payload))
+      } else {
+        localStorage.removeItem('applyEvent')
+      }
+      state.jobApply = action.payload
+    },
   },
 })
 
-export const { toggleNavbar, openAuth, viewJob, editJob ,applyJob} = uiSlice.actions
+export const { toggleNavbar, openAuth, viewJob, editJob ,applyJob,applyEvent} = uiSlice.actions
 export default uiSlice.reducer

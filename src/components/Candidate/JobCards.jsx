@@ -124,7 +124,7 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
                                     className='object-cover h-24 w-24 rounded-lg shadow-2xl'
                                 />
                                 <div className='pl-4 grid grid-cols-1 '>
-                                    <div className='font-sans text-4xl font-bold'>{job.jobTitle}</div>
+                                    <div onClick={(e)=>{onClickApply(job)}} className='font-sans text-4xl font-bold'>{job.jobTitle}</div>
                                     <div className='flex pt-2 '>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
