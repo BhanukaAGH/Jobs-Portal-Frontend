@@ -5,13 +5,20 @@ import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import moment from 'moment'
+import { applyJob } from '../../features/ui/uiSlice'
+import ViewJob from './ViewJob'
+import { useNavigate } from 'react-router-dom'
 const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF, companyF, experienceF }) => {
+    const dispatch = useDispatch()
+    const navigate =useNavigate()
 
+    //load view job component
+    const [viewjob, setViewjob] = useState(false)
     //store all jobs
     const [jobs, setJobs] = useState([])
     //check if logged in or not
     const { user } = useSelector((state) => state.auth)
-
+    
     //store page number
     const [pageNo, setPageNo] = useState(0)
     const [totPages, setTotPages] = useState(0)
@@ -80,7 +87,15 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
         setJobsCount(response.data.JobsCount)
         setSearch(0)
     }
-
+    //onclick apply
+    const onClickApply = async (job) => {
+        const jobData={
+            "job":job,
+            "savedJobs":savedJobs
+        }
+        dispatch(applyJob({ state: true, viewData: jobData }))
+        navigate('/candidate/view-job')
+    }
     useEffect(() => {
         if (user !== null) {
             getSavedJobs();
@@ -98,6 +113,7 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
                     </>
                 )}
             </p>
+            
 
             {jobs.map((job) => (
                 <div key={job._id} className='flex flex-col pt-4 ...'>
@@ -219,17 +235,19 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
                                             </svg>
                                         )}
                                     </button>)}
-
+                                    
 
                                     <div className='pr-4 pl-4 '>
-                                        <a
-                                            href='/'
+                                        <button
                                             className='no-underline hover:underline text-red-700'
+                                            onClick={(e)=>{onClickApply(job)}}
                                         >
                                             Apply
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
+                                {/* companyuserid{job.company._id}<br/>
+                                jobid{job._id} */}
                             </div>
                         </div>
                     </div>
@@ -258,6 +276,7 @@ const JobsCard = ({ keyword, location, search, setSearch, medialitiyF, categoryF
                     Next
                 </button>
             </div>
+            
         </>
     )
 }

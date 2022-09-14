@@ -86,7 +86,10 @@ const EventsCards = ({location,keyword,search,setSearch}) => {
 
   return (
     <>
-      <p className='text-sm italic'>{eventscount} Results Found</p>
+      <p className='text-sm italic'>{events.length===0 &&(
+        <>
+        No Results found</>
+      )} </p>
       <div className='grid grid-cols-2 gap-4'>
         {events.map((event) => (
           <div key={event._id} className='flex flex-col pt-4 ...'>
