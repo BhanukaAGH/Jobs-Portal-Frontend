@@ -5,8 +5,14 @@ import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
+import { applyEvent } from '../../features/ui/uiSlice'
 
 const EventsCards = ({location,keyword,search,setSearch}) => {
+  
+  const dispatch = useDispatch()
+  const navigate =useNavigate()
+
   //store all events
   const [events, setEvents] = useState([])
   //store saved events
@@ -59,7 +65,6 @@ const EventsCards = ({location,keyword,search,setSearch}) => {
         toast.error("error", { theme: 'dark' })
       }
     }
-    getAllEvents()
     getSavedEvents();
   }
   //get all event postings
@@ -77,6 +82,11 @@ const EventsCards = ({location,keyword,search,setSearch}) => {
     setTotPages(response.data.totalPages)
     setSearch(0)
   }
+  //onclcik event
+  const onClickApply = async (event) => {
+    dispatch(applyEvent({ state: true, viewData: event }))
+    navigate('/candidate/view-event')
+}
   useEffect(() => {
     getAllEvents()
     getSavedEvents();
@@ -100,11 +110,12 @@ const EventsCards = ({location,keyword,search,setSearch}) => {
                     <span class="text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-blue-800"
                     >{event.deliveryType}</span>
                   </div>
-                  <div className=''>
+                  {/* arrow to apply */}
+                  <button onClick={(e)=>{onClickApply(event)}}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
-                  </div>
+                  </button>
                 </div>
                 <div className='flex'>
                   <img
