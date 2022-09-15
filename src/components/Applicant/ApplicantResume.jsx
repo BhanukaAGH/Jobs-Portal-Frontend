@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 
-const ApplicantResume = ({ setViewResume }) => {
+const ApplicantResume = ({ viewResume, setViewResume }) => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [pageHeight, setPageHeight] = useState(window.innerHeight)
@@ -44,12 +44,15 @@ const ApplicantResume = ({ setViewResume }) => {
       <div className='fixed inset-0 bg-black bg-opacity-75 transition-opacity'></div>
 
       <div className='fixed inset-0 z-10 overflow-y-auto'>
-        <button className='absolute rounded-full h-8 w-8 md:h-12 md:w-12 flex items-center justify-center text-lg md:text-2xl top-3 right-3 bg-white text-black z-10 ring-black ring-1' onClick={() => setViewResume(null)}>
+        <button
+          className='absolute rounded-full h-8 w-8 md:h-12 md:w-12 flex items-center justify-center text-lg md:text-2xl top-3 right-3 bg-white text-black z-10 ring-black ring-1'
+          onClick={() => setViewResume(null)}
+        >
           X
         </button>
         <div className='w-screen min-h-screen flex items-center justify-center'>
           <Document
-            file='https://res.cloudinary.com/aghb/image/upload/v1663062743/jobs.lk-CV/gvzze03krtpqedoahmts.pdf'
+            file={viewResume}
             onLoadSuccess={onDocumentLoadSuccess}
             className='relative group'
           >
