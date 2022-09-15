@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ViewJob from "./components/Candidate/ViewJob";
 import ViewEvent from "./components/Candidate/ViewEvent";
+import AppliedJobs from "./pages/AppliedJobs";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/about" element={<Aboutus />} />
         <Route path="/candidate/view-job" element={<ViewJob />} />
         <Route path="/candidate/view-event" element={<ViewEvent />} />
+
         <Route
           path="/company/post-job"
           element={
@@ -68,6 +70,15 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/appliedjobs"
+          element={
+            <ProtectedRoute>
+              <AppliedJobs />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer
