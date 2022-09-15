@@ -17,21 +17,22 @@ import ViewJob from "./components/Candidate/ViewJob";
 import ViewEvent from "./components/Candidate/ViewEvent";
 import AppliedJobs from "./pages/AppliedJobs";
 
+
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/company/sign-up" element={<CompanySignUp />} />
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/about" element={<Aboutus />} />
-        <Route path="/candidate/view-job" element={<ViewJob />} />
-        <Route path="/candidate/view-event" element={<ViewEvent />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/company/sign-up' element={<CompanySignUp />} />
+        <Route path='/jobs' element={<Jobs />} />
+        <Route path='/companies' element={<Companies />} />
+        <Route path='/events' element={<Events />} />
+        <Route path='/about' element={<Aboutus />} />
+        <Route path='/candidate/view-job' element={<ViewJob />} />
+        <Route path='/candidate/view-event' element={<ViewEvent />} />
 
         <Route
-          path="/company/post-job"
+          path='/company/post-job'
           element={
             <ProtectedRoute>
               <PostJob />
@@ -39,7 +40,7 @@ const App = () => {
           }
         />
         <Route
-          path="/admin/dashboard"
+          path='/admin/dashboard'
           element={
             <ProtectedRoute>
               <Dashboard />
@@ -47,7 +48,7 @@ const App = () => {
           }
         />
         <Route
-          path="/company/dashboard"
+          path='/company/dashboard'
           element={
             <ProtectedRoute>
               <Dashboard />
@@ -55,7 +56,7 @@ const App = () => {
           }
         />
         <Route
-          path="/user-profile"
+          path='/user-profile'
           element={
             <ProtectedRoute>
               <UserProfile />
@@ -63,7 +64,7 @@ const App = () => {
           }
         />
         <Route
-          path="/saved"
+          path='/saved'
           element={
             <ProtectedRoute>
               <Saved />
@@ -78,18 +79,18 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
         <Route path="*" element={<NotFound />} />
+
       </Routes>
       <ToastContainer
-        position="bottom-right"
+        position='bottom-right'
         autoClose={3000}
         closeOnClick
         draggable
         limit={3}
       />
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App

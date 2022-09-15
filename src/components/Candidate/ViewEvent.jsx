@@ -350,4 +350,3 @@ const ViewEvent = () => {
 }
 
 export default ViewEvent
-//<button className='bg-red-700 hover:bg-red-500  text-white absolute float-right right-4 bottom-0 px-5 py-2.2 rounded-sm '>Apply</button>

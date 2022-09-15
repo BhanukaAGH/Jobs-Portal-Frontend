@@ -71,5 +71,12 @@ export const uiSlice = createSlice({
   },
 })
 
-export const { toggleNavbar, openAuth, viewJob, editJob ,applyJob,applyEvent} = uiSlice.actions
+export const {
+  toggleNavbar,
+  openAuth,
+  viewJob,
+  editJob,
+  applyJob,
+  applyEvent,
+} = uiSlice.actions
 export default uiSlice.reducer

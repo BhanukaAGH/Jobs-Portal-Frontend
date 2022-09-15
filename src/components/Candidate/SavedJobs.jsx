@@ -2,24 +2,19 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import api from '../../utils/api'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 const SavedJobsCard = () => {
-    const { authModal } = useSelector((state) => state.ui)
-    const { user } = useSelector((state) => state.auth)
-    const [type, setType] = useState(0)
-    //saved jobs 
-    const [savedJobs, setSavedjobs] = useState([])
-    //store page number
-    const [pageNo, setPageNo] = useState(0)
-    const [totPages, setTotPages] = useState(0)
-    const [jobscount, SetJobscount] = useState(0)
+  const { user } = useSelector((state) => state.auth)
+  //saved jobs
+  const [savedJobs, setSavedjobs] = useState([])
 
     //get all saved jobs
     const getSavedJobs = async () => {
         const API_URL = `candidate/getsaveJobs/${user.userId}`
         const response = await api.get(API_URL);
         let mapped = response.data.find.map((ele) => ele.JobID);
+        console.log('response', mapped)
         setSavedjobs(mapped)
     }
     //remove from saved
@@ -154,4 +149,3 @@ const SavedJobsCard = () => {
 }
 
 export default SavedJobsCard
-
