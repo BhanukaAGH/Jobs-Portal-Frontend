@@ -234,7 +234,12 @@ const JobDashboard = () => {
         </div>
       </div>
       <Dialog />
-      {viewResume && <ApplicantResume setViewResume={setViewResume} />}
+      {viewResume && (
+        <ApplicantResume
+          viewResume={viewResume}
+          setViewResume={setViewResume}
+        />
+      )}
     </div>
   )
 }
