@@ -6,7 +6,6 @@ import {
   MdDeleteOutline,
   MdSearch,
 } from 'react-icons/md'
-import { Link } from 'react-router-dom'
 import api from '../../utils/api'
 import CreateEvent from '../Event/CreateEvent'
 
