@@ -2,10 +2,16 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import api from '../../utils/api'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import { applyEvent } from '../../features/ui/uiSlice'
+import moment from 'moment'
 
 const SavedEvents = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const { user } = useSelector((state) => state.auth)
   //saved events
   const [savedEvents, setSavedEvents] = useState([])
@@ -36,6 +42,11 @@ const SavedEvents = () => {
     }
     getSavedEvents()
   }
+  //onclcik event
+  const onClickApply = async (event) => {
+    dispatch(applyEvent({ state: true, viewData: event }))
+    navigate('/candidate/view-event')
+  }
   useEffect(() => {
     if (user !== null) {
       getSavedEvents()
@@ -56,7 +67,9 @@ const SavedEvents = () => {
                       {event.deliveryType}
                     </span>
                   </div>
-                  <div className=''>
+                  <button onClick={(e) => {
+                    onClickApply(event)
+                  }}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -71,7 +84,7 @@ const SavedEvents = () => {
                         d='M8.25 4.5l7.5 7.5-7.5 7.5'
                       />
                     </svg>
-                  </div>
+                  </button>
                 </div>
                 <div className='flex'>
                   <img
@@ -115,7 +128,10 @@ const SavedEvents = () => {
               </div>
               <div>
                 <div className='grid grid-cols-2'>
-                  <div className='pl-4 pt-2'>{event.date}</div>
+                <div className='pl-4 pt-2 w-full'>
+                    {moment(event.date).utc().format('YYYY-MM-DD')} |{' '}
+                    {moment(event.date).utc().format('h:mm a')}
+                  </div>
                   <div className='flex justify-end pr-4 pt-2'>
                     <button title='login to save'>
                       <div className='pr-4 pl-4 '>

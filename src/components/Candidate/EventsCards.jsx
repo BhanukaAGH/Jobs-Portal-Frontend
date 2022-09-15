@@ -87,6 +87,7 @@ const EventsCards = ({ location, keyword, search, setSearch }) => {
     dispatch(applyEvent({ state: true, viewData: event }))
     navigate('/candidate/view-event')
   }
+  
   useEffect(() => {
     getAllEvents()
     getSavedEvents();
