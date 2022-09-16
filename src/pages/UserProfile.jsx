@@ -52,7 +52,7 @@ const UserProfile = () => {
   const [valCV, setValcv] = useState("")
 
   //resumeexits or not
-  const [resumeExist, setresumeExist] = useState('')
+  const [resumeExist, setresumeExist] = useState(false)
 
   const [skill, setSkills] = useState("")
   const [YOE, setYOE] = useState("")
@@ -149,18 +149,24 @@ const UserProfile = () => {
   const getResume = async () => {
     const API_URL = `candidate/viewResume/${user.userId}`
     const response = await api.get(API_URL);
-    setresumeExist(response.data.find)
+    console.log("resume",response.data.find)
+    if(response.data.find===null){
+      setresumeExist(false)
+      return;
+    }
+    if(!response.data.find.Location && !response.data.find.CV && !response.data.find.PrimaryRole && !response.data.find.Statement){
+      setresumeExist(false)
+    }else{
+      setresumeExist(true)
+    }
+    //setresumeExist(response.data.find)
   }
-  /**        <img
-                    src={resume}
-                    alt='resume'
-                    className='object-cover h-4 w-24 rounded-lg shadow-2xl'
-                  /> */
   useEffect(() => {
     getResume();
   }, [resume])
 
-  if (resumeExist === null) {
+  //if (resumeExist === null) {
+    if (!resumeExist) {
     return (
       <div className={`${authModal && 'h-screen overflow-hidden'}`}>
         <Navbar />
@@ -273,7 +279,7 @@ const UserProfile = () => {
       </div>
     )
   }
-  if (resumeExist !== null) {
+  if (resumeExist) {
     return (<ViewProfile />)
     // return (<h1>hi</h1>)
   }
