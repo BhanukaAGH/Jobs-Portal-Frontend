@@ -56,7 +56,7 @@ export const adminLinks = [
   },
   {
     id: 'AD4',
-    name: 'Event Report',
+    name: 'Events Report',
     icon: MdAssignment,
     element: EventReport,
   },

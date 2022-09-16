@@ -94,7 +94,7 @@ const SavedEvents = () => {
                   />
                   <div className='pl-4 grid grid-cols-1'>
                     <div className='font-sans text-4xl font-bold'>
-                      {event.eventTiltle}
+                    {event.eventTitle}
                     </div>
                     <div className='flex pt-6'>
                       <svg
