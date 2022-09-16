@@ -17,6 +17,7 @@ import useDebounce from '../../hooks/useDebounce'
 import { AnimatePresence, motion } from 'framer-motion'
 import Applicants from '../Applicant/Applicants'
 import ApplicantResume from '../Applicant/ApplicantResume'
+import generatePDF from '../../utils/generatePDF'
 
 const tableVariant = {
   initial: { opacity: 0 },
@@ -32,6 +33,7 @@ const JobDashboard = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth)
   const { jobs, isLoading, isSuccess, isError, message } = useSelector(
     (state) => state.job
   )
@@ -110,7 +112,10 @@ const JobDashboard = () => {
       <div className='dashboard-title'>
         <h3 className='text-lg md:text-2xl xl:text-3xl'>Company Jobs List</h3>
         <div className='space-x-3'>
-          <button className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'>
+          <button
+            className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'
+            onClick={() => generatePDF(user.name, user.userId, data)}
+          >
             Job Report
           </button>
           <Link to={'/company/post-job'} className='dashbord-title-button'>

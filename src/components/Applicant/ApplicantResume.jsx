@@ -26,12 +26,10 @@ const ApplicantResume = ({ viewResume, setViewResume }) => {
 
   const increaseScale = () => {
     setPageScale((scale) => scale + 0.1)
-    console.log(pageScale)
   }
 
   const decreaseScale = () => {
     setPageScale((scale) => scale - 0.1)
-    console.log(pageScale)
   }
 
   useEffect(() => {
