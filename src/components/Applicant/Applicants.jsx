@@ -63,19 +63,21 @@ const Applicants = ({ selectJob, setSelectRow, setViewResume }) => {
         <Loading />
       ) : (
         <div className='grid grid-cols-1 w-full px-4 pb-8 pt-4'>
-          <div className='col-span-1 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4'>
-            {applicants?.length > 0 ? (
-              applicants.map((applicant, index) => (
+          {applicants?.length > 0 ? (
+            <div className='col-span-1 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4'>
+              {applicants.map((applicant, index) => (
                 <ApplicantCard
                   key={index}
                   applicant={applicant}
                   setViewResume={setViewResume}
                 />
-              ))
-            ) : (
-              <div>Not Applicants yet</div>
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className='col-span-1 font-medium font-[Poppins] text-black text-lg text-center py-3'>
+              Not Applicants yet
+            </div>
+          )}
         </div>
       )}
     </div>
