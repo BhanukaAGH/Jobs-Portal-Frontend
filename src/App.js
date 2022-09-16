@@ -1,20 +1,22 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import Home from './pages/Home'
-import CompanySignUp from './pages/CompanySignUp'
-import PostJob from './pages/PostJob'
-import Dashboard from './pages/Dashboard'
-import Jobs from './pages/Jobs'
-import Companies from './pages/Companies'
-import Events from './pages/Events'
-import Aboutus from './pages/Aboutus'
-import UserProfile from './pages/UserProfile'
-import Saved from './pages/Saved'
-import NotFound from './pages/NotFound'
-import ProtectedRoute from './components/ProtectedRoute'
-import ViewJob from './components/Candidate/ViewJob'
-import ViewEvent from './components/Candidate/ViewEvent'
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import Home from "./pages/Home";
+import CompanySignUp from "./pages/CompanySignUp";
+import PostJob from "./pages/PostJob";
+import Dashboard from "./pages/Dashboard";
+import Jobs from "./pages/Jobs";
+import Companies from "./pages/Companies";
+import Events from "./pages/Events";
+import Aboutus from "./pages/Aboutus";
+import UserProfile from "./pages/UserProfile";
+import Saved from "./pages/Saved";
+import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ViewJob from "./components/Candidate/ViewJob";
+import ViewEvent from "./components/Candidate/ViewEvent";
+import AppliedJobs from "./pages/AppliedJobs";
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
         <Route path='/about' element={<Aboutus />} />
         <Route path='/candidate/view-job' element={<ViewJob />} />
         <Route path='/candidate/view-event' element={<ViewEvent />} />
+
         <Route
           path='/company/post-job'
           element={
@@ -68,7 +71,16 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='*' element={<NotFound />} />
+        <Route
+          path="/appliedjobs"
+          element={
+            <ProtectedRoute>
+              <AppliedJobs />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
       <ToastContainer
         position='bottom-right'

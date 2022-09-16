@@ -135,6 +135,11 @@ const Navbar = () => {
                         Saved Postings
                       </Link>
                     )}
+                      {user?.role === 'user' && (
+                      <Link to={'/appliedjobs'} className='avatar-option'>
+                        Applied Jobs
+                      </Link>
+                    )}
                     <span className='avatar-option' onClick={onLogout}>
                       Sign out
                     </span>

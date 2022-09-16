@@ -38,7 +38,7 @@ const EventsCards = ({ location, keyword, search, setSearch }) => {
     const response = await api.get(API_URL)
     let mapped = response.data.find.map((ele) => ele.EventID)
     setsavedEvent(mapped)
-    console.log('respon', mapped)
+    console.log("respon",mapped)
   }
   //save event
   const saveEvent = async (Eid) => {
@@ -89,7 +89,7 @@ const EventsCards = ({ location, keyword, search, setSearch }) => {
   }
   useEffect(() => {
     getAllEvents()
-    getSavedEvents()
+    getSavedEvents();
     //console.log(location)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo, search])
