@@ -3,6 +3,7 @@ import {
   MdOutlineBusinessCenter,
   MdOutlineEventNote,
   MdOutlineDashboard,
+  MdAssignment
 } from 'react-icons/md'
 import CompanyDashboard from '../components/Company/CompanyDashboard'
 import EventDashboard from '../components/Company/EventDashboard'
@@ -10,6 +11,8 @@ import JobDashboard from '../components/Company/JobDashboard'
 import AdminDashboard from '../components/Admin/AdminDashboard'
 import AdminCompany from '../components/Admin/AdminCompany'
 import AdminJobs from '../components/Admin/AdminJobs'
+import EventReport from '../components/Admin/EventReport'
+
 
 export const companyLinks = [
   {
@@ -50,5 +53,11 @@ export const adminLinks = [
     name: 'Jobs',
     icon: MdOutlineBusinessCenter,
     element: AdminJobs,
+  },
+  {
+    id: 'AD4',
+    name: 'Event Report',
+    icon: MdAssignment,
+    element: EventReport,
   },
 ]

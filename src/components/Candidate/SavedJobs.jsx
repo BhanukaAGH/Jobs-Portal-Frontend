@@ -2,12 +2,17 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import api from '../../utils/api'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { applyJob } from '../../features/ui/uiSlice'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import moment from 'moment'
 const SavedJobsCard = () => {
-  const { user } = useSelector((state) => state.auth)
-  //saved jobs
-  const [savedJobs, setSavedjobs] = useState([])
+    const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    //saved jobs
+    const [savedJobs, setSavedjobs] = useState([])
 
     //get all saved jobs
     const getSavedJobs = async () => {
@@ -30,9 +35,18 @@ const SavedJobsCard = () => {
                 toast.error("error", { theme: 'dark' })
             }
         } else {
-          return
+            return
         }
         getSavedJobs();
+    }
+    //onclick apply
+    const onClickApply = async (job) => {
+        const jobData = {
+            job: job,
+            savedJobs: savedJobs,
+        }
+        dispatch(applyJob({ state: true, viewData: jobData }))
+        navigate('/candidate/view-job')
     }
     useEffect(() => {
         if (user !== null) {
@@ -52,7 +66,14 @@ const SavedJobsCard = () => {
                                     className='object-cover h-24 w-24 rounded-lg shadow-2xl'
                                 />
                                 <div className='pl-4 grid grid-cols-1 '>
-                                    <div className='font-sans text-4xl font-bold'>{job.jobTitle}</div>
+                                    <div
+                                        onClick={(e) => {
+                                            onClickApply(job)
+                                        }}
+                                        className='font-sans text-4xl font-bold'
+                                    >
+                                        {job.jobTitle}
+                                    </div>
                                     <div className='flex pt-2 '>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -119,7 +140,9 @@ const SavedJobsCard = () => {
                         </div>
                         <div>
                             <div className='grid grid-cols-2'>
-                                <div className='pl-4 pt-2'>{job.createdAt}</div>
+                                <div className='pl-4 pt-2'>
+                                    Posted on: {moment(job.createdAt).utc().format('YYYY-MM-DD')}
+                                </div>
                                 <div className='flex justify-end pr-4 pt-2'>
 
                                     <div className='pr-4 pl-4 '>
@@ -131,12 +154,14 @@ const SavedJobsCard = () => {
                                         </button>
                                     </div>
                                     <div className='pr-4 pl-4 '>
-                                        <a
-                                            href='/'
+                                        <button
+                                            onClick={(e) => {
+                                                onClickApply(job)
+                                            }}
                                             className='no-underline hover:underline text-blue-700'
                                         >
                                             Apply
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
