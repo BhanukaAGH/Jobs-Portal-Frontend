@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaSearch } from 'react-icons/fa'
 import Navbar from '../components/Home/Navbar'
 import BGImage from '../assets/bg.webp'
@@ -7,9 +7,19 @@ import Category from '../components/Home/Category'
 import Popular from '../components/Home/Popular'
 import Footer from '../components/Home/Footer'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+  const navigate = useNavigate()
+  const [searchKey, setSearchKey] = useState('')
   const { authModal } = useSelector((state) => state.ui)
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchKey) {
+      navigate(`/jobs?searchKey=${searchKey}`)
+    }
+  }
 
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
@@ -32,17 +42,23 @@ const Home = () => {
             We Help you to find the best job to build your future and build a
             better future of digital era.
           </p>
-          <div className='flex items-center py-1 pl-3 pr-1 bg-white rounded-lg md:w-1/2 gap-x-2'>
+          <form className='flex items-center py-1 pl-3 pr-1 bg-white rounded-lg md:w-1/2 gap-x-2'>
             <FaSearch className='text-2xl text-[#9CA3AF]' />
             <input
               type='text'
               className='placeholder:italic rounded-lg w-full py-2 px-1 font-[Poppins] text-sm !outline-hidden !border-hidden !ring-0'
+              value={searchKey}
+              onChange={(e) => setSearchKey(e.target.value)}
               placeholder='Job title or keyword . . .'
             />
-            <button className='px-6 py-2 font-medium rounded-md bg-blue-700 text-white'>
+            <button
+              type='submit'
+              className='px-6 py-2 font-medium rounded-md bg-blue-700 text-white'
+              onClick={handleSearch}
+            >
               Search
             </button>
-          </div>
+          </form>
         </div>
       </header>
       <Trusted />
