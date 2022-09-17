@@ -66,7 +66,7 @@ export const uiSlice = createSlice({
       } else {
         localStorage.removeItem('applyEvent')
       }
-      state.jobApply = action.payload
+      state.eventApply = action.payload
     },
   },
 })
