@@ -2,14 +2,13 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import api from '../../utils/api'
 import moment from 'moment'
+import generatePDF from '../../utils/AdminEventsReport'
+import { useSelector } from 'react-redux'
 const EventReport = () => {
-
+  const { user } = useSelector((state) => state.auth)
   const [reportData, setReportData] = useState([])
   //total applied count
   const [total, setTotal] = useState(1)
-
-  const [order, setOrder] = useState('asc')
-
 
   const getEventsData = async () => {
     const API_URL = `adminreport/eventreport`
@@ -19,18 +18,26 @@ const EventReport = () => {
     setReportData(response.data.report)
 
   }
-  var asc=(a, b) => a.report.length < b.report.length ? 1 : -1
-  var desc= (a, b) => a.report.length > b.report.length ? 1 : -1
+  var asc = (a, b) => a.report.length < b.report.length ? 1 : -1
+  var desc = (a, b) => a.report.length > b.report.length ? 1 : -1
   useEffect(() => {
     getEventsData();
+    console.log("user",user)
   }, [])
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
       {/* Title Section */}
       <div className='dashboard-title'>
         <h3 className='text-lg md:text-2xl xl:text-3xl'>Events Report</h3>
+        <div className='space-x-3'>
+          <button
+            className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'
+            onClick={() => generatePDF(reportData, total,user.name)}
+          >
+            Download Report
+          </button>
+        </div>
       </div>
-
       {/* Dashboard Content */}
       <div className='dashboard-content'>
         <div className='flex flex-1 overflow-hidden relative h-full w-full'>
@@ -67,25 +74,25 @@ const EventReport = () => {
                   {reportData.sort(asc).map((data) => (
                     <tr key={data._id} className="bg-white border-b border-gray-600">
                       <td className="py-2 text-black px-6">
-                      {moment(data.createdAt).utc().format('YYYY-MM-DD')}
+                        {moment(data.createdAt).utc().format('YYYY-MM-DD')}
                       </td>
                       <td className="py-2 text-black px-6">
-                      {moment(data.date).utc().format('YYYY-MM-DD')}
+                        {moment(data.date).utc().format('YYYY-MM-DD')}
                       </td>
                       <td className="py-2 text-black px-6">
-                      {data.company.name}
+                        {data.company.name}
                       </td>
                       <td className="py-2 text-black px-6">
-                      {data.eventTitle}
+                        {data.eventTitle}
                       </td>
                       <td className="py-2 text-black px-6">
-                      {data.report.length}
+                        {data.report.length}
                       </td>
                       <td className="py-2 text-black px-6">
-                      {Math.round(((data.report.length)*100)/total)}%
+                        {Math.round(((data.report.length) * 100) / total)}%
                       </td>
                       <td className="py-2 text-black px-6">
-                      {data.deliveryType}
+                        {data.deliveryType}
                       </td>
                     </tr>
                   ))}
