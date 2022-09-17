@@ -22,7 +22,7 @@ const Jobs = () => {
   const [experience, setExperience] = useState([])
 
   //search data
-  const [keyword, setKeyword] = useState('')
+  const [keyword, setKeyword] = useState(params.get('searchKey') || '')
   const [location, setLocation] = useState('')
   const [search, setSearch] = useState(0)
   //filter data
