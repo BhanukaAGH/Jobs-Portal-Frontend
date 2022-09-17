@@ -9,7 +9,7 @@ const ApplicantCard = ({ applicant, setViewResume }) => {
   const dispatch = useDispatch()
 
   return (
-    <div className='relative block p-8 overflow-hidden border border-gray-200 rounded-lg h-min select-none'>
+    <div className='relative block p-8 overflow-hidden border border-gray-200 rounded-lg h-full select-none'>
       <span className='absolute inset-x-0 bottom-0 h-2  bg-gradient-to-r from-green-300 via-blue-500 to-purple-600'></span>
 
       <div className='justify-between sm:flex'>
