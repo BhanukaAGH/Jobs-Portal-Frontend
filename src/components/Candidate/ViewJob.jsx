@@ -110,7 +110,11 @@ const ViewJob = () => {
   }, [])
 
   if (loading) {
-    return <Loading />
+    return (
+      <div className='w-screen h-screen'>
+        <Loading />
+      </div>
+    )
   }
 
   return (
