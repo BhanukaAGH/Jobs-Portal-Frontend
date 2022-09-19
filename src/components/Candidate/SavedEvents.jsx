@@ -20,9 +20,7 @@ const SavedEvents = () => {
   const getSavedEvents = async () => {
     const API_URL = `candidate/getsaveEvents/${user.userId}`
     const response = await api.get(API_URL)
-    console.log(response)
     let mapped = response.data.find.map((ele) => ele.EventID)
-    console.log('response at event', mapped)
     setSavedEvents(mapped)
   }
   //remove from saved
@@ -63,7 +61,7 @@ const SavedEvents = () => {
               <div className=' h-5/6 w-full pl-4 pt-4 bg-white rounded-t-lg '>
                 <div className='flex justify-end pr-6'>
                   <div className=''>
-                    <span class='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-blue-800'>
+                    <span className='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-blue-800'>
                       {event.deliveryType}
                     </span>
                   </div>
@@ -76,7 +74,7 @@ const SavedEvents = () => {
                       viewBox='0 0 24 24'
                       stroke-width='1.5'
                       stroke='currentColor'
-                      class='w-6 h-6'
+                      className='w-6 h-6'
                     >
                       <path
                         stroke-linecap='round'

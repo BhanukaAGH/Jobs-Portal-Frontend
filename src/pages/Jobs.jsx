@@ -81,6 +81,7 @@ const Jobs = () => {
               onChange={(e) => {
                 setKeyword(e.target.value)
               }}
+              defaultValue={keyword}
               placeholder='Job title or keyword'
             />
             <input
