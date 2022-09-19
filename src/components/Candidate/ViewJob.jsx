@@ -34,7 +34,12 @@ const ViewJob = () => {
   const getResume = async () => {
     const API_URL = `candidate/viewResume/${user.userId}`
     const response = await api.get(API_URL)
-    return response.data.find._id
+    console.log(response)
+    if(!response.data.find){
+      return null
+    }else{
+      return response.data.find._id
+    }
   }
 
   const applyJob = async () => {
@@ -44,6 +49,12 @@ const ViewJob = () => {
     }
     setisLoading(true)
     const ResumeID = await getResume()
+    
+    if(!ResumeID){
+      setisLoading(false)
+      toast.info('resume no setup', { theme: 'dark' })
+      return
+    }
     const userID = user.userId //logged user
     const JobID = jobIdParams ? job?._id : jobApply.viewData.job._id
     const CompanyID = jobIdParams
