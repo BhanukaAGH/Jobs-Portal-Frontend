@@ -157,7 +157,6 @@ const ViewProfile = () => {
     const API_URL = `candidate/viewResume/${user.userId}`
     const response = await api.get(API_URL)
     if (response.data.find !== null) {
-      console.log('a', response)
       setLocation(response.data.find.Location)
       setPrimaryRole(response.data.find.PrimaryRole)
       setStatement(response.data.find.Statement)
@@ -196,20 +195,20 @@ const ViewProfile = () => {
                 <button
                   onClick={Update}
                   type='button'
-                  class=' flex font-medium rounded-md text-white text-md  px-4 py-2.5  bg-green-700 hover:bg-green-500 focus:outline-none'
+                  className=' flex font-medium rounded-md text-white text-md  px-4 py-2.5  bg-green-700 hover:bg-green-500 focus:outline-none'
                 >
                   <div>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
                       viewBox='0 0 24 24'
-                      stroke-width='1.5'
+                      strokeWidth='1.5'
                       stroke='currentColor'
                       className='w-4 h-6'
                     >
                       <path
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                         d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'
                       />
                     </svg>
@@ -220,20 +219,20 @@ const ViewProfile = () => {
                   <button
                     onClick={removeResume}
                     type='button'
-                    class=' flex font-medium rounded-md text-white text-md  px-4 py-2.5  bg-red-600 hover:bg-red-400 focus:outline-none'
+                    className=' flex font-medium rounded-md text-white text-md  px-4 py-2.5  bg-red-600 hover:bg-red-400 focus:outline-none'
                   >
                     <div>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
                         viewBox='0 0 24 24'
-                        stroke-width='1.5'
+                        strokeWidth='1.5'
                         stroke='currentColor'
                         className='w-4 h-6'
                       >
                         <path
-                          stroke-linecap='round'
-                          stroke-linejoin='round'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
                           d='M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z'
                         />
                       </svg>
@@ -257,13 +256,13 @@ const ViewProfile = () => {
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
                         viewBox='0 0 24 24'
-                        stroke-width='1.5'
+                        strokeWidth='1.5'
                         stroke='currentColor'
-                        class='w-10 h-10'
+                        className='w-10 h-10'
                       >
                         <path
-                          stroke-linecap='round'
-                          stroke-linejoin='round'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
                           d='M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15'
                         />
                       </svg>
@@ -355,12 +354,12 @@ const ViewProfile = () => {
                       xmlns='http://www.w3.org/2000/svg'
                       viewBox='0 0 24 24'
                       fill='currentColor'
-                      class='w-10 h-10'
+                      className='w-10 h-10'
                     >
                       <path
-                        fill-rule='evenodd'
+                        fillRule='evenodd'
                         d='M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z'
-                        clip-rule='evenodd'
+                        clipRule='evenodd'
                       />
                     </svg>
                   </button>

@@ -19,7 +19,6 @@ const SavedJobsCard = () => {
     const API_URL = `candidate/getsaveJobs/${user.userId}`
     const response = await api.get(API_URL)
     let mapped = response.data.find.map((ele) => ele.JobID)
-    console.log('response', mapped)
     setSavedjobs(mapped)
   }
   //remove from saved
