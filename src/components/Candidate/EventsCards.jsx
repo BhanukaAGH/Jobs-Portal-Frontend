@@ -93,11 +93,12 @@ const EventsCards = ({ location, keyword, search, setSearch }) => {
     setLoading(true)
     const getAll = async () => {
       await getAllEvents()
-      await getSavedEvents()
+      if (user) {
+        await getSavedEvents()
+      }
       setLoading(false)
     }
     getAll()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageNo, search])
 
