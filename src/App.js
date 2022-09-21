@@ -1,22 +1,21 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import Home from "./pages/Home";
-import CompanySignUp from "./pages/CompanySignUp";
-import PostJob from "./pages/PostJob";
-import Dashboard from "./pages/Dashboard";
-import Jobs from "./pages/Jobs";
-import Companies from "./pages/Companies";
-import Events from "./pages/Events";
-import Aboutus from "./pages/Aboutus";
-import UserProfile from "./pages/UserProfile";
-import Saved from "./pages/Saved";
-import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./components/ProtectedRoute";
-import ViewJob from "./components/Candidate/ViewJob";
-import ViewEvent from "./components/Candidate/ViewEvent";
-import AppliedJobs from "./pages/AppliedJobs";
-
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import Home from './pages/Home'
+import CompanySignUp from './pages/CompanySignUp'
+import PostJob from './pages/PostJob'
+import Dashboard from './pages/Dashboard'
+import Jobs from './pages/Jobs'
+import Companies from './pages/Companies'
+import Events from './pages/Events'
+import Aboutus from './pages/Aboutus'
+import UserProfile from './pages/UserProfile'
+import Saved from './pages/Saved'
+import NotFound from './pages/NotFound'
+import ProtectedRoute from './components/ProtectedRoute'
+import ViewJob from './components/Candidate/ViewJob'
+import ViewEvent from './components/Candidate/ViewEvent'
+import AppliedJobs from './pages/AppliedJobs'
 
 const App = () => {
   return (
@@ -72,15 +71,14 @@ const App = () => {
           }
         />
         <Route
-          path="/appliedjobs"
+          path='/appliedjobs'
           element={
             <ProtectedRoute>
               <AppliedJobs />
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<NotFound />} />
-
+        <Route path='*' element={<NotFound />} />
       </Routes>
       <ToastContainer
         position='bottom-right'
