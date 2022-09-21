@@ -24,14 +24,10 @@ const ViewProfile = () => {
   const [resumeData, setresumeData] = useState('')
   const [resumeURL, setResumeURL] = useState('')
 
-  //check if resume exist
-  const [resumeExist, setresumeExist] = useState('')
-
   //form validation
   const [valLocation, setValLocation] = useState('')
   const [valRole, setValRole] = useState('')
   const [valStatment, setValStatment] = useState('')
-  const [valCV, setValcv] = useState('')
 
   //resume file
   const [resume, setResume] = useState(null)
@@ -49,7 +45,6 @@ const ViewProfile = () => {
       )
       return uploadRes?.data?.secure_url
     } catch (error) {
-      console.log(error)
       toast.error('error in uploading CV', { theme: 'dark' })
     }
   }
@@ -164,7 +159,6 @@ const ViewProfile = () => {
       setresumeData(response.data.find.CV.slice(68).slice(0, -11) + '.pdf')
       setResumeURL(response.data.find.CV)
     }
-    setresumeExist(response.data.find)
   }
   const removeResume = async () => {
     const API_URL = `candidate/removeResume/${user.userId}`
@@ -280,7 +274,6 @@ const ViewProfile = () => {
                     />
                   </div>
                 </div>
-                <p className='text-xs text-red-500 pt-0.5'>{valCV}</p>
                 <div className='pt-4'>
                   <p className='font-sans text-xl font-bold'>
                     Where do you live

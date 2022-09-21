@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { logout, reset } from '../../features/auth/authSlice'
 import Logo from '../../assets/Logo.webp'
 import useOnClickOutside from '../../hooks/useOnClickOutside'
+import { MdOutlineLogout } from 'react-icons/md'
 
 const DashboardNav = () => {
   const ref = useRef()
@@ -44,7 +45,8 @@ const DashboardNav = () => {
               role='menu'
             >
               <span className='avatar-option' onClick={onLogout}>
-                Sign out
+                <MdOutlineLogout className='text-xl' />
+                <span>Sign out</span>
               </span>
             </div>
           </div>
