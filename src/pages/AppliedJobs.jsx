@@ -18,7 +18,6 @@ const AppliedJobs = () => {
   const getAppliedJobs = async () => {
     const API_URL = `candidate/userappliedJobs/${user.userId}`
     const response = await api.get(API_URL)
-    console.log(response.data.find)
     setData(
       response.data.find.filter(
         (data) =>

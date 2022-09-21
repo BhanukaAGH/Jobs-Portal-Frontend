@@ -49,12 +49,12 @@ const Saved = () => {
           <button onClick={SavedType}>
             <div>
               {type === 0 && (
-                <span class='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-400 text-black'>
+                <span className='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-400 text-black'>
                   Saved Jobs
                 </span>
               )}
               {type === 1 && (
-                <span class='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-black'>
+                <span className='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-black'>
                   Saved Jobs
                 </span>
               )}
@@ -63,12 +63,12 @@ const Saved = () => {
           <button onClick={SavedType}>
             <div>
               {type === 1 && (
-                <span class='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-400 text-black'>
+                <span className='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-400 text-black'>
                   Saved Events
                 </span>
               )}
               {type === 0 && (
-                <span class='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-black'>
+                <span className='text-sm font-medium mr-2 px-5 py-1.5 rounded-full  bg-blue-200 text-black'>
                   Saved Events
                 </span>
               )}
