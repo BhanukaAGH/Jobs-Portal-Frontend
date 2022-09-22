@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -11,6 +11,8 @@ import { urlPattern } from '../constants/pattern'
 import { Oval } from 'react-loader-spinner'
 
 const CompanySignUp = () => {
+  const [imageload, setImageLoad] = useState(true)
+
   const {
     register,
     handleSubmit,
@@ -288,14 +290,17 @@ const CompanySignUp = () => {
           </form>
         </div>
       </div>
-      <div className='hidden lg:block col-span-3 w-full relative'>
+      <div className='hidden lg:block col-span-3 w-full relative overflow-hidden'>
         <img
           src={BGImage}
           alt='right-bg'
           loading='lazy'
-          width={'100%'}
-          height={'100%'}
-          className='absolute inset-0 h-full object-cover w-full'
+          onLoad={() => setImageLoad(false)}
+          className={`absolute inset-0 w-full h-full object-cover duration-700 ease-in-out ${
+            imageload
+              ? 'grayscale blur-lg scale-105'
+              : 'grayscale-0 blur-0 scale-100'
+          }`}
         />
       </div>
     </div>
