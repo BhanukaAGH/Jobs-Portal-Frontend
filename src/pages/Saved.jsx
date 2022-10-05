@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/Home/Navbar'
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import SavedJobsCard from '../components/Candidate/SavedJobs'
 import SavedEvents from '../components/Candidate/SavedEvents'

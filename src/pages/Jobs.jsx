@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Home/Navbar'
 import JobsCard from '../components/Candidate/JobCards'
 import { useSelector } from 'react-redux'
 import api from '../utils/api'
-import { useEffect } from 'react'
-import { useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { categories } from '../utils/jobCategories'
 

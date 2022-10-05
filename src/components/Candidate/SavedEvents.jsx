@@ -1,6 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
@@ -65,9 +63,11 @@ const SavedEvents = () => {
                       {event.deliveryType}
                     </span>
                   </div>
-                  <button onClick={(e) => {
-                    onClickApply(event)
-                  }}>
+                  <button
+                    onClick={(e) => {
+                      onClickApply(event)
+                    }}
+                  >
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -92,7 +92,7 @@ const SavedEvents = () => {
                   />
                   <div className='pl-4 grid grid-cols-1'>
                     <div className='font-sans text-4xl font-bold'>
-                    {event.eventTitle}
+                      {event.eventTitle}
                     </div>
                     <div className='flex pt-6'>
                       <svg
@@ -126,7 +126,7 @@ const SavedEvents = () => {
               </div>
               <div>
                 <div className='grid grid-cols-2'>
-                <div className='pl-4 pt-2 w-full'>
+                  <div className='pl-4 pt-2 w-full'>
                     {moment(event.date).utc().format('YYYY-MM-DD')} |{' '}
                     {moment(event.date).utc().format('h:mm a')}
                   </div>

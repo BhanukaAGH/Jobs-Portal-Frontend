@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import api from '../../utils/api'
 import moment from 'moment'
 import generatePDF from '../../utils/AdminEventsReport'
@@ -18,7 +17,7 @@ const EventReport = () => {
     setTotal(response.data.totalapplied)
     setReportData(response.data.report)
   }
-  var asc = (a, b) => (a.report.length < b.report.length ? 1 : -1)
+  let asc = (a, b) => (a.report.length < b.report.length ? 1 : -1)
 
   useEffect(() => {
     getEventsData()

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { MdOutlineCloudUpload } from 'react-icons/md'
 import { toast } from 'react-toastify'
@@ -96,7 +95,6 @@ const CompanyDashboard = () => {
       type: 'success',
       isLoading: false,
     })
-    profileUrl = ''
     setProfileImg(null)
   }
 

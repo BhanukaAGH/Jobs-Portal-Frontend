@@ -1,6 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -35,9 +33,9 @@ const ViewJob = () => {
     const API_URL = `candidate/viewResume/${user.userId}`
     const response = await api.get(API_URL)
     console.log(response)
-    if(!response.data.find){
+    if (!response.data.find) {
       return null
-    }else{
+    } else {
       return response.data.find._id
     }
   }
@@ -49,8 +47,8 @@ const ViewJob = () => {
     }
     setisLoading(true)
     const ResumeID = await getResume()
-    
-    if(!ResumeID){
+
+    if (!ResumeID) {
       setisLoading(false)
       toast.info('resume no setup', { theme: 'dark' })
       return
@@ -107,7 +105,6 @@ const ViewJob = () => {
       }
     }
     getSavedJobs()
-    // getAllJobs();
   }
   useEffect(() => {
     if (jobIdParams) {

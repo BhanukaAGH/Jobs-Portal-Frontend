@@ -1,11 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../components/Home/Navbar'
 import ViewProfile from '../components/Candidate/ViewProfile'
 import { useSelector } from 'react-redux'
-import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { useRef } from 'react'
-import { useEffect } from 'react'
 import api from '../utils/api'
 import axios from 'axios'
 import Loading from '../components/Loading'
@@ -173,7 +170,6 @@ const UserProfile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resume])
 
-  //if (resumeExist === null) {
   if (!resumeExist) {
     return (
       <div className={`${authModal && 'h-screen overflow-hidden'}`}>
@@ -410,7 +406,6 @@ const UserProfile = () => {
   }
   if (resumeExist) {
     return <ViewProfile />
-    // return (<h1>hi</h1>)
   }
 }
 

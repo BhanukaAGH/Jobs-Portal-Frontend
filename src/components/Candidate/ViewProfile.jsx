@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../Home/Navbar'
 import { useSelector } from 'react-redux'
-import { useState } from 'react'
 import { toast } from 'react-toastify'
 import api from '../../utils/api'
 import { useRef } from 'react'
@@ -170,8 +169,6 @@ const ViewProfile = () => {
     getResume()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  //if (isLoading) return <Loading />
 
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
