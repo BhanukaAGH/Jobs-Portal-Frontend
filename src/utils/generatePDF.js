@@ -64,7 +64,7 @@ const generatePDF = async (companyName, companyId, jobs) => {
     doc.setFontSize(12)
     doc.setTextColor('black')
     doc.text(
-      `${++i < 10 ? `0${i}` : i}.   ${job.jobTitle} Applicants`,
+      `${++i < 10 ? '0' : ''}${i}.   ${job.jobTitle} Applicants`,
       14,
       doc.lastAutoTable.finalY + 14
     )
