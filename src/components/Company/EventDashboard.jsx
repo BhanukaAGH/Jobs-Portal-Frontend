@@ -12,6 +12,7 @@ import CreateEvent from '../Event/CreateEvent'
 
 const EventDashboard = () => {
   const [events, setEvents] = useState([])
+  const [eventUpdateData, setEventUpdateData] = useState(null)
   const [form, setForm] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [results, setResults] = useState([])
@@ -39,6 +40,11 @@ const EventDashboard = () => {
     }
   }, [searchInput, events])
 
+  const handleEditEvent = (event) => {
+    setEventUpdateData(event)
+    setForm(true)
+  }
+
   return (
     <div className='w-full h-full bg-[#F9FAFF]'>
       {/* Title Section */}
@@ -60,7 +66,7 @@ const EventDashboard = () => {
       {/* Dashboard Content */}
       <div className='dashboard-content'>
         {form ? (
-          <CreateEvent setForm={setForm} />
+          <CreateEvent setForm={setForm} eventUpdateData={eventUpdateData} />
         ) : (
           <div className='flex flex-1 overflow-hidden relative h-full w-full'>
             <div className='absolute inset-0 overflow-auto !scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
@@ -116,7 +122,10 @@ const EventDashboard = () => {
                       <td className='py-4 px-6'>{event.date.substr(0, 10)}</td>
                       <td className='flex items-center py-4 px-6 space-x-3'>
                         <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
-                        <MdOutlineEdit className='text-lg text-blue-500 cursor-pointer' />
+                        <MdOutlineEdit
+                          className='text-lg text-blue-500 cursor-pointer'
+                          onClick={() => handleEditEvent(event)}
+                        />
                         <MdDeleteOutline className='text-lg text-red-500 cursor-pointer' />
                       </td>
                     </tr>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import api from '../../utils/api'
 
-const CreateEvent = ({ setForm }) => {
+const CreateEvent = ({ setForm, eventUpdateData }) => {
   const [event, setEvent] = useState({
     eventTitle: '',
     deliveryType: 'Virtual',
