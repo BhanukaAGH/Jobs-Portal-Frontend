@@ -41,7 +41,7 @@ const EventDashboard = () => {
 
   const handleEditEvent = (event) => {
     setEventUpdateData(event)
-    setForm(true)
+    // setForm(true)
   }
 
   return (
