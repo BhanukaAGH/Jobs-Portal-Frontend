@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Home/Navbar'
 import JobsCard from '../components/Candidate/JobCards'
 import { useSelector } from 'react-redux'
 import api from '../utils/api'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { categories } from '../utils/jobCategories'
+
 const Jobs = () => {
+  const [params] = useSearchParams()
+  const urlLocation = useLocation()
   const { authModal } = useSelector((state) => state.ui)
   //company details for dropdown
   const [companies, setCompanies] = useState([])
@@ -17,18 +20,21 @@ const Jobs = () => {
   const [experience, setExperience] = useState([])
 
   //search data
-  const [keyword, setKeyword] = useState('')
+  const [keyword, setKeyword] = useState(params.get('searchKey') || '')
   const [location, setLocation] = useState('')
   const [search, setSearch] = useState(0)
   //filter data
   const [experienceF, setExperienceF] = useState('')
   const [companyF, setCompanyF] = useState('')
-  const [categoryF, setCategoryF] = useState('')
+  const [categoryF, setCategoryF] = useState(
+    categories.find((catg) => catg.paramName === params.get('category'))
+      ?.name || ''
+  )
   const [medialitiyF, setMedialitiyF] = useState('')
-  
+
   //! Get All Company
   const getAllCompany = async () => {
-    const response = await api.get("/company")
+    const response = await api.get('/company')
     setCompanies(response.data.companies)
     return response.data
   }
@@ -43,12 +49,21 @@ const Jobs = () => {
   }
   const Onsearch = async () => {
     setSearch(1)
-    //setSearch(0)    
+    //setSearch(0)
   }
   useEffect(() => {
     getAllCompany()
-    getAllJobs();
+    getAllJobs()
   }, [])
+
+  useEffect(() => {
+    setCategoryF(
+      categories.find((catg) => catg.paramName === params.get('category'))
+        ?.name || ''
+    )
+    setSearch(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlLocation])
 
   return (
     <div className={`${authModal && 'h-screen overflow-hidden'}`}>
@@ -61,16 +76,23 @@ const Jobs = () => {
             <input
               type='text'
               className='header-input'
-              onChange={(e) => { setKeyword(e.target.value) }}
+              onChange={(e) => {
+                setKeyword(e.target.value)
+              }}
+              defaultValue={keyword}
               placeholder='Job title or keyword'
             />
             <input
               type='text'
               className='header-input'
-              onChange={(e) => { setLocation(e.target.value) }}
+              onChange={(e) => {
+                setLocation(e.target.value)
+              }}
               placeholder='Location'
             />
-            <button className='header-search-button' onClick={Onsearch} >Search</button>
+            <button className='header-search-button' onClick={Onsearch}>
+              Search
+            </button>
           </div>
         </div>
       </header>
@@ -79,45 +101,60 @@ const Jobs = () => {
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
-            onChange={(e) => { setExperienceF(e.target.value)}}
+            onChange={(e) => {
+              setExperienceF(e.target.value)
+            }}
           >
-            <option value="" >Experience</option>
-            {experience.map((option) => (
-              <option  value={option}>{option}</option>
+            <option value=''>Experience</option>
+            {experience.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
             ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
-            onChange={(e) => { setCompanyF(e.target.value) }}
+            onChange={(e) => {
+              setCompanyF(e.target.value)
+            }}
           >
-
-            <option value="">Company</option>
-            {companies.map((company) => (
-              <option  value={company.name}>{company.name}</option>
+            <option value=''>Company</option>
+            {companies.map((company, index) => (
+              <option key={index} value={company.name}>
+                {company.name}
+              </option>
             ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
-            onChange={(e) => { setCategoryF(e.target.value) }}
+            onChange={(e) => {
+              setCategoryF(e.target.value)
+            }}
           >
             <option value=''>Category</option>
-            {category.map((option) => (
-              <option  value={option}>{option}</option>
+            {category.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
             ))}
           </select>
 
           <select
             id='countries'
             className=' border-2 border-[#E2E2E2] text-gray-900 text-sm  shadow-inner-2xl rounded-lg !outline-hidden !ring-0 w-40 p-2.5 '
-            onChange={(e) => { setMedialitiyF(e.target.value) }}
+            onChange={(e) => {
+              setMedialitiyF(e.target.value)
+            }}
           >
             <option value=''>Mediality</option>
-            {medialitiy.map((option) => (
-              <option  value={option}>{option}</option>
+            {medialitiy.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
@@ -126,8 +163,15 @@ const Jobs = () => {
           <div className='box-border grow-0  h-auto'>
             {/* card starts here */}
 
-            <JobsCard keyword={keyword} location={location} search={search} setSearch={setSearch} 
-              experienceF={experienceF} companyF={companyF} categoryF={categoryF} medialitiyF={medialitiyF}
+            <JobsCard
+              keyword={keyword}
+              location={location}
+              search={search}
+              setSearch={setSearch}
+              experienceF={experienceF}
+              companyF={companyF}
+              categoryF={categoryF}
+              medialitiyF={medialitiyF}
             />
             {/* card ends here */}
           </div>

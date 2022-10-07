@@ -1,6 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { MdMenu, MdClose } from 'react-icons/md'
+import {
+  MdMenu,
+  MdClose,
+  MdOutlineDashboard,
+  MdOutlineLogout,
+  MdOutlineBookmarks,
+  MdOutlineAccountCircle,
+  MdOutlineDescription,
+  MdOutlineBusinessCenter,
+} from 'react-icons/md'
 import Logo from '../../assets/Logo.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAuth, toggleNavbar } from '../../features/ui/uiSlice'
@@ -117,26 +126,43 @@ const Navbar = () => {
                   >
                     {user?.role === 'admin' && (
                       <Link to={'/admin/dashboard'} className='avatar-option'>
-                        Dashboard
+                        <MdOutlineDashboard className='text-xl' />
+                        <span>Dashboard</span>
                       </Link>
                     )}
                     {user?.role === 'company' && (
                       <Link to={'/company/dashboard'} className='avatar-option'>
-                        Dashboard
+                        <MdOutlineDashboard className='text-xl' />
+                        <span>Dashboard</span>
                       </Link>
                     )}
                     {user?.role === 'user' && (
-                      <Link to={'/user-profile'} className='avatar-option'>
-                        Profile
+                      <Link to={'/user-profile'} className='avatar-option '>
+                        <MdOutlineDescription className='text-xl' />
+                        <span>Resume</span>
                       </Link>
                     )}
                     {user?.role === 'user' && (
                       <Link to={'/saved'} className='avatar-option'>
-                        Saved Postings
+                        <MdOutlineBookmarks className='text-xl' />
+                        <span>Saved Postings</span>
+                      </Link>
+                    )}
+                    {user?.role === 'user' && (
+                      <Link to={'/appliedjobs'} className='avatar-option'>
+                        <MdOutlineBusinessCenter className='text-xl' />
+                        <span>Applied Jobs</span>
+                      </Link>
+                    )}
+                    {user?.role === 'user' && (
+                      <Link to={'/appliedjobs'} className='avatar-option'>
+                        <MdOutlineAccountCircle className='text-xl' />
+                        <span>Profile</span>
                       </Link>
                     )}
                     <span className='avatar-option' onClick={onLogout}>
-                      Sign out
+                      <MdOutlineLogout className='text-xl' />
+                      <span>Sign out</span>
                     </span>
                   </div>
                 </div>

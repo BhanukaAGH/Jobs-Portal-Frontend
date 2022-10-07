@@ -41,7 +41,6 @@ const Companies = () => {
       return
     }
     setData(companies)
-    return
   }
 
   useEffect(() => {

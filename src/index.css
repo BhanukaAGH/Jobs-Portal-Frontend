@@ -46,7 +46,7 @@
   }
 
   .avatar-option {
-    @apply block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-black hover:text-white;
+    @apply flex items-center space-x-2 cursor-pointer px-3 py-2 text-sm text-gray-700 hover:bg-black hover:text-white;
   }
 
   .input-label {
@@ -76,5 +76,21 @@
 
   .header-search-button {
     @apply px-6 py-3.5 w-48 md:w-64 font-medium rounded-md bg-blue-700 text-white shadow-xl;
+  }
+
+  .apply-state {
+    @apply text-xs text-gray-500;
+  }
+
+  .apply-state[data-content='pending'] {
+    @apply text-green-600 font-bold drop-shadow-md;
+  }
+
+  .apply-state[data-content='accepted'] {
+    @apply text-blue-600 font-bold drop-shadow-md;
+  }
+
+  .apply-state[data-content='rejected'] {
+    @apply text-red-600 font-bold drop-shadow-md;
   }
 }
