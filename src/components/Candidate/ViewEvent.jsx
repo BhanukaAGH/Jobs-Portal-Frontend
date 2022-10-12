@@ -10,6 +10,7 @@ import BGImage from '../../assets/bg.webp'
 import moment from 'moment'
 import { useForm } from 'react-hook-form'
 
+
 const ViewEvent = () => {
   const { eventApply } = useSelector((state) => state.ui)
   const { user } = useSelector((state) => state.auth)
@@ -117,7 +118,8 @@ const ViewEvent = () => {
                   </div>
                 </div>
                 <h1 className='text-white absolute right-4 top-6 '>
-                  {eventApply.viewData.createdAt}
+                  Posted On:{''}
+                  {moment(eventApply.viewData.createdAt).utc().format('YYYY-MM-DD')}
                 </h1>
                 {/* Saved Button */}
                 {savedEvent.includes(eventApply.viewData._id) && (

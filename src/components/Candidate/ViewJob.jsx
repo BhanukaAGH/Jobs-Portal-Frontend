@@ -8,6 +8,7 @@ import { getJob } from '../../features/job/jobSlice'
 import api from '../../utils/api'
 import Navbar from '../Home/Navbar'
 import Loading from '../Loading'
+import moment from 'moment'
 
 const ViewJob = () => {
   const [params] = useSearchParams()
@@ -169,9 +170,10 @@ const ViewJob = () => {
                   </div>
                 </div>
                 <h1 className='text-white absolute right-4 top-6 '>
-                  {jobIdParams
+                  Posted on:{' '}
+                  {moment(jobIdParams
                     ? job?.createdAt
-                    : jobApply.viewData.job.createdAt}
+                    : jobApply.viewData.job.createdAt).utc().format('YYYY-MM-DD')}
                 </h1>
                 <button
                   onClick={applyJob}
