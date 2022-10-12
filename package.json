@@ -28,7 +28,6 @@
     "react-toastify": "^9.0.7",
     "react-tooltip": "^4.2.21",
     "sweetalert": "^2.1.2",
-    "sweetalert2": "^11.4.37",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
