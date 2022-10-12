@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 import {
   MdOutlineRemoveRedEye,
@@ -11,10 +12,19 @@ import CreateEvent from '../Event/CreateEvent'
 
 const EventDashboard = () => {
   const [events, setEvents] = useState([])
-  const [eventUpdateData, setEventUpdateData] = useState(null)
+  const [event, setEvent] = useState({
+    eventTitle: '',
+    eventCategory: '',
+    deliveryType: 'Virtual',
+    location: '',
+    date: undefined,
+    description: '',
+  })
+  const [editEvent, setEditEvent] = useState(false)
   const [form, setForm] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [results, setResults] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getAllEvents = async () => {
@@ -23,7 +33,8 @@ const EventDashboard = () => {
     }
 
     getAllEvents()
-  }, [form, setForm])
+    setLoading(false)
+  }, [loading, setLoading])
 
   useEffect(() => {
     if (searchInput === '') {
@@ -39,9 +50,16 @@ const EventDashboard = () => {
     }
   }, [searchInput, events])
 
-  const handleEditEvent = (event) => {
-    setEventUpdateData(event)
+  const handleEditEvent = (eventData) => {
+    setEvent(eventData)
     setForm(true)
+    setEditEvent(true)
+  }
+
+  const handleDeleteEvent = async (id) => {
+    await api.delete(`/event/${id}`)
+    toast.info('Event Successfully created', { theme: 'dark' })
+    setLoading(true)
   }
 
   return (
@@ -65,7 +83,13 @@ const EventDashboard = () => {
       {/* Dashboard Content */}
       <div className='dashboard-content'>
         {form ? (
-          <CreateEvent setForm={setForm} eventUpdateData={eventUpdateData} />
+          <CreateEvent
+            setForm={setForm}
+            editEvent={editEvent}
+            event={event}
+            setEvent={setEvent}
+            setLoading={setLoading}
+          />
         ) : (
           <div className='flex flex-1 overflow-hidden relative h-full w-full'>
             <div className='absolute inset-0 overflow-auto !scrollbar-thin !scrollbar-track-gray-200 !scrollbar-thumb-gray-800'>
@@ -108,24 +132,29 @@ const EventDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {results.map((event) => (
+                  {results.map((eventData) => (
                     <tr
-                      key={event._id}
+                      key={eventData._id}
                       className='bg-white border-b hover:bg-gray-50'
                     >
                       <td className='py-4 px-6 font-medium text-gray-900 whitespace-nowrap'>
-                        {event.eventTitle}
+                        {eventData.eventTitle}
                       </td>
-                      <td className='py-4 px-6'>{event.location}</td>
-                      <td className='py-4 px-6'>{event.deliveryType}</td>
-                      <td className='py-4 px-6'>{event.date.substr(0, 10)}</td>
+                      <td className='py-4 px-6'>{eventData.location}</td>
+                      <td className='py-4 px-6'>{eventData.deliveryType}</td>
+                      <td className='py-4 px-6'>
+                        {eventData.date.substr(0, 10)}
+                      </td>
                       <td className='flex items-center py-4 px-6 space-x-3'>
                         <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
                         <MdOutlineEdit
                           className='text-lg text-blue-500 cursor-pointer'
-                          onClick={() => handleEditEvent(event)}
+                          onClick={() => handleEditEvent(eventData)}
                         />
-                        <MdDeleteOutline className='text-lg text-red-500 cursor-pointer' />
+                        <MdDeleteOutline
+                          className='text-lg text-red-500 cursor-pointer'
+                          onClick={() => handleDeleteEvent(eventData._id)}
+                        />
                       </td>
                     </tr>
                   ))}

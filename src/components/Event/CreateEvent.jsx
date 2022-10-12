@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import api from '../../utils/api'
 
-const CreateEvent = ({ setForm, eventUpdateData }) => {
-  const [event, setEvent] = useState({
-    eventTitle: '',
-    deliveryType: 'Virtual',
-    location: '',
-    date: undefined,
-    description: '',
-  })
+const CreateEvent = ({ setForm, editEvent, event, setEvent, setLoading }) => {
+  useEffect(() => {
+    if (editEvent) {
+      setEvent(event)
+      // setEvent({ ...event, date: event.date.toISOString().slice(0, 10) })
+    }
+    console.log(event)
+  }, [])
 
   const handleChange = (e) => {
     const name = e.target.name
@@ -23,20 +23,26 @@ const CreateEvent = ({ setForm, eventUpdateData }) => {
 
     const newEvent = {
       eventTitle: event.eventTitle,
+      eventCategory: event.eventCategory,
       deliveryType: event.deliveryType,
       location: event.location,
       date: event.date,
       description: event.description,
     }
 
+    const updateEvent = async () => {
+      await api.patch(`/event/${event._id}`, newEvent)
+      toast.info('Event Successfully updated', { theme: 'dark' })
+    }
+
     const createEvent = async () => {
-      const res = await api.post('/event', newEvent)
-      setEvent(res.data)
+      await api.post('/event', newEvent)
       toast.info('Event Successfully created', { theme: 'dark' })
     }
 
     if (
       newEvent.eventTitle === '' ||
+      newEvent.eventCategory === '' ||
       newEvent.deliveryType === '' ||
       newEvent.location === '' ||
       newEvent.date === undefined ||
@@ -44,7 +50,12 @@ const CreateEvent = ({ setForm, eventUpdateData }) => {
     ) {
       toast.error('Please fill all fields', { theme: 'dark' })
     } else {
-      createEvent()
+      if (editEvent) {
+        updateEvent()
+      } else {
+        createEvent()
+      }
+      setLoading(true)
       setForm(false)
     }
   }
@@ -107,10 +118,27 @@ const CreateEvent = ({ setForm, eventUpdateData }) => {
             />
           </div>
 
-          <div className='col-span-6'>
+          <div className='col-span-6 lg:col-span-3'>
+            <label
+              htmlFor='eventCategory'
+              className='mb-2 block text-sm font-medium text-gray-900'
+            >
+              Event Category
+            </label>
+            <input
+              type='text'
+              name='eventCategory'
+              value={event.eventCategory}
+              onChange={handleChange}
+              placeholder='Event Category'
+              className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
+            />
+          </div>
+
+          <div className='col-span-6 lg:col-span-3'>
             <label
               htmlFor='deliveryType'
-              className='block text-sm font-medium text-gray-700'
+              className='mb-2 block text-sm font-medium text-gray-700'
             >
               Delivery Type
             </label>
