@@ -69,6 +69,7 @@ const EventDashboard = () => {
       if (willDelete) {
         api.delete(`/event/${id}`)
         toast('Event Delete  Successfully', { type: 'success' })
+        setLoading(true)
       } else {
       }
     })
