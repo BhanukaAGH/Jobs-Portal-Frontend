@@ -147,7 +147,6 @@ const EventDashboard = () => {
                         {eventData.date.substr(0, 10)}
                       </td>
                       <td className='flex items-center py-4 px-6 space-x-3'>
-                        <MdOutlineRemoveRedEye className='text-lg cursor-pointer' />
                         <MdOutlineEdit
                           className='text-lg text-blue-500 cursor-pointer'
                           onClick={() => handleEditEvent(eventData)}
