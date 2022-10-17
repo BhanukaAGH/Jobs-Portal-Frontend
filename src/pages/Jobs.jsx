@@ -61,6 +61,7 @@ const Jobs = () => {
       categories.find((catg) => catg.paramName === params.get('category'))
         ?.name || ''
     )
+    //test
     setSearch(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlLocation])
