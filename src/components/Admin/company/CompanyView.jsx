@@ -67,9 +67,6 @@ const CompanyView = () => {
     await api.patch(`/admin/update/status/${id}`, data);
     toast("Status Updated Successfully", { type: "success" });
     updateView();
-    setTimeout(() => {
-      window.location.reload();
-    }, 4000);
   };
 
   if (IsLoading) return <Loading />;
@@ -88,7 +85,7 @@ const CompanyView = () => {
           />
         </div>
       </div>
-      <section className="flex flex-wrap justify-around items-center mx-3 p-3">
+      <section className="flex flex-wrap justify-around  content-center  mx-3 p-3">
         {search.length === 0
           ? "No result"
           : search.map((data) => {

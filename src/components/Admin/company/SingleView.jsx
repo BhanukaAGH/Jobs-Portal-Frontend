@@ -15,7 +15,7 @@ const SingleView = ({
     showView({});
   };
   return (
-    <article className="absolute inset-0 flex items-center justify-center bg-black  bg-opacity-50 ">
+    <article className="absolute inset-0 flex items-center justify-center bg-black  bg-opacity-50 mb-4 ">
       <div className="rounded-lg bg-white py-4 px-6 border-1  border-black rounded-lg w-1/2">
         <h1 className="text-2xl font-bold text-center mb-4">
           Company Information
@@ -30,7 +30,7 @@ const SingleView = ({
               <BiMapPin className="h-10 w-10 mr-5" />
               <p> {companyLocation}</p>
             </div>
-            <div className="flex items-center mb-5">
+            <div className="flex items-center mb-5 justify-center">
               <BiGlobe className="h-10 w-10 mr-5" />
               <p> {email}</p>
             </div>
