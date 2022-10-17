@@ -13,7 +13,7 @@ const EventReport = () => {
   const getEventsData = async () => {
     const API_URL = `adminreport/eventreport`
     const response = await api.get(API_URL)
-    console.log(response.data.totalapplied)
+    console.log(response.data)
     setTotal(response.data.totalapplied)
     setReportData(response.data.report)
   }
