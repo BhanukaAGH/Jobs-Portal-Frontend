@@ -95,7 +95,7 @@ const CreateEvent = ({ setForm, editEvent, event, setEvent, setLoading }) => {
             <input
               type='date'
               name='date'
-              value={event.date}
+              value={event.date?.substr(0, 10)}
               onChange={handleChange}
               className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-3 text-sm text-gray-900 focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500'
             />
