@@ -93,4 +93,9 @@
   .apply-state[data-content='rejected'] {
     @apply text-red-600 font-bold drop-shadow-md;
   }
+
+  /* Admin Page Styles */
+  .admin-btn {
+    @apply rounded-lg py-1 px-3 text-lg font-bold  text-white transition duration-500 ease-out;
+  }
 }
