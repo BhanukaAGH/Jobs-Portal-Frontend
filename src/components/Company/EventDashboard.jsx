@@ -89,6 +89,7 @@ const EventDashboard = () => {
             event={event}
             setEvent={setEvent}
             setLoading={setLoading}
+            setEditEvent={setEditEvent}
           />
         ) : (
           <div className='flex flex-1 overflow-hidden relative h-full w-full'>
