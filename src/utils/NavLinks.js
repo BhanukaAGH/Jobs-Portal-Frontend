@@ -10,7 +10,6 @@ import EventDashboard from '../components/Company/EventDashboard'
 import JobDashboard from '../components/Company/JobDashboard'
 import AdminDashboard from '../components/Admin/AdminDashboard'
 import AdminCompany from '../components/Admin/AdminCompany'
-import AdminJobs from '../components/Admin/AdminJobs'
 import EventReport from '../components/Admin/EventReport'
 
 export const companyLinks = [
