@@ -39,12 +39,12 @@ const CreateEvent = ({
 
     const updateEvent = async () => {
       await api.patch(`/event/${event._id}`, newEvent)
-      toast.info('Event Successfully updated', { theme: 'dark' })
+      toast('Event Successfully updated', { type: 'success' })
     }
 
     const createEvent = async () => {
       await api.post('/event', newEvent)
-      toast.info('Event Successfully created', { theme: 'dark' })
+      toast('Event Successfully created', { type: 'success' })
     }
 
     if (

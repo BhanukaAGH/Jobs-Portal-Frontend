@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
+import swal from 'sweetalert'
+import jsPDF from 'jspdf'
 
 import {
   MdOutlineRemoveRedEye,
@@ -57,9 +59,50 @@ const EventDashboard = () => {
   }
 
   const handleDeleteEvent = async (id) => {
-    await api.delete(`/event/${id}`)
-    toast.info('Event Successfully created', { theme: 'dark' })
-    setLoading(true)
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this event data!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        api.delete(`/event/${id}`)
+        toast('Event Delete  Successfully', { type: 'success' })
+      } else {
+      }
+    })
+  }
+
+  const generateReport = () => {
+    const unit = 'pt'
+    const size = 'A4' // Use A1, A2, A3 or A4
+    const orientation = 'portrait' // portrait or landscape
+
+    const marginLeft = 40
+    const doc = new jsPDF(orientation, unit, size)
+
+    doc.setFontSize(15)
+
+    const title = 'Event Report Of the company'
+    const headers = [['Title', 'Location', 'Delivrey Type', 'Date']]
+
+    const data = results.map((event) => [
+      event.eventTitle,
+      event.location,
+      event.deliveryType,
+      event.date.substr(0, 10),
+    ])
+
+    let content = {
+      startY: 50,
+      head: headers,
+      body: data,
+    }
+
+    doc.text(title, marginLeft, 40)
+    doc.autoTable(content)
+    doc.save('event report.pdf')
   }
 
   return (
@@ -68,7 +111,10 @@ const EventDashboard = () => {
       <div className='dashboard-title'>
         <h3 className='text-lg md:text-2xl xl:text-3xl'>Company Events List</h3>
         <div className='space-x-3'>
-          <button className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'>
+          <button
+            className='dashbord-title-button bg-white text-black border border-black hidden md:inline-block'
+            onClick={generateReport}
+          >
             Event Report
           </button>
           <button
