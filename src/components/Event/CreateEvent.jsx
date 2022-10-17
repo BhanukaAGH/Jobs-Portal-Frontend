@@ -57,6 +57,14 @@ const CreateEvent = ({ setForm, editEvent, event, setEvent, setLoading }) => {
       }
       setLoading(true)
       setForm(false)
+      setEvent({
+        eventTitle: '',
+        eventCategory: '',
+        deliveryType: 'Virtual',
+        location: '',
+        date: undefined,
+        description: '',
+      })
     }
   }
 
