@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import api from '../../utils/api'
 
-const CreateEvent = ({ setForm, editEvent, event, setEvent, setLoading }) => {
+const CreateEvent = ({
+  setForm,
+  editEvent,
+  event,
+  setEvent,
+  setLoading,
+  setEditEvent,
+}) => {
   useEffect(() => {
     if (editEvent) {
       setEvent(event)
@@ -57,6 +64,7 @@ const CreateEvent = ({ setForm, editEvent, event, setEvent, setLoading }) => {
       }
       setLoading(true)
       setForm(false)
+      setEditEvent(false)
       setEvent({
         eventTitle: '',
         eventCategory: '',
