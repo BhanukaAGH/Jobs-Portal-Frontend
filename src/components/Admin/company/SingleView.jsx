@@ -14,7 +14,7 @@ const SingleView = ({
   }
   return (
     <article className='absolute inset-0 flex items-center justify-center bg-black  bg-opacity-50 mb-4 '>
-      <div className='rounded-lg bg-white py-4 px-6 border-1  border-black rounded-lg w-1/2'>
+      <div className='rounded-lg bg-white py-4 px-6 border-1 border-black w-1/2'>
         <h1 className='text-2xl font-bold text-center mb-4'>
           Company Information
         </h1>
