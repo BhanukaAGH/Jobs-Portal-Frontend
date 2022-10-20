@@ -44,20 +44,20 @@ const Popular = () => {
               <div
                 key={data.job._id}
                 onClick={() =>
-                  navigate(`/candidate/view-job?job=${data.job._id}`)
+                  navigate(`/candidate/view-job?job=${data.job?._id}`)
                 }
                 className='flex flex-col items-center justify-center rounded-lg w-full h-80 cursor-pointer bg-[#4285F4]/10 px-2 sm:px-4 shadow-lg hover:shadow-xl hover:shadow-blue-200'
               >
                 <img
-                  src={data.job.company.photoUrl}
+                  src={data?.job?.company?.photoUrl}
                   alt='google-logo'
                   className='w-14 lg:w-20 mb-3'
                 />
                 <h1 className='text-2xl font-[Poppins] font-semibold text-center text-black'>
-                  {data.job.jobTitle}
+                  {data.job?.jobTitle}
                 </h1>
                 <p className='font-[Poppins] text-[#6B7E8B] text-center mb-6'>
-                  We are looking for a {data.job.jobTitle}
+                  We are looking for a {data.job?.jobTitle}
                 </p>
                 <button className='text-white bg-[#0A2537] rounded-md px-3 py-1 text-center'>
                   Apply Now
