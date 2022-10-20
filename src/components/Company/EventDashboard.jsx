@@ -3,12 +3,7 @@ import { toast } from 'react-toastify'
 import swal from 'sweetalert'
 import jsPDF from 'jspdf'
 
-import {
-  MdOutlineRemoveRedEye,
-  MdOutlineEdit,
-  MdDeleteOutline,
-  MdSearch,
-} from 'react-icons/md'
+import { MdOutlineEdit, MdDeleteOutline, MdSearch } from 'react-icons/md'
 import api from '../../utils/api'
 import CreateEvent from '../Event/CreateEvent'
 
@@ -70,7 +65,6 @@ const EventDashboard = () => {
         api.delete(`/event/${id}`)
         toast('Event Delete  Successfully', { type: 'success' })
         setLoading(true)
-      } else {
       }
     })
   }
