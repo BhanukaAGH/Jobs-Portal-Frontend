@@ -42,7 +42,7 @@ const Popular = () => {
         {!loading
           ? popularJobs?.map((data) => (
               <div
-                key={data.job._id}
+                key={data.job?._id}
                 onClick={() =>
                   navigate(`/candidate/view-job?job=${data.job?._id}`)
                 }
